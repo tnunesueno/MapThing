@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+    <head>
+
+    <title>Find a toilet!</title>
+    <style>
+        #map {
+            height: 500px;
+            width: 100%;
+        }
+        </style>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyALRD7VW8Aat0OnS2sc8yX8AKSxH3JFKoA&libraries=places"></script>
+
+</head>
+
+<body>
+    <h3>Add a toilet!</h3>
+    <form>
+        <input type="text" id="location" placeholder="Enter an address">
+        <input type="button" value="Add" onclick="addBathroomFromAddress()">
+    </form>
+    <br>
+    <div id="map"></div>
+    <script src="bathroomModel.js"></script>
+
+</body>
+
+</html>
