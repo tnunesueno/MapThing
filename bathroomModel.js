@@ -145,12 +145,10 @@ initMap();
         function addBathroomFromAddress(address) {
             console.log("addBathroomFromAddress function called");
             const newBathroom = new Bathroom(address + "Philadelphia PA USA", 0, 0, 0, 0, 0, 0);
-         //   geocodeBathroom(newBathroom);
-            array.push(newBathroom);
+            geocodeBathroom(newBathroom);
+            array.push(newBathroom); 
 
-            for (let i = 0; i < array.length; i++) {
-                geocodeBathroom(array[i]);
-            }
+            addPinToMap(newBathroom.bLatitude, newBathroom.bLongitude);
         }
 
         function addPinToMap(lat, lng) {
