@@ -65,7 +65,7 @@ class Bathroom {
         this.genderNeutral = newGenderNeutral;
     }
 }
-// bathroom1 is the object that is being created.
+// the addresses are the only true values here. remember to find a way to populate the rest with real data and put it in info windows??
 const bathroom1 = new Bathroom("207 S. Sydenham St Philadelphia PA USA",10,true,false,true);
 const bathroom2 = new Bathroom("2000 Sansom Street Philadelphia PA USA", 10, false, true, false);
 const bathroom3 = new Bathroom("1937 Callowhill St Philadelphia PA USA", 10, true, false, true);
