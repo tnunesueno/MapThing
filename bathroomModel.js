@@ -66,11 +66,11 @@ class Bathroom {
     }
 }
 // the addresses are the only true values here. remember to find a way to populate the rest with real data and put it in info windows??
-const bathroom1 = new Bathroom("207 S. Sydenham St Philadelphia PA USA",10,true,false,true);
-const bathroom2 = new Bathroom("2000 Sansom Street Philadelphia PA USA", 10, false, true, false);
-const bathroom3 = new Bathroom("1937 Callowhill St Philadelphia PA USA", 10, true, false, true);
-const bathroom4 = new Bathroom("7101 Emlen St Philadelphia PA USA", 10, false, true, false);
-const bathroom5 = new Bathroom("923 Race St Philadelphia PA USA", 10, true, false, true);
+const bathroom1 = new Bathroom("207 S. Sydenham St",10,true,false,true);
+const bathroom2 = new Bathroom("2000 Sansom Street", 10, false, true, false);
+const bathroom3 = new Bathroom("1937 Callowhill St", 10, true, false, true);
+const bathroom4 = new Bathroom("7101 Emlen St", 10, false, true, false);
+const bathroom5 = new Bathroom("923 Race St", 10, true, false, true);
 
 var array = []; 
 array.push(bathroom1);
@@ -103,9 +103,8 @@ async function initMap() {
 initMap();
 
 // work on this just taking any bathroom? 
-    function geocodeBathroom(Bathroom) {
+function geocodeBathroom(Bathroom) {
        address = Bathroom.getAddress(); 
-
         console.log("geocode function called");
         
         if (typeof google === 'undefined') {
@@ -123,17 +122,13 @@ initMap();
               console.log(latitude+ ", "+longitude);
               Bathroom.setbLatitude(latitude);
               Bathroom.setbLongitude(longitude);
-            } 
-            console.log("BATHROOM LAT " + Bathroom.bLatitude + "BATHROOM LONG " + Bathroom.bLongitude);
 
-            pin = new google.maps.marker.AdvancedMarkerElement({
-                position: {lat: latitude, lng: longitude},
-                map: map,
-                title: Bathroom.getAddress(),
-                gmpClickable: true,
-            }); 
+              console.log("BATHROOM LAT " + Bathroom.bLatitude + "BATHROOM LONG " + Bathroom.bLongitude);
             
-           addPinToMap(latitude, longitude);
+              addPinToMap(latitude, longitude, Bathroom);
+            } else {
+                console.error("Geocode was not successful for the following reason: " + status);
+            }
 
           }); 
         }
@@ -145,27 +140,49 @@ initMap();
         function addBathroomFromAddress(address) {
             console.log("addBathroomFromAddress function called");
             const newBathroom = new Bathroom(address + "Philadelphia PA USA", 0, 0, 0, 0, 0, 0);
-            geocodeBathroom(newBathroom);
-            array.push(newBathroom); 
-
-            addPinToMap(newBathroom.bLatitude, newBathroom.bLongitude);
+            geocodeBathroom(newBathroom); // the pin is supposed to be added here
+            array.push(newBathroom);
+           // addPinToMap(newBathroom.bLatitude, newBathroom.bLongitude);
         }
 
-        function addPinToMap(lat, lng) {
+        function addPinToMap(lat, lng, Bathroom) {
             console.log("addPinToMap function called");
-            pin = new google.maps.marker.AdvancedMarkerElement({
+            if (typeof map === 'undefined') {
+                console.error("Map is not defined.");
+                return;
+            }
+            
+            const pin = new google.maps.marker.AdvancedMarkerElement({
                 position: {lat: lat, lng: lng},
                 map: map,
-                title: "New Bathroom",
+                title: Bathroom.getAddress(),
             });
-        }
+            console.log("Pin created at " + lat + ", " + lng);
 
-        pin.addListener('click', ({ domEvent, latLng }) => {
-            const { target } = domEvent;
-            infoWindow.close();
-            infoWindow.setContent(marker.title);
-            infoWindow.open(marker.map, marker);
-            });   
+            // maybe make only one info window and change the content based on the pin clicked? so two can't be opened at once 
+            const infowindowContent = ` 
+             ${Bathroom.getAddress()} <br/> 
+            <div> <p>Cleanliness: ${Bathroom.getCleanliness()} <br/>
+               Handicap Accessible: ${Bathroom.getHandicapAccesible()} <br/>
+               Baby Changing Station: ${Bathroom.getBabyChangingStation()}<br/>
+                Gender Neutral: ${Bathroom.getGenderNeutral()}</p> 
+            </div> -->
+
+        `;    
+
+            const infowindow = new google.maps.InfoWindow({
+                content: infowindowContent,
+                ariaLabel: Bathroom.getAddress(),
+              });
+        
+            pin.addListener("click", () => {
+                infowindow.open({
+                  anchor: pin,
+                  map,
+                });
+              });
+        
+        }
         
         // this doesn't work. look into how to actually push the coordinates to the object.
         async function updateBathroomCoordinates(Bathroom) {
