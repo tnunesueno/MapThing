@@ -1,4 +1,6 @@
 <!DOCTYPE html>
+
+<link rel="stylesheet" href="slider.css">
 <html>
     <head>
 
@@ -17,12 +19,36 @@
     <h3>Add a toilet!</h3>
     <form>
         <input type="text" id="location" placeholder="Enter an address">
-        <input type="button" value="Add" onclick="addBathroomFromAddress()">
+        <input type="button" value="Add" onclick="openDialog()">
     </form>
     <br>
     <div id="map"></div>
     <script src="bathroomModel.js"></script>
 
 </body>
+
+<dialog id="myDialog">
+    <div>
+    <h2>Tell us more about this bathroom!</h2>
+    <p>Cleanliness (1-10): </p>
+    <div class="slidecontainer">
+        <input type="range" min="1" max="10" value="50" class="slider" id="myRange">
+      </div>
+    <p>This bathroom is: </p>   
+    <input type="checkbox" id="HandicapAccesible" name="Handicap Accesible" value="checked"> 
+    <label for="HandicapAccesible">Handicap Accesible</label>
+    <br/> 
+    <input type="checkbox" id="GenderNeutral" name="Gender Neutral" value="checked"> 
+    <label for="GenderNeutral">Gender Neutral</label>
+    <br/> 
+    <input type="checkbox" id="BabyChanging" name="Baby Changing Table" value="checked"> 
+    <label for="BabyChanging">Baby Changing Table</label>
+    <br/> 
+    <br/> 
+    <button onclick="closeDialog()">Close</button>
+    </div>  
+  </dialog>
+
+  
 
 </html>
