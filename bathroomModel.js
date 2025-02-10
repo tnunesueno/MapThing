@@ -79,6 +79,10 @@ array.push(bathroom3);
 array.push(bathroom4);
 array.push(bathroom5);
 
+const { Place } = await google.maps.importLibrary("places");
+const { AdvancedMarkerElement } = await google.maps.importLibrary("marker");
+const {InfoWindow} = await google.maps.importLibrary("maps");
+
 // Initialize and add the map
 let map;
 
@@ -88,8 +92,7 @@ async function initMap() {
   // Request needed libraries.
   //@ts-ignore
   const { Map } = await google.maps.importLibrary("maps");
-  const { AdvancedMarkerElement } = await google.maps.importLibrary("marker");
-  const {InfoWindow} = await google.maps.importLibrary("maps")
+ 
   // The map, centered at Philadelphia
   map = new Map(document.getElementById("map"), {
     zoom: 13,
@@ -220,8 +223,42 @@ function geocodeBathroom(Bathroom) {
             dialog.close(); 
             // document.getElementById("location").reset(); not sure why this doesnt work, reet is not a func?
         }
+
+let request = {
+  input: "Philadelphia",
+  //locationRestriction: {
+   // west: -122.44, // fix these 
+   // north: 37.8,
+   // east: -122.39,
+   // south: 37.78,
+  //},
+  origin: { lat: 40, lng: -75 },
+  language: "en-US",
+  region: "us",
+};
+// Create a session token.
+const token = new AutocompleteSessionToken();
+
+// Add the token to the request.
+// @ts-ignore
+request.sessionToken = token;
+
+let place = suggestions[0].placePrediction.toPlace(); // Get first predicted place.
+
+await place.fetchFields({ // concludes session 
+  fields: ["displayName", "formattedAddress"],
+});
+
+const placeInfo = document.getElementById("prediction");
+
+placeInfo.textContent =
+  "First predicted place: " +
+  place.displayName +
+  ": " +
+  place.formattedAddress;
         
     // to do: 
+    // add place autocomplete so users don't have to type in address
     // delete pin func 
     // add cleanliness etc when adding pin 
     // save to json 
