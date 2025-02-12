@@ -1,5 +1,6 @@
 class Bathroom {
-    constructor(streetAddress, bLatitude, bLongitude, cleanliness, handicapAccesible, babyChangingStation, genderNeutral) {
+    constructor(name, streetAddress, bLatitude, bLongitude, cleanliness, handicapAccesible, babyChangingStation, genderNeutral, notes) {
+        this.name = name;  
         this.streetAddress = streetAddress;
         this.bLatitude = bLatitude;
         this.bLongitude = bLongitude;
@@ -7,6 +8,7 @@ class Bathroom {
         this.handicapAccesible = handicapAccesible;
         this.babyChangingStation = babyChangingStation;
         this.genderNeutral = genderNeutral;
+        this.notes = notes;
     }
    
     getAddress() {
@@ -64,13 +66,14 @@ class Bathroom {
     setGenderNeutral(newGenderNeutral) {
         this.genderNeutral = newGenderNeutral;
     }
+
 }
 // the addresses are the only true values here. remember to find a way to populate the rest with real data and put it in info windows??
-const bathroom1 = new Bathroom("207 S. Sydenham St",null, null, 10,true,false,true);
-const bathroom2 = new Bathroom("2000 Sansom Street",null, null, 10, false, true, false);
-const bathroom3 = new Bathroom("1937 Callowhill St", null, null, 10, true, false, true);
-const bathroom4 = new Bathroom("7101 Emlen St", null, null, 10, false, true, false);
-const bathroom5 = new Bathroom("923 Race St", null, null, 10, true, false, true);
+const bathroom1 = new Bathroom( null, "207 S. Sydenham St",null, null, 10,true,false,true, null)
+const bathroom2 = new Bathroom(null, "2000 Sansom Street",null, null, 10, false, true, false, null);
+const bathroom3 = new Bathroom(null," 1937 Callowhill St", null, null, 10, true, false, true, null);
+const bathroom4 = new Bathroom(null, "7101 Emlen St", null, null, 10, false, true, false, null);
+const bathroom5 = new Bathroom(null, "923 Race St", null, null, 10, true, false, true, null);
 
 var array = []; 
 array.push(bathroom1);
@@ -79,29 +82,31 @@ array.push(bathroom3);
 array.push(bathroom4);
 array.push(bathroom5);
 
-const { Place } = await google.maps.importLibrary("places");
-const { AdvancedMarkerElement } = await google.maps.importLibrary("marker");
-const {InfoWindow} = await google.maps.importLibrary("maps");
+//const { Place } = await google.maps.importLibrary("places");
+
 
 // Initialize and add the map
 let map;
 
 async function initMap() {
-  // The location of Philadelphia
-  const position = { lat: 39.9526, lng: -75.1652 };
-  // Request needed libraries.
-  //@ts-ignore
-  const { Map } = await google.maps.importLibrary("maps");
- 
-  // The map, centered at Philadelphia
-  map = new Map(document.getElementById("map"), {
-    zoom: 13,
-    center: position,
-    mapId: "DEMO_MAP_ID",
-  });
+    
+    // The location of Philadelphia
+    const position = { lat: 39.9526, lng: -75.1652 };
+    // Request needed libraries.
+    //@ts-ignore
+    const { Map } = await google.maps.importLibrary("maps");
+    const { AdvancedMarkerElement } = await google.maps.importLibrary("marker");
+    const { InfoWindow } = await google.maps.importLibrary("maps");
+    // The map, centered at Philadelphia
+    map = new Map(document.getElementById("map"), {
+        zoom: 13,
+        center: position,
+        mapId: "DEMO_MAP_ID",
+    });
 }
 
 initMap();
+// Ensure initMap is called when the pwindow.onload = initMap;
 
 // work on this just taking any bathroom? 
 function geocodeBathroom(Bathroom) {
@@ -221,42 +226,15 @@ function geocodeBathroom(Bathroom) {
                }
 
             dialog.close(); 
+            document.getElementById("location").value.reset();
             // document.getElementById("location").reset(); not sure why this doesnt work, reet is not a func?
         }
 
-let request = {
-  input: "Philadelphia",
-  //locationRestriction: {
-   // west: -122.44, // fix these 
-   // north: 37.8,
-   // east: -122.39,
-   // south: 37.78,
-  //},
-  origin: { lat: 40, lng: -75 },
-  language: "en-US",
-  region: "us",
-};
-// Create a session token.
-const token = new AutocompleteSessionToken();
-
-// Add the token to the request.
-// @ts-ignore
-request.sessionToken = token;
-
-let place = suggestions[0].placePrediction.toPlace(); // Get first predicted place.
-
-await place.fetchFields({ // concludes session 
-  fields: ["displayName", "formattedAddress"],
-});
-
-const placeInfo = document.getElementById("prediction");
-
-placeInfo.textContent =
-  "First predicted place: " +
-  place.displayName +
-  ": " +
-  place.formattedAddress;
         
+  
+ //window.init = initAutocomplete;
+
+
     // to do: 
     // add place autocomplete so users don't have to type in address
     // delete pin func 
@@ -264,4 +242,4 @@ placeInfo.textContent =
     // save to json 
     // only one infowindow at once? 
     // list view side pop out 
-    // directions? 
+    // directions? */

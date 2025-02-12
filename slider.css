@@ -1,6 +1,7 @@
+
 .slidecontainer {
     width: 100%; /* Width of the outside container */
-  }
+  } 
   
   /* The slider itself */
   .slider {
@@ -45,3 +46,4 @@
  background-size: contain;
     cursor: pointer; /* Cursor on hover */
   }
+  
