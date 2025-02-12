@@ -230,8 +230,105 @@ function geocodeBathroom(Bathroom) {
             // document.getElementById("location").reset(); not sure why this doesnt work, reet is not a func?
         }
 
-        
-  
+        let title;
+        let results;
+        let input;
+        let token;
+       
+            // Add an initial request body.
+            let request = {
+              input: document.getElementById("location").value,
+             locationRestriction: {
+               west: 76,
+               north: 41,
+               east: 74,
+               south:38,
+              },
+              origin: { lat: 40, lng: -75 },
+              language: "en-US",
+              region: "us",
+            };
+
+
+            async function initAutocomplete() {
+            title = document.getElementById("title");
+            results = document.getElementById("results"); // Ensure results element is initialized
+            // Create a session token.
+            token = new google.maps.places.AutocompleteSessionToken();
+            input = document.querySelector("input");
+            input.addEventListener("input", makeAcRequest); // This will trigger makeAcRequest on input event
+            request = refreshToken(request);
+            }
+       
+      async function makeAcRequest(input) {
+          // Reset elements and exit if an empty string is received.
+          if (input.target.value == "") {
+            title.innerText = "";
+            results.replaceChildren();
+            return;
+          }
+        // Add the latest char sequence to the request.
+        request.input = input.target.value;
+        // Fetch autocomplete suggestions and show them in a list.
+        // @ts-ignore
+        const { suggestions } =
+        await google.maps.places.AutocompleteSuggestion.fetchAutocompleteSuggestions(
+        request,
+        );
+
+
+        title.innerText = 'Query predictions for "' + request.input + '"';
+        // Clear the list first.
+        //results.replaceChildren();
+
+
+  for (const suggestion of suggestions) {
+    const placePrediction = suggestion.placePrediction;
+    // Create a link for the place, add an event handler to fetch the place.
+    const a = document.createElement("a");
+
+
+    a.addEventListener("click", () => {
+      onPlaceSelected(placePrediction.toPlace());
+    });
+    a.innerText = placePrediction.text.toString();
+
+
+    // Create a new list element.
+    const li = document.createElement("li");
+
+
+    li.appendChild(a);
+    results.appendChild(li);
+
+
+        }
+    }
+
+
+    // Event handler for clicking on a suggested place.
+async function onPlaceSelected(place) {
+    await place.fetchFields({
+      fields: ["displayName", "formattedAddress"],
+    });
+ 
+    let placeText = document.createTextNode(
+      place.displayName + ": " + place.formattedAddress,
+    );
+ 
+    results.replaceChildren(placeText);
+    title.innerText = "Selected Place:";
+    input.value = "";
+    refreshToken(request);
+  }
+ 
+  // Helper function to refresh the session token.
+  async function refreshToken(request) {
+    // Create a new session token and add it to the request.
+    token = new google.maps.places.AutocompleteSessionToken();
+    request.sessionToken = token;
+    return request;
+  }
  //window.init = initAutocomplete;
 
 

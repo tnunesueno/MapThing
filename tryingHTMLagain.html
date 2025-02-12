@@ -10,6 +10,12 @@
             height: 500px;
             width: 100%;
         }
+
+        #results {
+            list-style-type: none;
+            padding: 0;
+            margin: 0;
+        }
         </style>
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyALRD7VW8Aat0OnS2sc8yX8AKSxH3JFKoA&libraries=places"></script>
 
@@ -18,11 +24,20 @@
 <body>
     <h3>Add a toilet!</h3>
     <form>
-        <input type="text" id="location" placeholder="Enter an address">
+        <input type="text" id="location" placeholder="Enter an address" onfocus="initAutocomplete()">
         <input type="button" value="Add" onclick="openDialog()">
     </form>
     <br>
-    <div id="map"></div>
+    
+      <div id="title"></div>
+      <ul id="results"></ul>
+      <p><span id="prediction"></span></p>
+      <img
+        class="powered-by-google"
+        src="https://storage.googleapis.com/geo-devrel-public-buckets/powered_by_google_on_white.png"
+        alt="Powered by Google"
+      />      
+      <div id="map"></div>
     <script src="bathroomModel.js"></script>
 
 </body>
