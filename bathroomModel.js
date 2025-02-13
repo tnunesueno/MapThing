@@ -122,13 +122,11 @@ async function initMap() {
 }
 
 initMap();
-// Ensure initMap is called when the pwindow.onload = initMap;
 
-// work on this just taking any bathroom? 
 function geocodeBathroom(Bathroom) {
        address = Bathroom.getAddress(); 
         console.log("geocode function called");
-        //const { Place } = await google.maps.importLibrary("places");
+        
         if (typeof google === 'undefined') {
             console.error("Google Maps API is not loaded.");
             return;
@@ -245,6 +243,19 @@ function geocodeBathroom(Bathroom) {
             document.getElementById("location").value.reset();
             // document.getElementById("location").reset(); not sure why this doesnt work, reet is not a func?
         }
+        document.addEventListener("DOMContentLoaded", function() {
+        document.getElementById("location").addEventListener("input", function() {
+        
+        var words = document.getElementById("location").value;
+        var container = document.getElementById("wrapper");
+        if (container){
+        if(words==null || words=="") {
+        container.style.display = "none";}
+        else {
+        container.style.display = "block"; }
+        }
+        })
+        });
 
         let title;
         let results;
@@ -266,13 +277,12 @@ function geocodeBathroom(Bathroom) {
             };
 
 
-            async function initAutocomplete() {
-                
-           title = document.getElementById("title");
-            results = document.getElementById("results"); // Ensure results element is initialized
-            // Create a session token.
+            async function initAutocomplete() {   
+            
+            title = document.getElementById("title");
+            results = document.getElementById("results"); 
             token = new google.maps.places.AutocompleteSessionToken();
-            input = document.querySelector("input");
+            input = document.querySelector("input"); // not sure how the hell this works but it does 
             input.addEventListener("input", makeAcRequest); // This will trigger makeAcRequest on input event
             request = refreshToken(request);
             }

@@ -43,12 +43,14 @@
      background: #838383; 
      ; /* Green background */
     border-radius: 50%; /* Round slider handle */   
- background-size: contain;
+    background-size: contain;
     cursor: pointer; /* Cursor on hover */
   }
   .wrapper{ 
+    position: relative;
     height: 200px; 
     overflow:scroll;
+    z-index: 1000; 
   }
 
   .results {
@@ -63,5 +65,9 @@
   .map{
     position: relative;
     z-index: 2;
+  }
+
+  .location{
+    display: flex;
   }
   
