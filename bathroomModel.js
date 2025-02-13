@@ -74,6 +74,14 @@ const bathroom2 = new Bathroom(null, "2000 Sansom Street",null, null, 10, false,
 const bathroom3 = new Bathroom(null," 1937 Callowhill St", null, null, 10, true, false, true, null);
 const bathroom4 = new Bathroom(null, "7101 Emlen St", null, null, 10, false, true, false, null);
 const bathroom5 = new Bathroom(null, "923 Race St", null, null, 10, true, false, true, null);
+const bathroom6 = new Bathroom("Liberty Place Food Court", "1625 Chestnut St", null, null, 8, true, true, false, "Bathroom on hallway between Fuwa and Bain’s Deli");
+const bathroom7 = new Bathroom("Just Salad", "1729 Chestnut St", null, null, 8, true, false, true, "Code: 9532. No inside lock. Single stall.");
+const bathroom8 = new Bathroom("DIG", "1616 Chestnut St", null, null, 8, true, true, true, "Code: 2929. Single stall.");
+const bathroom9 = new Bathroom("Di Bruno Bros", "1730 Chestnut Street", null, null, 8, true, false, true, "Bathroom behind elevator access door.");
+const bathroom10 = new Bathroom("Cheesecake Factory", "1430 Walnut St", null, null, 10, true, true, false, "Bathroom is through dining room, which is upstairs. Elevator available.");
+const bathroom11 = new Bathroom("CAVA", "1713 Chestnut St", null, null, 8, true, true, true, "Code: 09876.");
+const bathroom12 = new Bathroom("Capital One Café", "135 S 17th St", null, null, 9, true, true, false, "Bathroom upstairs.");
+const bathroom13 = new Bathroom("Ten Asian Food Hall", "1715 Chestnut St", null, null, 7, true, false, false, "notes");
 
 var array = []; 
 array.push(bathroom1);
@@ -81,8 +89,15 @@ array.push(bathroom2);
 array.push(bathroom3);
 array.push(bathroom4);
 array.push(bathroom5);
+array.push(bathroom6);
+array.push(bathroom7);
+array.push(bathroom8);
+array.push(bathroom9);
+array.push(bathroom10);
+array.push(bathroom11);
+array.push(bathroom12);
+array.push(bathroom13);
 
-//const { Place } = await google.maps.importLibrary("places");
 
 
 // Initialize and add the map
@@ -97,9 +112,10 @@ async function initMap() {
     const { Map } = await google.maps.importLibrary("maps");
     const { AdvancedMarkerElement } = await google.maps.importLibrary("marker");
     const { InfoWindow } = await google.maps.importLibrary("maps");
+    const { Place } = await google.maps.importLibrary("places");
     // The map, centered at Philadelphia
     map = new Map(document.getElementById("map"), {
-        zoom: 13,
+        zoom: 15,
         center: position,
         mapId: "DEMO_MAP_ID",
     });
@@ -112,7 +128,7 @@ initMap();
 function geocodeBathroom(Bathroom) {
        address = Bathroom.getAddress(); 
         console.log("geocode function called");
-        
+        //const { Place } = await google.maps.importLibrary("places");
         if (typeof google === 'undefined') {
             console.error("Google Maps API is not loaded.");
             return;
@@ -185,9 +201,9 @@ function geocodeBathroom(Bathroom) {
            dialog.showModal(); 
         }
         
-        function closeDialog(){ 
+        function closeDialog(address){ 
 
-            var address = document.getElementById("location").value;
+            address = document.getElementById("location").value;
             const newBathroom = new Bathroom(address, null, null, null, null, null,null);
             geocodeBathroom(newBathroom);
             array.push(newBathroom);
@@ -251,7 +267,8 @@ function geocodeBathroom(Bathroom) {
 
 
             async function initAutocomplete() {
-            title = document.getElementById("title");
+                
+           title = document.getElementById("title");
             results = document.getElementById("results"); // Ensure results element is initialized
             // Create a session token.
             token = new google.maps.places.AutocompleteSessionToken();
@@ -277,9 +294,9 @@ function geocodeBathroom(Bathroom) {
         );
 
 
-        title.innerText = 'Query predictions for "' + request.input + '"';
+       // title.innerText = 'Query predictions for "' + request.input + '"';
         // Clear the list first.
-        //results.replaceChildren();
+        results.replaceChildren();
 
 
   for (const suggestion of suggestions) {
@@ -297,29 +314,30 @@ function geocodeBathroom(Bathroom) {
     // Create a new list element.
     const li = document.createElement("li");
 
-
     li.appendChild(a);
     results.appendChild(li);
-
 
         }
     }
 
-
     // Event handler for clicking on a suggested place.
 async function onPlaceSelected(place) {
     await place.fetchFields({
-      fields: ["displayName", "formattedAddress"],
+      fields: ["displayName", "formattedAddress"], // put this on the dialog
     });
+
  
     let placeText = document.createTextNode(
       place.displayName + ": " + place.formattedAddress,
     );
  
     results.replaceChildren(placeText);
-    title.innerText = "Selected Place:";
+   title.innerText = "Selected Place:";
     input.value = "";
     refreshToken(request);
+
+    openDialog();
+    document.getElementById("location").value =place.formattedAddress;
   }
  
   // Helper function to refresh the session token.
@@ -328,11 +346,14 @@ async function onPlaceSelected(place) {
     token = new google.maps.places.AutocompleteSessionToken();
     request.sessionToken = token;
     return request;
+
+
   }
  //window.init = initAutocomplete;
 
 
     // to do: 
+    // ADD THE POTTY PIC 
     // add place autocomplete so users don't have to type in address
     // delete pin func 
     // add cleanliness etc when adding pin 
