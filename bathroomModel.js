@@ -10,6 +10,14 @@ class Bathroom {
         this.genderNeutral = genderNeutral;
         this.notes = notes;
     }
+
+    getName() {
+        return this.name;
+    }
+
+    setName(newName) {  
+    this.name = newName;
+    }
    
     getAddress() {
         return this.streetAddress;
@@ -67,12 +75,20 @@ class Bathroom {
         this.genderNeutral = newGenderNeutral;
     }
 
+    getNotes() {  
+        return this.notes;
+    }
+    
+    setNotes(newNotes) {  
+      this.notes = newNotes;
+    }
+
 }
 // the addresses are the only true values here. remember to find a way to populate the rest with real data and put it in info windows??
-const bathroom1 = new Bathroom( null, "207 S. Sydenham St",null, null, 10,true,false,true, null)
+const bathroom1 = new Bathroom(null, "207 S. Sydenham St",null, null, 10,true,false,true, null)
 const bathroom2 = new Bathroom(null, "2000 Sansom Street",null, null, 10, false, true, false, null);
 const bathroom3 = new Bathroom(null," 1937 Callowhill St", null, null, 10, true, false, true, null);
-const bathroom4 = new Bathroom(null, "7101 Emlen St", null, null, 10, false, true, false, null);
+const bathroom4 = new Bathroom("Mt. Airy Coffee", "7101 Emlen St", null, null, 10, false, true, false, null);
 const bathroom5 = new Bathroom(null, "923 Race St", null, null, 10, true, false, true, null);
 const bathroom6 = new Bathroom("Liberty Place Food Court", "1625 Chestnut St", null, null, 8, true, true, false, "Bathroom on hallway between Fuwa and Bain’s Deli");
 const bathroom7 = new Bathroom("Just Salad", "1729 Chestnut St", null, null, 8, true, false, true, "Code: 9532. No inside lock. Single stall.");
@@ -97,8 +113,6 @@ array.push(bathroom10);
 array.push(bathroom11);
 array.push(bathroom12);
 array.push(bathroom13);
-
-
 
 // Initialize and add the map
 let map;
@@ -125,7 +139,7 @@ initMap();
 
 function geocodeBathroom(Bathroom) {
        address = Bathroom.getAddress(); 
-        console.log("geocode function called");
+       console.log ("address to geocode: "+ address);
         
         if (typeof google === 'undefined') {
             console.error("Google Maps API is not loaded.");
@@ -165,6 +179,7 @@ function geocodeBathroom(Bathroom) {
             }
             
             const pin = new google.maps.marker.AdvancedMarkerElement({
+              //  glyph: png.pngtree.com/png-vector/20230903/ourmid/pngtree-open-white-toilet-png-image_9951695.png;
                 position: {lat: lat, lng: lng},
                 map: map,
                 title: Bathroom.getAddress(),
@@ -199,10 +214,11 @@ function geocodeBathroom(Bathroom) {
            dialog.showModal(); 
         }
         
-        function closeDialog(address){ 
+        function closeDialog(){ 
 
-            address = document.getElementById("location").value;
-            const newBathroom = new Bathroom(address, null, null, null, null, null,null);
+            var address = document.getElementById("location").value;
+            console.log("address from text field: "+ address);
+            const newBathroom = new Bathroom(null, address, null, null, null, null, null,null,null);
             geocodeBathroom(newBathroom);
             array.push(newBathroom);
             
@@ -239,9 +255,8 @@ function geocodeBathroom(Bathroom) {
                newBathroom.setBabyChangingStation(false); 
                }
 
-            dialog.close(); 
-            document.getElementById("location").value.reset();
-            // document.getElementById("location").reset(); not sure why this doesnt work, reet is not a func?
+            dialog.close();
+            document.getElementById("location").value = ""; //not sure why this doesnt work, reet is not a func?
         }
         document.addEventListener("DOMContentLoaded", function() {
         document.getElementById("location").addEventListener("input", function() {
@@ -277,15 +292,15 @@ function geocodeBathroom(Bathroom) {
             };
 
 
-            async function initAutocomplete() {   
+      async function initAutocomplete() {   
             
-            title = document.getElementById("title");
-            results = document.getElementById("results"); 
-            token = new google.maps.places.AutocompleteSessionToken();
-            input = document.querySelector("input"); // not sure how the hell this works but it does 
-            input.addEventListener("input", makeAcRequest); // This will trigger makeAcRequest on input event
-            request = refreshToken(request);
-            }
+        title = document.getElementById("title");
+        results = document.getElementById("results"); 
+        token = new google.maps.places.AutocompleteSessionToken();
+        input = document.querySelector("input"); // not sure how the hell this works but it does 
+        input.addEventListener("input", makeAcRequest); // This will trigger makeAcRequest on input event
+        request = refreshToken(request);
+        }
        
       async function makeAcRequest(input) {
           // Reset elements and exit if an empty string is received.
@@ -312,14 +327,12 @@ function geocodeBathroom(Bathroom) {
   for (const suggestion of suggestions) {
     const placePrediction = suggestion.placePrediction;
     // Create a link for the place, add an event handler to fetch the place.
-    const a = document.createElement("a");
-
+    const a = document.createElement("a"); // do this for the wrapper to put the stuff in? 
 
     a.addEventListener("click", () => {
       onPlaceSelected(placePrediction.toPlace());
     });
     a.innerText = placePrediction.text.toString();
-
 
     // Create a new list element.
     const li = document.createElement("li");
@@ -329,6 +342,10 @@ function geocodeBathroom(Bathroom) {
 
         }
     }
+
+    function replaceAllChars(str, charToReplace, replacementChar) {
+        return str.replaceAll(charToReplace, replacementChar);
+      }
 
     // Event handler for clicking on a suggested place.
 async function onPlaceSelected(place) {
@@ -342,13 +359,23 @@ async function onPlaceSelected(place) {
     );
  
     results.replaceChildren(placeText);
-   title.innerText = "Selected Place:";
+    title.innerText = "Selected Place:";
     input.value = "";
     refreshToken(request);
 
     openDialog();
-    document.getElementById("location").value =place.formattedAddress;
-  }
+    var Addy = place.formattedAddress;
+    Addy = Addy = replaceAllChars(Addy, ",", ""); // remove commas
+    Addy = Addy = replaceAllChars(Addy, "  ", " ");   // remove double spaces (shouldnt be any)
+    
+    const sequence = " PA";
+    let index = Addy.indexOf(sequence); // should return an int for index
+    console.log(`First occurrence at index: ${index}`);
+    Addy = Addy.substring(0, index); // does chop at PA -> avoids postal code weirdness STILL DOESN'T GEOCODE
+
+    document.getElementById("location").value = Addy;
+    console.log("addy minus pa and zip: "+ Addy);
+  } // send NAME to addpintoaddress with an html element?? 
  
   // Helper function to refresh the session token.
   async function refreshToken(request) {
@@ -356,17 +383,11 @@ async function onPlaceSelected(place) {
     token = new google.maps.places.AutocompleteSessionToken();
     request.sessionToken = token;
     return request;
-
-
   }
- //window.init = initAutocomplete;
-
-
+ 
     // to do: 
     // ADD THE POTTY PIC 
-    // add place autocomplete so users don't have to type in address
     // delete pin func 
-    // add cleanliness etc when adding pin 
     // save to json 
     // only one infowindow at once? 
     // list view side pop out 

@@ -1,4 +1,3 @@
-
 .slidecontainer {
     width: 100%; /* Width of the outside container */
   } 
@@ -46,15 +45,10 @@
     background-size: contain;
     cursor: pointer; /* Cursor on hover */
   }
-  .wrapper{ 
-    position: relative;
-    height: 200px; 
-    overflow:scroll;
-    z-index: 1000; 
-  }
-
+  
   .results {
-    /*overflow: scroll;*/
+    z-index: 1000; 
+    overflow: scroll;
     position: relative;
     z-index: 1;
     justify-content: center;
@@ -64,10 +58,9 @@
 
   .map{
     position: relative;
-    z-index: 2;
+    z-index: 1; /* Ensure this is lower than the wrapper */
   }
 
   .location{
     display: flex;
   }
-  
