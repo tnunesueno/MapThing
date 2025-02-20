@@ -84,6 +84,7 @@ class Bathroom {
     }
 
 }
+
 // the addresses are the only true values here. remember to find a way to populate the rest with real data and put it in info windows??
 const bathroom1 = new Bathroom(null, "207 S. Sydenham St",null, null, 10,true,false,true, null)
 const bathroom2 = new Bathroom(null, "2000 Sansom Street",null, null, 10, false, true, false, null);
@@ -114,11 +115,39 @@ array.push(bathroom11);
 array.push(bathroom12);
 array.push(bathroom13);
 
+// Import the functions you need from the SDKs you need
+
+
+// TODO: Add SDKs for Firebase products that you want to use
+// https://firebase.google.com/docs/web/setup#available-libraries
+
+// Your web app's Firebase configuration
+// For Firebase JS SDK v7.20.0 and later, measurementId is optional
+
+import { initializeApp } from "firebase/app";
+import { getAnalytics } from "firebase/analytics";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyBQCJP0lTLWp4gRzh6bv_YZv9EmndPSkCc",
+  authDomain: "where2wizz.firebaseapp.com",
+  projectId: "where2wizz",
+  storageBucket: "where2wizz.firebasestorage.app",
+  messagingSenderId: "491577614536",
+  appId: "1:491577614536:web:52965a10ae2d325a3e45fd",
+  measurementId: "G-HLEL0645BV"
+};
+
+
+// FIREBASE STUFF DOES NOT WORK 
+// Initialize Firebase
+const app = initializeApp(firebaseConfig);
+const analytics = getAnalytics(app);
+
 // Initialize and add the map
 let map;
 
 async function initMap() {
-    
+
     // The location of Philadelphia
     const position = { lat: 39.9526, lng: -75.1652 };
     // Request needed libraries.
@@ -384,11 +413,16 @@ async function onPlaceSelected(place) {
     request.sessionToken = token;
     return request;
   }
+
  
     // to do: 
-    // ADD THE POTTY PIC 
+    // ADD THE TOILET GRAPHIC
     // delete pin func 
-    // save to json 
+    // save to json + upload from server 
+    // location services
     // only one infowindow at once? 
     // list view side pop out 
-    // directions? */
+    // directions to nearest bathroom
+    // popout to view all
+    // search 
+    // filter 
