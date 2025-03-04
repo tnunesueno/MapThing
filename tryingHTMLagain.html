@@ -1,65 +1,55 @@
 <!DOCTYPE html>
-
-<link rel="stylesheet" href="slider.css">
 <html>
-    <head>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Welcome to Firebase Hosting</title>
+  <link rel="stylesheet" href="slider.css">
 
-      <meta charset="utf-8">
-      <meta name="viewport" content="width=device-width, initial-scale=1">
-      <title>Welcome to Firebase Hosting</title>
-  
-      <!-- update the version number as needed -->
-      <script defer src="/__/firebase/11.3.1/firebase-app-compat.js"></script>
-      <!-- include only the Firebase features as you need -->
-      <script defer src="/__/firebase/11.3.1/firebase-auth-compat.js"></script>
-      <script defer src="/__/firebase/11.3.1/firebase-database-compat.js"></script>
-      <script defer src="/__/firebase/11.3.1/firebase-firestore-compat.js"></script>
-      <script defer src="/__/firebase/11.3.1/firebase-functions-compat.js"></script>
-      <script defer src="/__/firebase/11.3.1/firebase-messaging-compat.js"></script>
-      <script defer src="/__/firebase/11.3.1/firebase-storage-compat.js"></script>
-      <script defer src="/__/firebase/11.3.1/firebase-analytics-compat.js"></script>
-      <script defer src="/__/firebase/11.3.1/firebase-remote-config-compat.js"></script>
-      <script defer src="/__/firebase/11.3.1/firebase-performance-compat.js"></script>
-      <!-- 
-        initialize the SDK after all desired features are loaded, set useEmulator to false
-        to avoid connecting the SDK to running emulators.
-      -->
-      <script defer src="/__/firebase/init.js?useEmulator=true"></script>
-  
-      <style media="screen">
-        body { background: #ECEFF1; color: rgba(0,0,0,0.87); font-family: Roboto, Helvetica, Arial, sans-serif; margin: 0; padding: 0; }
-        #message { background: white; max-width: 360px; margin: 100px auto 16px; padding: 32px 24px; border-radius: 3px; }
-        #message h2 { color: #ffa100; font-weight: bold; font-size: 16px; margin: 0 0 8px; }
-        #message h1 { font-size: 22px; font-weight: 300; color: rgba(0,0,0,0.6); margin: 0 0 16px;}
-        #message p { line-height: 140%; margin: 16px 0 24px; font-size: 14px; }
-        #message a { display: block; text-align: center; background: #039be5; text-transform: uppercase; text-decoration: none; color: white; padding: 16px; border-radius: 4px; }
-        #message, #message a { box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24); }
-        #load { color: rgba(0,0,0,0.4); text-align: center; font-size: 13px; }
-        @media (max-width: 600px) {
-          body, #message { margin-top: 0; background: white; box-shadow: none; }
-          body { border-top: 16px solid #ffa100; }
-        }
-      </style>
+  <!-- update the version number as needed -->
+  <script defer src="/__/firebase/11.3.1/firebase-app-compat.js"></script>
+  <!-- include only the Firebase features as you need -->
+  <script defer src="/__/firebase/11.3.1/firebase-auth-compat.js"></script>
+  <script defer src="/__/firebase/11.3.1/firebase-database-compat.js"></script>
+  <script defer src="/__/firebase/11.3.1/firebase-firestore-compat.js"></script>
+  <script defer src="/__/firebase/11.3.1/firebase-functions-compat.js"></script>
+  <script defer src="/__/firebase/11.3.1/firebase-messaging-compat.js"></script>
+  <script defer src="/__/firebase/11.3.1/firebase-storage-compat.js"></script>
+  <script defer src="/__/firebase/11.3.1/firebase-analytics-compat.js"></script>
+  <script defer src="/__/firebase/11.3.1/firebase-remote-config-compat.js"></script>
+  <script defer src="/__/firebase/11.3.1/firebase-performance-compat.js"></script>
+  <!-- 
+    initialize the SDK after all desired features are loaded, set useEmulator to false
+    to avoid connecting the SDK to running emulators.
+  -->
+  <script defer src="/__/firebase/init.js?useEmulator=true"></script>
 
-    <title>Find a toilet!</title>
-    <style>
-        #map {
-            position: relative;
-            z-index: 0;
-            height: 500px;
-            width: 100%;
-        }
-
-        </style>
-    <script>
-      (g=>{var h,a,k,p="The Google Maps JavaScript API",c="google",l="importLibrary",q="__ib__",m=document,b=window;b=b[c]||(b[c]={});var d=b.maps||(b.maps={}),r=new Set,e=new URLSearchParams,u=()=>h||(h=new Promise(async(f,n)=>{await (a=m.createElement("script"));e.set("libraries",[...r]+"");for(k in g)e.set(k.replace(/[A-Z]/g,t=>"_"+t[0].toLowerCase()),g[k]);e.set("callback",c+".maps."+q);a.src=`https://maps.${c}apis.com/maps/api/js?`+e;d[q]=f;a.onerror=()=>h=n(Error(p+" could not load."));a.nonce=m.querySelector("script[nonce]")?.nonce||"";m.head.append(a)}));d[l]?console.warn(p+" only loads once. Ignoring:",g):d[l]=(f,...n)=>r.add(f)&&u().then(()=>d[l](f,...n))})({
-        key: "AIzaSyALRD7VW8Aat0OnS2sc8yX8AKSxH3JFKoA",
-        v: "weekly",
-        // Use the 'v' parameter to indicate the version to use (weekly, beta, alpha, etc.).
-        // Add other bootstrap parameters as needed, using camel case.
-      });
-    </script>
-    
+  <style media="screen">
+    body { background: #ECEFF1; color: rgba(0,0,0,0.87); font-family: Roboto, Helvetica, Arial, sans-serif; margin: 0; padding: 0; }
+    #message { background: white; max-width: 360px; margin: 100px auto 16px; padding: 32px 24px; border-radius: 3px; }
+    #message h2 { color: #ffa100; font-weight: bold; font-size: 16px; margin: 0 0 8px; }
+    #message h1 { font-size: 22px; font-weight: 300; color: rgba(0,0,0,0.6); margin: 0 0 16px;}
+    #message p { line-height: 140%; margin: 16px 0 24px; font-size: 14px; }
+    #message a { display: block; text-align: center; background: #039be5; text-transform: uppercase; text-decoration: none; color: white; padding: 16px; border-radius: 4px; }
+    #message, #message a { box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24); }
+    #load { color: rgba(0,0,0,0.4); text-align: center; font-size: 13px; }
+    @media (max-width: 600px) {
+      body, #message { margin-top: 0; background: white; box-shadow: none; }
+      body { border-top: 16px solid #ffa100; }
+    }
+    #map {
+      position: relative;
+      z-index: 0;
+      height: 500px;
+      width: 100%;
+    }
+  </style>
+  <script>
+    (g=>{var h,a,k,p="The Google Maps JavaScript API",c="google",l="importLibrary",q="__ib__",m=document,b=window;b=b[c]||(b[c]={});var d=b.maps||(b.maps={}),r=new Set,e=new URLSearchParams,u=()=>h||(h=new Promise(async(f,n)=>{await (a=m.createElement("script"));e.set("libraries",[...r]+"");for(k in g)e.set(k.replace(/[A-Z]/g,t=>"_"+t[0].toLowerCase()),g[k]);e.set("callback",c+".maps."+q);a.src=`https://maps.${c}apis.com/maps/api/js?`+e;d[q]=f;a.onerror=()=>h=n(Error(p+" could not load."));a.nonce=m.querySelector("script[nonce]")?.nonce||"";m.head.append(a)}));d[l]?console.warn(p+" only loads once. Ignoring:",g):d[l]=(f,...n)=>r.add(f)&&u().then(()=>d[l](f,...n))})({
+      key: "AIzaSyALRD7VW8Aat0OnS2sc8yX8AKSxH3JFKoA",
+      v: "weekly",
+    });
+  </script>
 </head>
 
 <body>
@@ -70,84 +60,43 @@
     <a target="_blank" href="https://firebase.google.com/docs/hosting/">Open Hosting Documentation</a>
   </div>
   <p id="load">Firebase SDK Loading&hellip;</p>
-
   <script>
-    document.addEventListener('DOMContentLoaded', function() {
-      const loadEl = document.querySelector('#load');
-      // // 🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥
-      // // The Firebase SDK is initialized and available here!
-      //
-      // firebase.auth().onAuthStateChanged(user => { });
-      // firebase.database().ref('/path/to/ref').on('value', snapshot => { });
-      // firebase.firestore().doc('/foo/bar').get().then(() => { });
-      // firebase.functions().httpsCallable('yourFunction')().then(() => { });
-      // firebase.messaging().requestPermission().then(() => { });
-      // firebase.storage().ref('/path/to/ref').getDownloadURL().then(() => { });
-      // firebase.analytics(); // call to activate
-      // firebase.analytics().logEvent('tutorial_completed');
-      // firebase.performance(); // call to activate
-      //
-      // // 🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥
-
-      try {
-        let app = firebase.app();
-        let features = [
-          'auth', 
-          'database', 
-          'firestore',
-          'functions',
-          'messaging', 
-          'storage', 
-          'analytics', 
-          'remoteConfig',
-          'performance',
-        ].filter(feature => typeof app[feature] === 'function');
-        loadEl.textContent = `Firebase SDK loaded with ${features.join(', ')}`;
-      } catch (e) {
-        console.error(e);
-        loadEl.textContent = 'Error loading the Firebase SDK, check the console.';
-      }
-    });
-  </script>
   
-    <h3>Add a toilet!</h3>
-    <form>
-        <input type="text" id="location" placeholder="Add a place" onfocus="initAutocomplete(), function(){
-          display: block; 
-        }">
-        <input type="button" value="Add" onclick="openDialog()">
-    </form>
-    <br>
-    
-   <div id="title"></div>
-      <ul id="results"></ul>
-      <p><span id="prediction"></span></p>
-      <div id="map"></div>
-    <script type="module" src="bathroomModel.js"></script>
+  </script>
 
-</body>
+  <h3>Add a toilet!</h3>
+  <form>
+    <input type="text" id="location" placeholder="Add a place" onfocus="initAutocomplete()">
+    <input type="button" value="Add" onclick="openDialog()">
+  </form>
+  <br>
+  
+  <div id="title"></div>
+  <ul id="results"></ul>
+  <p><span id="prediction"></span></p>
+  <div id="map"></div>
+  <script type="module" src="bathroomModel.js"></script>
 
-<dialog id="myDialog">
+  <dialog id="myDialog">
     <div>
-    <h2>Tell us more about this bathroom!</h2>
-    <p>Cleanliness (1-10): </p>
-    <div class="slidecontainer">
+      <h2>Tell us more about this bathroom!</h2>
+      <p>Cleanliness (1-10): </p>
+      <div class="slidecontainer">
         <input type="range" min="1" max="10" value="50" class="slider" id="myRange">
       </div>
-    <p>This bathroom is: </p>   
-    <input type="checkbox" id="HandicapAccesible" name="Handicap Accesible" value="checked"> 
-    <label for="HandicapAccesible">Handicap Accesible</label>
-    <br/> 
-    <input type="checkbox" id="GenderNeutral" name="Gender Neutral" value="checked"> 
-    <label for="GenderNeutral">Gender Neutral</label>
-    <br/> 
-    <input type="checkbox" id="BabyChanging" name="Baby Changing Table" value="checked"> 
-    <label for="BabyChanging">Baby Changing Table</label>
-    <br/> 
-    <br/> 
-    <button onclick="closeDialog(address)">Close</button>
+      <p>This bathroom is: </p>   
+      <input type="checkbox" id="HandicapAccesible" name="Handicap Accesible" value="checked"> 
+      <label for="HandicapAccesible">Handicap Accesible</label>
+      <br/> 
+      <input type="checkbox" id="GenderNeutral" name="Gender Neutral" value="checked"> 
+      <label for="GenderNeutral">Gender Neutral</label>
+      <br/> 
+      <input type="checkbox" id="BabyChanging" name="Baby Changing Table" value="checked"> 
+      <label for="BabyChanging">Baby Changing Table</label>
+      <br/> 
+      <br/> 
+      <button onclick="closeDialog()">Close</button>
     </div>  
   </dialog>
-
-
+</body>
 </html>
