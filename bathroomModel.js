@@ -1,4 +1,4 @@
-// Import the functions you need from the SDKs you need
+/*// Import the functions you need from the SDKs you need
 
 
 // TODO: Add SDKs for Firebase products that you want to use
@@ -56,7 +56,7 @@ document.addEventListener('DOMContentLoaded', function() {
   loadEl.textContent = 'Error loading the Firebase SDK, check the console.';
 }
 });
-
+*/
 class Bathroom {
     constructor(name, streetAddress, bLatitude, bLongitude, cleanliness, handicapAccesible, babyChangingStation, genderNeutral, notes) {
         this.name = name;  
@@ -444,8 +444,10 @@ async function onPlaceSelected(place) {
     request.sessionToken = token;
     return request;
   }
+ //window.init = initAutocomplete;
 
- 
+
+
     // to do: 
     // ADD THE TOILET GRAPHIC
     // delete pin func 
