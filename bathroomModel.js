@@ -190,22 +190,26 @@ function geocodeBathroom(Bathroom) {
             // maybe make only one info window and change the content based on the pin clicked? so two can't be opened at once 
             const infowindowContent = ` 
              ${Bathroom.getAddress()} <br/> 
-            <div> <p>Cleanliness: ${Bathroom.getCleanliness()} <br/>
+               <div> <p>Cleanliness: ${Bathroom.getCleanliness()} <br/>
                Handicap Accessible: ${Bathroom.getHandicapAccesible()} <br/>
                Baby Changing Station: ${Bathroom.getBabyChangingStation()}<br/>
                 Gender Neutral: ${Bathroom.getGenderNeutral()}</p> 
-            </div> `;    
-
+            </div> `; 
+            
+        
             const infowindow = new google.maps.InfoWindow({
                 content: infowindowContent,
                 ariaLabel: Bathroom.getAddress(),
               });
         
             pin.addListener("click", () => {
-                infowindow.open({
-                  anchor: pin,
-                  map,
-                });
+              const popOut = document.getElementById("selectedBR");
+              document.getElementById("address").innerHTML = Bathroom.getAddress();
+              document.getElementById("cleanlinessText").innerHTML = `Cleanliness: ${Bathroom.getCleanliness()}`;
+              document.getElementById("handicap").innerHTML = `Handicap Accessible: ${Bathroom.getHandicapAccesible()}`;
+              document.getElementById("genderNeutral").innerHTML = `Gender Neutral: ${Bathroom.getGenderNeutral()}`;
+              document.getElementById("babyChanging").innerHTML = `Baby Changing Station: ${Bathroom.getBabyChangingStation()}`;
+              popOut.style.display = "block"; // Show the popOut element
               });
         
         }
@@ -259,8 +263,6 @@ function geocodeBathroom(Bathroom) {
             dialog.close();
             document.getElementById("location").value = ""; //not sure why this doesnt work, reet is not a func?
         }
-
-
         document.addEventListener("DOMContentLoaded", function() {
         document.getElementById("location").addEventListener("input", function() {
         
@@ -387,7 +389,11 @@ async function onPlaceSelected(place) {
     request.sessionToken = token;
     return request;
   }
- //window.init = initAutocomplete;
+
+  function closePopOut() {
+    document.getElementById("selectedBR").style.display = "none";
+  }
+ 
 
     // to do: 
     // ADD THE TOILET GRAPHIC

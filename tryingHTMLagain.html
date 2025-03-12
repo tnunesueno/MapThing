@@ -13,6 +13,19 @@
             width: 100%;
         }
 
+        #selectedBR {
+            display: none;
+            width: 30%;
+            height: 40%;
+            position: absolute; /* or fixed */
+            top: 200px; /* Adjust as needed */
+            left: 20px; /* Adjust as needed */
+            z-index: 10; /* Higher than the map's z-index */
+            background-color: white; /* Optional: for visibility */
+            padding: 10px; /* Optional: for spacing */
+            border: 1px solid #ccc; /* Optional: for visibility */
+        }
+
         #results {
             list-style-type: none;
             padding: 0;
@@ -46,6 +59,15 @@
       <div id="map"></div>
     <script src="bathroomModel.js"></script>
 
+    <div id="selectedBR">Selected Bathroom Info
+        <p id="address"></p>
+        <p id="cleanlinessText"></p>
+        <p id="handicap"></p>
+        <p id="genderNeutral"></p>
+        <p id="babyChanging"></p> 
+        <input type="button" onclick="closePopOut()">
+    </div>
+
 </body>
 
 <dialog id="myDialog">
@@ -69,5 +91,6 @@
     <button onclick="closeDialog(address)">Close</button>
     </div>  
   </dialog>
+
 
 </html>
