@@ -203,16 +203,19 @@ function geocodeBathroom(Bathroom) {
               });
         
             pin.addListener("click", () => {
+             // map.setCenter(Bathroom.getbLatitude,Bathroom.getbLongitude,17);
+            
               const popOut = document.getElementById("selectedBR");
+              document.getElementById("title").innerHTML = Bathroom.getName();
               document.getElementById("address").innerHTML = Bathroom.getAddress();
               document.getElementById("cleanlinessText").innerHTML = `Cleanliness: ${Bathroom.getCleanliness()}`;
               document.getElementById("handicap").innerHTML = `Handicap Accessible: ${Bathroom.getHandicapAccesible()}`;
               document.getElementById("genderNeutral").innerHTML = `Gender Neutral: ${Bathroom.getGenderNeutral()}`;
               document.getElementById("babyChanging").innerHTML = `Baby Changing Station: ${Bathroom.getBabyChangingStation()}`;
               popOut.style.display = "block"; // Show the popOut element
+
               });
-        
-        }
+            }
 
         function openDialog(){
            const dialog = document.getElementById("myDialog");
@@ -368,7 +371,6 @@ async function onPlaceSelected(place) {
     input.value = "";
     refreshToken(request);
 
-    openDialog();
     var Addy = place.formattedAddress;
     Addy = Addy = replaceAllChars(Addy, ",", ""); // remove commas
     Addy = Addy = replaceAllChars(Addy, "  ", " ");   // remove double spaces (shouldnt be any)
@@ -376,10 +378,17 @@ async function onPlaceSelected(place) {
     const sequence = " PA";
     let index = Addy.indexOf(sequence); // should return an int for index
     console.log(`First occurrence at index: ${index}`);
-    Addy = Addy.substring(0, index); // does chop at PA -> avoids postal code weirdness STILL DOESN'T GEOCODE
-
+    Addy = Addy.substring(0, index); // does chop at PA -> avoids postal code weirdness
     document.getElementById("location").value = Addy;
     console.log("addy minus pa and zip: "+ Addy);
+
+    // Create a new Bathroom object and set its name field
+    const newBathroom = new Bathroom(place.displayName, Addy, null, null, null, null, null, null, null);
+    console.log("New Bathroom created with name: " + newBathroom.getName());
+
+    // Proceed with geocoding and adding the bathroom to the map and array
+    geocodeBathroom(newBathroom);
+    array.push(newBathroom);
   } // send NAME to addpintoaddress with an html element?? 
  
   // Helper function to refresh the session token.
@@ -393,7 +402,6 @@ async function onPlaceSelected(place) {
   function closePopOut() {
     document.getElementById("selectedBR").style.display = "none";
   }
- 
 
     // to do: 
     // ADD THE TOILET GRAPHIC

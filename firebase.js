@@ -23,6 +23,34 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
+import { collection, addDoc } from "firebase/firestore"; 
+
+async function writeBathroomsToFirestore(array) {
+  try {
+    for (const bathroom of array) {
+      const docRef = await addDoc(collection(db, "bathrooms"), {
+        name: bathroom.getName(),
+        address: bathroom.getAddress(),
+        latitude: bathroom.bLatitude,
+        longitude: bathroom.bLongitude,
+        cleanliness: bathroom.getCleanliness(),
+        handicapAccessible: bathroom.getHandicapAccesible(),
+        babyChangingStation: bathroom.getBabyChangingStation(),
+        genderNeutral: bathroom.getGenderNeutral(),
+        notes: bathroom.notes
+      });
+      console.log("Document written with ID: ", docRef.id);
+    }
+  } catch (e) {
+    console.error("Error adding document: ", e);
+  }
+}
+
+// Example usage
+// Assuming `array` is defined and populated in `bathroomModel.js`
+import { array } from './bathroomModel.js';
+writeBathroomsToFirestore(array);
+
 /*// Import the functions you need from the SDKs you need
 
 
