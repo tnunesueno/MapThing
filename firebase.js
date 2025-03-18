@@ -28,7 +28,7 @@ import { collection, addDoc } from "firebase/firestore";
 async function writeBathroomsToFirestore(array) {
   try {
     for (const bathroom of array) {
-      const docRef = await addDoc(collection(db, "bathrooms"), {
+      addDoc(collection(db, "bathrooms"), {
         name: bathroom.getName(),
         address: bathroom.getAddress(),
         latitude: bathroom.bLatitude,
@@ -38,18 +38,28 @@ async function writeBathroomsToFirestore(array) {
         babyChangingStation: bathroom.getBabyChangingStation(),
         genderNeutral: bathroom.getGenderNeutral(),
         notes: bathroom.notes
+      }).then(docRef => {
+        console.log("Document written with ID: ", docRef.id);
       });
-      console.log("Document written with ID: ", docRef.id);
+      
     }
   } catch (e) {
     console.error("Error adding document: ", e);
   }
+  
+
 }
 
 // Example usage
 // Assuming `array` is defined and populated in `bathroomModel.js`
-import { array } from './bathroomModel.js';
+export {db}; 
 writeBathroomsToFirestore(array);
+// Read from Firestore to verify data was written correctly BUT ITS NOT
+import { collection, getDocs } from "firebase/firestore"; 
+const querySnapshot = await getDocs(collection(db, "bathrooms"));
+querySnapshot.forEach((doc) => {
+  console.log(`${doc.id} => ${doc.data()}`);
+});
 
 /*// Import the functions you need from the SDKs you need
 

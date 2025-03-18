@@ -1,5 +1,6 @@
 {
+  "type": "module",
   "dependencies": {
-    "@eslint/config-array": "^0.19.2"
+   "@eslint/config-array": "^0.19.2"
   }
 }

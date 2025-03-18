@@ -1,8 +1,0 @@
-"hosting": {
-  "public": "public",  // the only required attribute for Hosting
-  "ignore": [
-    "firebase.json",
-    "**/.*",
-    "**/node_modules/**"
-  ]
-}

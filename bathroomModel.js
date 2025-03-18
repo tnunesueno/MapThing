@@ -1,3 +1,6 @@
+ //import {db} from "/firebase.js";
+ //import { collection, getDocs, addDocs } from "firebase/firestore";
+
 class Bathroom {
     constructor(name, streetAddress, bLatitude, bLongitude, cleanliness, handicapAccesible, babyChangingStation, genderNeutral, notes) {
         this.name = name;  
@@ -86,7 +89,7 @@ class Bathroom {
 }
 
 // the addresses are the only true values here. remember to find a way to populate the rest with real data and put it in info windows??
-const bathroom1 = new Bathroom(null, "207 S. Sydenham St",null, null, 10,true,false,true, null)
+//const bathroom1 = new Bathroom(null, "207 S. Sydenham St",null, null, 10,true,false,true, null)
 const bathroom2 = new Bathroom(null, "2000 Sansom Street",null, null, 10, false, true, false, null);
 const bathroom3 = new Bathroom(null," 1937 Callowhill St", null, null, 10, true, false, true, null);
 const bathroom4 = new Bathroom("Mt. Airy Coffee", "7101 Emlen St", null, null, 10, false, true, false, null);
@@ -101,7 +104,7 @@ const bathroom12 = new Bathroom("Capital One Café", "135 S 17th St", null, null
 const bathroom13 = new Bathroom("Ten Asian Food Hall", "1715 Chestnut St", null, null, 7, true, false, false, "notes");
 
 var array = []; 
-array.push(bathroom1);
+//array.push(bathroom1);
 array.push(bathroom2);
 array.push(bathroom3);
 array.push(bathroom4);
@@ -115,7 +118,7 @@ array.push(bathroom11);
 array.push(bathroom12);
 array.push(bathroom13);
 
-// Initialize and add the map
+
 let map;
 
 async function initMap() {
@@ -383,12 +386,13 @@ async function onPlaceSelected(place) {
     console.log("addy minus pa and zip: "+ Addy);
 
     // Create a new Bathroom object and set its name field
-    const newBathroom = new Bathroom(place.displayName, Addy, null, null, null, null, null, null, null);
-    console.log("New Bathroom created with name: " + newBathroom.getName());
+    //const newBathroom = new Bathroom(place.displayName, Addy, null, null, null, null, null, null, null);
+    openDialog(); 
+    //console.log("New Bathroom created with name: " + newBathroom.getName());
 
     // Proceed with geocoding and adding the bathroom to the map and array
-    geocodeBathroom(newBathroom);
-    array.push(newBathroom);
+    //geocodeBathroom(newBathroom);
+    // array.push(newBathroom);
   } // send NAME to addpintoaddress with an html element?? 
  
   // Helper function to refresh the session token.
