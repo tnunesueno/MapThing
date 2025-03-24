@@ -1,6 +1,3 @@
- //import {db} from "/firebase.js";
- //import { collection, getDocs, addDocs } from "firebase/firestore";
-
 class Bathroom {
     constructor(name, streetAddress, bLatitude, bLongitude, cleanliness, handicapAccesible, babyChangingStation, genderNeutral, notes) {
         this.name = name;  
@@ -89,7 +86,7 @@ class Bathroom {
 }
 
 // the addresses are the only true values here. remember to find a way to populate the rest with real data and put it in info windows??
-//const bathroom1 = new Bathroom(null, "207 S. Sydenham St",null, null, 10,true,false,true, null)
+const bathroom1 = new Bathroom(null, "207 S. Sydenham St",null, null, 10,true,false,true, null)
 const bathroom2 = new Bathroom(null, "2000 Sansom Street",null, null, 10, false, true, false, null);
 const bathroom3 = new Bathroom(null," 1937 Callowhill St", null, null, 10, true, false, true, null);
 const bathroom4 = new Bathroom("Mt. Airy Coffee", "7101 Emlen St", null, null, 10, false, true, false, null);
@@ -104,7 +101,7 @@ const bathroom12 = new Bathroom("Capital One Café", "135 S 17th St", null, null
 const bathroom13 = new Bathroom("Ten Asian Food Hall", "1715 Chestnut St", null, null, 7, true, false, false, "notes");
 
 var array = []; 
-//array.push(bathroom1);
+array.push(bathroom1);
 array.push(bathroom2);
 array.push(bathroom3);
 array.push(bathroom4);
@@ -118,7 +115,21 @@ array.push(bathroom11);
 array.push(bathroom12);
 array.push(bathroom13);
 
+console.log(array); // for debugging purposes, remove later
 
+async function populateArray(){
+  for (let i = 0; i < array.length; i++) {
+    await geocodeBathroom(array[i]); // Wait for geocoding to complete for each bathroom
+  }
+  console.log("All bathrooms geocoded:", array);
+  return array; // Return the fully populated array
+}
+
+const arrayPromise = populateArray();
+export {arrayPromise}; 
+import { writeBathroomsToFirestore } from './firebase.js';
+writeBathroomsToFirestore(array);
+// Initialize and add the map
 let map;
 
 async function initMap() {
@@ -142,8 +153,8 @@ async function initMap() {
 initMap();
 
 function geocodeBathroom(Bathroom) {
-       address = Bathroom.getAddress(); 
-       console.log ("address to geocode: "+ address);
+       var address = Bathroom.getAddress(); 
+       //console.log ("address to geocode: "+ address);
         
         if (typeof google === 'undefined') {
             console.error("Google Maps API is not loaded.");
@@ -156,12 +167,12 @@ function geocodeBathroom(Bathroom) {
             if (status == google.maps.GeocoderStatus.OK) {
             var latitude= results[0].geometry.location.lat();
             var longitude = results[0].geometry.location.lng();
-              console.log("should be geocoding");
-              console.log(latitude+ ", "+longitude);
+             // console.log("should be geocoding");
+              //console.log(latitude+ ", "+longitude);
               Bathroom.setbLatitude(latitude);
               Bathroom.setbLongitude(longitude);
 
-              console.log("BATHROOM LAT " + Bathroom.bLatitude + "BATHROOM LONG " + Bathroom.bLongitude);
+              //console.log("BATHROOM LAT " + Bathroom.bLatitude + "BATHROOM LONG " + Bathroom.bLongitude);
             
               addPinToMap(latitude, longitude, Bathroom);
             } else {
@@ -209,7 +220,7 @@ function geocodeBathroom(Bathroom) {
              // map.setCenter(Bathroom.getbLatitude,Bathroom.getbLongitude,17);
             
               const popOut = document.getElementById("selectedBR");
-              document.getElementById("title").innerHTML = Bathroom.getName();
+              document.getElementById("name").innerHTML = Bathroom.getName();
               document.getElementById("address").innerHTML = Bathroom.getAddress();
               document.getElementById("cleanlinessText").innerHTML = `Cleanliness: ${Bathroom.getCleanliness()}`;
               document.getElementById("handicap").innerHTML = `Handicap Accessible: ${Bathroom.getHandicapAccesible()}`;
@@ -220,55 +231,59 @@ function geocodeBathroom(Bathroom) {
               });
             }
 
-        function openDialog(){
-           const dialog = document.getElementById("myDialog");
-           dialog.showModal(); 
+        function openDialog(bathroom){
+          const dialog = document.getElementById("myDialog");
+          dialog.showModal();
+      
+          // Store the Bathroom object in a global variable for later use in closeDialog
+          window.currentBathroom = bathroom;
         }
         
-        function closeDialog(){ 
-
-            var address = document.getElementById("location").value;
-            console.log("address from text field: "+ address);
-            const newBathroom = new Bathroom(null, address, null, null, null, null, null,null,null);
-            geocodeBathroom(newBathroom);
-            array.push(newBathroom);
-            
-            const dialog = document.getElementById("myDialog");
-            var slider = document.getElementById("myRange");
-            var value = slider.value;
-
-            newBathroom.setCleanliness(value);
-            console.log("cleanliness: "+newBathroom.getCleanliness());
-            
-            if(document.getElementById("HandicapAccesible").checked){
-                console.log("HA box checked");
-              
-                newBathroom.setHandicapAccesible(true);
-               } else {
-                console.log("HA box unchecked")
-                HA = false;
-                newBathroom.setHandicapAccesible(false);
-               }
-
-               if(document.getElementById("GenderNeutral").checked){
-                console.log("GN box checked");
-                newBathroom.setGenderNeutral(true);
-               } else {
-                console.log("GN box unchecked")
-               newBathroom.setGenderNeutral(false); 
-               }
-
-               if(document.getElementById("BabyChanging").checked){
-                console.log("babychaing box checked");
-                newBathroom.setBabyChangingStation(true);
-               } else {
-                console.log("baby changing box unchecked")
-               newBathroom.setBabyChangingStation(false); 
-               }
-
-            dialog.close();
-            document.getElementById("location").value = ""; //not sure why this doesnt work, reet is not a func?
-        }
+        function closeDialog() {
+          const dialog = document.getElementById("myDialog");
+      
+          // Retrieve the Bathroom object from the global variable
+          const newBathroom = window.currentBathroom;
+      
+          // Get cleanliness from the slider
+          const slider = document.getElementById("myRange");
+          const value = slider.value;
+          newBathroom.setCleanliness(value);
+          console.log("Cleanliness: " + newBathroom.getCleanliness());
+      
+          // Get checkbox values
+          if (document.getElementById("HandicapAccesible").checked) {
+              console.log("Handicap Accessible box checked");
+              newBathroom.setHandicapAccesible(true);
+          } else {
+              console.log("Handicap Accessible box unchecked");
+              newBathroom.setHandicapAccesible(false);
+          }
+      
+          if (document.getElementById("GenderNeutral").checked) {
+              console.log("Gender Neutral box checked");
+              newBathroom.setGenderNeutral(true);
+          } else {
+              console.log("Gender Neutral box unchecked");
+              newBathroom.setGenderNeutral(false);
+          }
+      
+          if (document.getElementById("BabyChanging").checked) {
+              console.log("Baby Changing Station box checked");
+              newBathroom.setBabyChangingStation(true);
+          } else {
+              console.log("Baby Changing Station box unchecked");
+              newBathroom.setBabyChangingStation(false);
+          }
+      
+          // Geocode the bathroom and add it to the map and array
+          geocodeBathroom(newBathroom);
+          array.push(newBathroom);
+      
+          // Close the dialog
+          dialog.close();
+          document.getElementById("location").value = ""; // Clear the location input
+      }
         document.addEventListener("DOMContentLoaded", function() {
         document.getElementById("location").addEventListener("input", function() {
         
@@ -360,40 +375,37 @@ function geocodeBathroom(Bathroom) {
 
     // Event handler for clicking on a suggested place.
 async function onPlaceSelected(place) {
-    await place.fetchFields({
-      fields: ["displayName", "formattedAddress"], // put this on the dialog
-    });
+  await place.fetchFields({
+    fields: ["displayName", "formattedAddress"],
+});
 
- 
-    let placeText = document.createTextNode(
-      place.displayName + ": " + place.formattedAddress,
-    );
- 
-    results.replaceChildren(placeText);
-    title.innerText = "Selected Place:";
-    input.value = "";
-    refreshToken(request);
+let placeText = document.createTextNode(
+    place.displayName + ": " + place.formattedAddress,
+);
 
-    var Addy = place.formattedAddress;
-    Addy = Addy = replaceAllChars(Addy, ",", ""); // remove commas
-    Addy = Addy = replaceAllChars(Addy, "  ", " ");   // remove double spaces (shouldnt be any)
-    
-    const sequence = " PA";
-    let index = Addy.indexOf(sequence); // should return an int for index
-    console.log(`First occurrence at index: ${index}`);
-    Addy = Addy.substring(0, index); // does chop at PA -> avoids postal code weirdness
-    document.getElementById("location").value = Addy;
-    console.log("addy minus pa and zip: "+ Addy);
+results.replaceChildren(placeText);
+title.innerText = "Selected Place:";
+input.value = "";
+refreshToken(request);
 
-    // Create a new Bathroom object and set its name field
-    //const newBathroom = new Bathroom(place.displayName, Addy, null, null, null, null, null, null, null);
-    openDialog(); 
-    //console.log("New Bathroom created with name: " + newBathroom.getName());
+var Addy = place.formattedAddress;
+Addy = replaceAllChars(Addy, ",", ""); // Remove commas
+Addy = replaceAllChars(Addy, "  ", " "); // Remove double spaces
 
-    // Proceed with geocoding and adding the bathroom to the map and array
-    //geocodeBathroom(newBathroom);
-    // array.push(newBathroom);
-  } // send NAME to addpintoaddress with an html element?? 
+const sequence = " PA";
+let index = Addy.indexOf(sequence); // Find " PA" in the address
+console.log(`First occurrence at index: ${index}`);
+Addy = Addy.substring(0, index); // Remove " PA" and postal code
+document.getElementById("location").value = Addy;
+console.log("Address minus PA and zip: " + Addy);
+
+// Create a new Bathroom object with the displayName and address
+const newBathroom = new Bathroom(place.displayName, Addy, null, null, null, null, null, null, null);
+console.log("New Bathroom created with name: " + newBathroom.getName());
+
+// Open the dialog and pass the Bathroom object to finalize its properties
+openDialog(newBathroom);
+  }  
  
   // Helper function to refresh the session token.
   async function refreshToken(request) {
@@ -412,8 +424,6 @@ async function onPlaceSelected(place) {
     // delete pin func 
     // save to json + upload from server 
     // location services
-    // only one infowindow at once? 
-    // list view side pop out 
     // directions to nearest bathroom
     // popout to view all
     // search 

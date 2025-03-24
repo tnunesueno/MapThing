@@ -2,12 +2,15 @@
 
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
-import { initializeApp } from "firebase/app";
-import { getFirestore } from "firebase/firestore";
+import { initializeApp } from "https://www.gstatic.com/firebasejs/11.5.0/firebase-app.js";
+import { getFirestore } from "https://www.gstatic.com/firebasejs/11.5.0/firebase-firestore.js";
+import { addDoc } from "https://www.gstatic.com/firebasejs/11.5.0/firebase-firestore.js"; 
+import { arrayPromise } from "./bathroomModel.js"; // Correctly import the named export 'array'
+
 
 // Your web app's Firebase configuration
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
-import { collection, getDocs } from "firebase/firestore";
+import { collection, getDocs } from "https://www.gstatic.com/firebasejs/11.5.0/firebase-firestore.js";
 const firebaseConfig = {
   apiKey: "AIzaSyBQCJP0lTLWp4gRzh6bv_YZv9EmndPSkCc",
   authDomain: "where2wizz.firebaseapp.com",
@@ -23,7 +26,6 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
-import { collection, addDoc } from "firebase/firestore"; 
 
 async function writeBathroomsToFirestore(array) {
   try {
@@ -46,21 +48,26 @@ async function writeBathroomsToFirestore(array) {
   } catch (e) {
     console.error("Error adding document: ", e);
   }
-  
-
 }
 
-// Example usage
-// Assuming `array` is defined and populated in `bathroomModel.js`
-export {db}; 
-writeBathroomsToFirestore(array);
-// Read from Firestore to verify data was written correctly BUT ITS NOT
-import { collection, getDocs } from "firebase/firestore"; 
-const querySnapshot = await getDocs(collection(db, "bathrooms"));
-querySnapshot.forEach((doc) => {
-  console.log(`${doc.id} => ${doc.data()}`);
-});
+export{writeBathroomsToFirestore, db}; 
 
+// Wait for the array to be fully populated before writing to Firestore
+/*arrayPromise.then((array) => {
+  console.log("Array ready for Firestore:", array);
+  writeBathroomsToFirestore(array);
+}).catch((error) => {
+  console.error("Error populating array:", error);
+});*/
+
+async function fetchBathrooms() {
+  const querySnapshot = await getDocs(collection(db, "bathrooms"));
+  querySnapshot.forEach((doc) => {
+    console.log(`${doc.id} => ${doc.data()}`);
+  });
+}
+
+fetchBathrooms();
 /*// Import the functions you need from the SDKs you need
 
 
