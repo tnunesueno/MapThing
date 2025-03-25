@@ -128,7 +128,7 @@ return array; // Return the fully populated array
 const arrayPromise = populateArray();
 export {arrayPromise}; 
 import { writeBathroomsToFirestore } from './firebase.js';
-writeBathroomsToFirestore(array);
+//writeBathroomsToFirestore(array);
 // Initialize and add the map
 let map;
 
@@ -284,6 +284,10 @@ function geocodeBathroom(Bathroom) {
         dialog.close();
         document.getElementById("location").value = ""; // Clear the location input
     }
+
+    window.closeDialog = closeDialog; // Make the function available in the global scope
+
+
       document.addEventListener("DOMContentLoaded", function() {
       document.getElementById("location").addEventListener("input", function() {
       
@@ -420,3 +424,14 @@ async function refreshToken(request) {
 function closePopOut() {
   document.getElementById("selectedBR").style.display = "none";
 }
+
+window.closePopOut = closePopOut; // Make the function available in the global scope
+
+// TO DO 
+// move away from the array ASAP 
+// add save and restore
+// decide whether to geocode once or every time the map is loaded
+// figure out why tf nothing will display over the map
+// zoom in on selected pin 
+// make a plus button that opens the interface to add a bathroom 
+// turn the og add a bathroom into a search bar 

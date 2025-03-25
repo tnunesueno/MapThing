@@ -27,9 +27,27 @@
         }
 
         #results {
-            list-style-type: none;
-            padding: 0;
-            margin: 0;
+            z-index: 10000;
+            list-style: none;
+            padding: 5px;
+            margin: 5px;
+        }
+
+        #results li{
+            padding: 5px;
+            margin: 5px;
+            border: 1px solid #ccc;
+            background-color: #f9f9f9;
+            cursor: pointer;
+           
+           /* background-image: url('favicon.ico');  Path to your favicon.ico file */
+            /*background-size: 16px 16px; /* Adjust the size of the image */
+            /*background-repeat: no-repeat; /* Do not repeat the image */
+            list-style-position: inside;
+        }
+
+        #results li :hover {
+            border:  #a0b9df;;
         }
         </style>
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyALRD7VW8Aat0OnS2sc8yX8AKSxH3JFKoA&libraries=places"></script>
@@ -39,13 +57,11 @@
 <body>
     <h3>Add a toilet!</h3>
     <form>
-        <input type="text" id="location" placeholder="Enter an address" onfocus="initAutocomplete()">
-        <input type="button" value="Add" onclick="openDialog()">
+        <input type="text" id="location" placeholder="Add a place" onfocus="initAutocomplete()">
     </form>
     <br>
 
    <div id="title"></div>
-      <ul id="results"></ul>
    <!--<div class="wrapper">-->
       <ul id="results"></ul><!--</div>-->
       <p><span id="prediction"></span></p>
@@ -88,7 +104,7 @@
     <label for="BabyChanging">Baby Changing Table</label>
     <br/> 
     <br/> 
-    <button onclick="closeDialog(address)">Close</button>
+    <button onclick="closeDialog()">Close</button>
     </div>  
   </dialog>
 
