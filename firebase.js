@@ -25,6 +25,21 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
+function writeOneBr(bathroom) {
+  addDoc(collection(db, "bathrooms"), {
+    name: bathroom.getName(),
+    address: bathroom.getAddress(),
+    latitude: bathroom.getLatitude(),
+    longitude: bathroom.getLongitude(),
+    cleanliness: bathroom.getCleanliness(),
+    handicapAccessible: bathroom.getHandicapAccesible(),
+    babyChangingStation: bathroom.getBabyChangingStation(),
+  }).then(docRef => { 
+    console.log("Document written with ID: ", docRef.id);
+  });
+}
+
+export {writeOneBr, db};
 
 async function writeBathroomsToFirestore(array) {
   try {
@@ -49,14 +64,20 @@ async function writeBathroomsToFirestore(array) {
   }
 }
 
-export{writeBathroomsToFirestore, db}; 
+export{writeBathroomsToFirestore}; 
 
-
+var array = [];
 async function fetchBathrooms() {
   const querySnapshot = await getDocs(collection(db, "bathrooms"));
   querySnapshot.forEach((doc) => {
     console.log(`${doc.id} => ${doc.data()}`);
+
+    array.push(doc.data());
   });
+  console.log("array of fetched bathrooms" + array);
 }
 
 fetchBathrooms();
+
+
+
