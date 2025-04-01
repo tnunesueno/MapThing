@@ -51,6 +51,20 @@
         #floatingPanel:hover {
   background-color: #0056b3; /* Darker blue on hover */
 }
+
+#addDialog{
+  
+    width: 50%;
+    height: 40%;
+    position: absolute; /* or fixed */
+    top: 100px; /* Adjust as needed */
+    left: 20px; /* Adjust as needed */
+    z-index: 10; /* Higher than the map's z-index */
+    background-color: white; /* Optional: for visibility */
+    padding: 10px; /* Optional: for spacing */
+    border: 1px solid #ccc; /* Optional: for visibility */
+}
+
         </style>
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyALRD7VW8Aat0OnS2sc8yX8AKSxH3JFKoA&libraries=places"></script>
 
@@ -112,7 +126,7 @@
   </dialog>
 
   <dialog id="addDialog">
-    <input type="text" id="location" placeholder="Enter an address" onfocus="initAutocomplete()"> </input>
+    <input type="text" id="location" placeholder="Enter a place (e.g. Starbucks)"> </input>
     <div id="title"></div>
       <ul id="results"></ul>
    <div class="wrapper">

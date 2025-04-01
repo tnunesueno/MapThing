@@ -264,7 +264,7 @@ function geocodeBathroom(Bathroom) {
 
 
       async function initAutocomplete() {   
-            
+        console.log("initAutocomplete called");
         title = document.getElementById("title");
         results = document.getElementById("results"); 
         token = new google.maps.places.AutocompleteSessionToken();
