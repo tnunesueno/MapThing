@@ -85,9 +85,6 @@ class Bathroom {
 
 }
 
-import {openAddDialog} from './dialogs.js'; // import the dialog functions
-import{openDialog} from './dialogs.js'; // import the dialog functions
-import{closeDialog} from  './dialogs.js'; 
 
 // Initialize and add the map
 let map;
@@ -139,12 +136,7 @@ function geocodeBathroom(Bathroom) {
                 console.error("Geocode was not successful for the following reason: " + status);
             }
 
-          }); 
-        }
-        
-        for (let i = 0; i < array.length; i++) {
-          geocodeBathroom(array[i]);
-        }
+          }); }
 
         function addPinToMap(lat, lng, Bathroom) {
             console.log("addPinToMap function called");
@@ -191,7 +183,55 @@ function geocodeBathroom(Bathroom) {
               });
             }
 
-       
+        function openDialog(){
+           const dialog = document.getElementById("myDialog");
+           dialog.showModal(); 
+        }
+        
+        function closeDialog(){ 
+
+            var address = document.getElementById("location").value;
+            console.log("address from text field: "+ address);
+            const newBathroom = new Bathroom(null, address, null, null, null, null, null,null,null);
+            geocodeBathroom(newBathroom);
+            array.push(newBathroom);
+            
+            const dialog = document.getElementById("myDialog");
+            var slider = document.getElementById("myRange");
+            var value = slider.value;
+
+            newBathroom.setCleanliness(value);
+            console.log("cleanliness: "+newBathroom.getCleanliness());
+            
+            if(document.getElementById("HandicapAccesible").checked){
+                console.log("HA box checked");
+              
+                newBathroom.setHandicapAccesible(true);
+               } else {
+                console.log("HA box unchecked")
+                HA = false;
+                newBathroom.setHandicapAccesible(false);
+               }
+
+               if(document.getElementById("GenderNeutral").checked){
+                console.log("GN box checked");
+                newBathroom.setGenderNeutral(true);
+               } else {
+                console.log("GN box unchecked")
+               newBathroom.setGenderNeutral(false); 
+               }
+
+               if(document.getElementById("BabyChanging").checked){
+                console.log("babychaing box checked");
+                newBathroom.setBabyChangingStation(true);
+               } else {
+                console.log("baby changing box unchecked")
+               newBathroom.setBabyChangingStation(false); 
+               }
+
+            dialog.close();
+            document.getElementById("location").value = ""; //not sure why this doesnt work, reet is not a func?
+        }
         document.addEventListener("DOMContentLoaded", function() {
         document.getElementById("location").addEventListener("input", function() {
         
@@ -235,8 +275,6 @@ function geocodeBathroom(Bathroom) {
         input.addEventListener("input", makeAcRequest); // This will trigger makeAcRequest on input event
         request = refreshToken(request);
         }
-
-        window.initAutocomplete = initAutocomplete; // make it global so we can call it after the api loads
        
       async function makeAcRequest(input) {
           // Reset elements and exit if an empty string is received.
@@ -314,10 +352,9 @@ async function onPlaceSelected(place) {
     const newBathroom = new Bathroom(place.displayName, Addy, null, null, null, null, null, null, null);
     console.log("New Bathroom created with name: " + newBathroom.getName());
 
-    openDialog(newBathroom); // Open the dialog to get more details
     // Proceed with geocoding and adding the bathroom to the map and array
     geocodeBathroom(newBathroom);
-// add code that uploads it to the firebase database 
+    array.push(newBathroom);
   } // send NAME to addpintoaddress with an html element?? 
  
   // Helper function to refresh the session token.
@@ -331,6 +368,21 @@ async function onPlaceSelected(place) {
   function closePopOut() {
     document.getElementById("selectedBR").style.display = "none";
   }
+
+  document.addEventListener("DOMContentLoaded", function () {
+    const input = document.getElementById("location");
+    if (input) {
+      input.addEventListener("focus", initAutocomplete);
+    }
+  });
+
+import { openAddDialog } from "./dialogs";
+  document.addEventListener("DOMContentLoaded", function () {
+      const input = document.getElementById("Add");
+      if (input) {
+        input.addEventListener("click", openAddDialog);
+      }
+    });
 
     // to do: 
     // ADD THE TOILET GRAPHIC
