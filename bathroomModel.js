@@ -183,10 +183,7 @@ function geocodeBathroom(Bathroom) {
               });
             }
 
-        function openDialog(){
-           const dialog = document.getElementById("myDialog");
-           dialog.showModal(); 
-        }
+      
         
         function closeDialog(){ 
 
@@ -376,13 +373,29 @@ async function onPlaceSelected(place) {
     }
   });
 
-import { openAddDialog } from "./dialogs";
+function openAddDialog(){
+  const addDialog = document.getElementById("addDialog");
+  addDialog.showModal();
+}
+
+
+
+
+    function openDialog(bathroom){
+      const dialog = document.getElementById("myDialog");
+      dialog.showModal(); 
+  
+      // i think this makes it into a global variable so that it's values can be passed around 
+      window.currentBathroom = bathroom;
+    }
+
+    
   document.addEventListener("DOMContentLoaded", function () {
-      const input = document.getElementById("Add");
-      if (input) {
-        input.addEventListener("click", openAddDialog);
-      }
-    });
+    const input = document.getElementById("addButton");
+    if (input) {
+      input.addEventListener("click", openAddDialog);
+    }
+  });
 
     // to do: 
     // ADD THE TOILET GRAPHIC
