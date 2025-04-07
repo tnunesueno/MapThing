@@ -5,11 +5,11 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/11.5.0/firebase-app.js";
 import { getFirestore } from "https://www.gstatic.com/firebasejs/11.5.0/firebase-firestore.js";
 import { addDoc } from "https://www.gstatic.com/firebasejs/11.5.0/firebase-firestore.js"; 
-
+import { Bathroom, geocodeBathroom } from "./bathroomModel.js"; // Import the Bathroom class
+import { collection, getDocs } from "https://www.gstatic.com/firebasejs/11.5.0/firebase-firestore.js";
 
 // Your web app's Firebase configuration
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
-import { collection, getDocs } from "https://www.gstatic.com/firebasejs/11.5.0/firebase-firestore.js";
 const firebaseConfig = {
   apiKey: "AIzaSyBQCJP0lTLWp4gRzh6bv_YZv9EmndPSkCc",
   authDomain: "where2wizz.firebaseapp.com",
@@ -66,18 +66,42 @@ async function writeBathroomsToFirestore(array) {
 
 export{writeBathroomsToFirestore}; 
 
-var array = [];
 async function fetchBathrooms() {
+  console.log("Fetching bathrooms from Firestore...");
   const querySnapshot = await getDocs(collection(db, "bathrooms"));
-  querySnapshot.forEach((doc) => {
-    console.log(`${doc.id} => ${doc.data()}`);
+  const bathrooms = []; 
 
-    array.push(doc.data());
-  });
-  console.log("array of fetched bathrooms" + array);
+  for (const doc of querySnapshot.docs) {
+    const data = doc.data();
+    console.log(`${doc.id} => ${JSON.stringify(data)}`);
+
+    // Create a new Bathroom object using the document data
+    const bathroom = new Bathroom(
+      data.name,
+      data.address,
+      data.latitude,
+      data.longitude,
+      data.cleanliness,
+      data.handicapAccessible,
+      data.babyChangingStation,
+      data.genderNeutral,
+      data.notes
+    );
+
+    console.log("Bathroom object created:", bathroom.getAddress());
+
+    // Await geocodeBathroom to ensure it completes
+    await geocodeBathroom(bathroom);
+
+    bathrooms.push(bathroom); // Add the geocoded Bathroom object to the array
+  }
+
+  console.log("Array of Bathroom objects:", bathrooms);
+  return bathrooms; // Return the array of Bathroom objects
 }
-
 fetchBathrooms();
+
+export { fetchBathrooms };
 
 
 

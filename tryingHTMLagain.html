@@ -32,6 +32,21 @@
             margin: 0;
         }
 
+        #results li {
+            padding: 10px;
+            border-bottom: 1px solid #ccc;
+        }
+        #results li:hover {
+            background-color: #f0f0f0;
+            cursor: pointer;
+        }
+        #location{
+            width: 95%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
         #floatingPanel{
           position: absolute; /* Position it relative to the map */
   bottom: 20px; /* Distance from the bottom of the map */
@@ -71,25 +86,18 @@
 </head>
 
 <body>
-    <h3>Add a toilet!</h3>
-    <form>
-       <!--- <input type="text" id="location" placeholder="Enter an address" onfocus="initAutocomplete()">--->
-        <input type="button" value="Add" onclick="openDialog()">
-    </form>
-    <br>
+    <h3>Where2Wizz</h3>
 
-   <!--<div id="title"></div>
-      <ul id="results"></ul>
-   <div class="wrapper">
-      <ul id="results"></ul><!--</div>
-      <p><span id="prediction"></span></p>-->
+    <br>
       <img
         class="powered-by-google"
         src="https://storage.googleapis.com/geo-devrel-public-buckets/powered_by_google_on_white.png"
         alt="Powered by Google"
       />      
       <div id="map"></div>
-    <script type ="module" src="bathroomModel.js"></script>
+      <script type ="module" src="firebase.js"></script>
+      <script type ="module" src="bathroomModel.js"></script>
+    
 
     <div id="selectedBR">Selected Bathroom Info
         <p id="name"></p>
@@ -98,7 +106,7 @@
         <p id="handicap"></p>
         <p id="genderNeutral"></p>
         <p id="babyChanging"></p>  
-        <input type="button" value="Close" onclick="closePopOut()">
+        <input type="button" value="Close" id="close" onclick="closePopOut()">
     </div>
 
 </body>
