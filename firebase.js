@@ -29,8 +29,8 @@ function writeOneBr(bathroom) {
   addDoc(collection(db, "bathrooms"), {
     name: bathroom.getName(),
     address: bathroom.getAddress(),
-    latitude: bathroom.getLatitude(),
-    longitude: bathroom.getLongitude(),
+    latitude: bathroom.getbLatitude(),
+    longitude: bathroom.getbLongitude(),
     cleanliness: bathroom.getCleanliness(),
     handicapAccessible: bathroom.getHandicapAccesible(),
     babyChangingStation: bathroom.getBabyChangingStation(),
