@@ -5,7 +5,7 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/11.5.0/firebase-app.js";
 import { getFirestore } from "https://www.gstatic.com/firebasejs/11.5.0/firebase-firestore.js";
 import { addDoc } from "https://www.gstatic.com/firebasejs/11.5.0/firebase-firestore.js"; 
-import { Bathroom, geocodeBathroom } from "./bathroomModel.js"; // Import the Bathroom class
+import { Bathroom } from "./bathroomModel.js"; // Import the Bathroom class
 import { collection, getDocs } from "https://www.gstatic.com/firebasejs/11.5.0/firebase-firestore.js";
 
 // Your web app's Firebase configuration
@@ -89,9 +89,6 @@ async function fetchBathrooms() {
     );
 
     console.log("Bathroom object created:", bathroom.getAddress());
-
-    // Await geocodeBathroom to ensure it completes
-    await geocodeBathroom(bathroom);
 
     bathrooms.push(bathroom); // Add the geocoded Bathroom object to the array
   }

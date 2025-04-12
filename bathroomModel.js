@@ -21,7 +21,7 @@ class Bathroom {
     this.name = newName;
     }
    
-    getAddress() {
+    getAddress() {  
         return this.streetAddress;
     }
 
@@ -137,9 +137,7 @@ function geocodeBathroom(Bathroom) {
             }
 
           }); 
-        }
-      
-        fetchBathrooms(); 
+}
 
         function addPinToMap(lat, lng, Bathroom) {
             console.log("addPinToMap function called");
@@ -213,15 +211,40 @@ function geocodeBathroom(Bathroom) {
 
               });
             }
+            // this is not a function, this is just floating code 
+            fetchBathrooms().then(() => {
+              if (!Array.isArray(bathrooms) || bathrooms.length === 0) {
+                  console.error("No bathrooms found to geocode.");
+                  return;
+              }
+      
+              bathrooms.forEach((bathroom) => {
+                  const address = bathroom.getAddress();
+                  if (!address) {
+                      console.error("Bathroom has no address to geocode.");
+                      return;
+                  }
+      
+                  geocodeBathroom(bathroom);
+                  console.log("Geocoding bathroom from firebase:", bathroom);
+              });
 
-        function openDialog(){
-           const dialog = document.getElementById("myDialog");
-           dialog.showModal(); 
-        }
+          }).catch((error) => {
+              console.error("Error fetching bathrooms:", error);
+          });
+
+          function openDialog(bathroom){
+            const dialog = document.getElementById("myDialog");
+            dialog.showModal(); 
+      
+            // i think this makes it into a global variable so that it's values can be passed around 
+            window.currentBathroom = bathroom;
+          }
         
         function closeDialog(){ 
 
-            var address = document.getElementById("location").value;
+            const bathroom = window.currentBathroom;
+            const address = bathroom.getAddress();
             console.log("address from text field: "+ address);
             const newBathroom = new Bathroom(null, address, null, null, null, null, null,null,null);
             geocodeBathroom(newBathroom);
@@ -399,6 +422,21 @@ async function onPlaceSelected(place) {
   function closePopOut() {
     document.getElementById("selectedBR").style.display = "none";
   }
+
+  export{Bathroom, closePopOut, openDialog, closeDialog, initMap, geocodeBathroom, addPinToMap, fetchBathrooms};
+  window.closePopOut = closePopOut;
+  window.openDialog = openDialog;
+  window.closeDialog = closeDialog;
+  window.initMap = initMap;
+  window.geocodeBathroom = geocodeBathroom;
+  window.addPinToMap = addPinToMap;
+  window.fetchBathrooms = fetchBathrooms;
+  window.initAutocomplete = initAutocomplete;
+  window.onPlaceSelected = onPlaceSelected;
+  window.makeAcRequest = makeAcRequest;
+  window.replaceAllChars = replaceAllChars;
+  window.refreshToken = refreshToken;
+
 
     // to do: 
     // ADD THE TOILET GRAPHIC

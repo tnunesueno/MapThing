@@ -36,19 +36,60 @@
             padding: 0;
             margin: 0;
         }
+
+        #results li {
+            padding: 10px;
+            border-bottom: 1px solid #ccc;
+            cursor: pointer;
+        }
+        #results li:hover {
+            background-color: #f0f0f0;
+        }
+        #title {
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        #floatingPanel{
+           position: absolute; /* Position it relative to the map */
+   bottom: 20px; /* Distance from the bottom of the map */
+   left: 20px; /* Distance from the left of the map */
+   z-index: 10000; /* Ensure it appears above the map */
+   background-color: #007bff; /* Button background color (blue) */
+   color: white; /* Button text color */
+   padding: 10px 20px; /* Add padding for a button-like appearance */
+   border: none; /* Remove default border */
+   border-radius: 5px; /* Rounded corners */
+   font-size: 16px; /* Adjust font size */
+   cursor: pointer; /* Change cursor to pointer on hover */
+   box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2); /* Add a shadow for depth */
+   transition: background-color 0.3s ease; /* Smooth hover effect */
+         }
+ 
+         #floatingPanel:hover {
+          background-color: #0056b3; /* Darker blue on hover */
+      }
+
+      #addDialog{
+   
+   width: 50%;
+   height: 40%;
+   position: absolute; /* or fixed */
+   top: 100px; /* Adjust as needed */
+   left: 20px; /* Adjust as needed */
+   z-index: 10; /* Higher than the map's z-index */
+   background-color: white; /* Optional: for visibility */
+   padding: 10px; /* Optional: for spacing */
+   border: 1px solid #ccc; /* Optional: for visibility */
+}
         </style>
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyALRD7VW8Aat0OnS2sc8yX8AKSxH3JFKoA&libraries=places"></script>
 
 </head>
 
 <body>
-    <h3>Add a toilet!</h3>
-    <form>
-        <input type="text" id="location" placeholder="Enter an address" onfocus="initAutocomplete(), function(){
-          display: block; 
-        }">
-        <input type="button" value="Add" onclick="openDialog()">
-    </form>
+  <h3>Where2Wizz</h3>
     <br>
 
    <div id="title"></div>
@@ -62,7 +103,8 @@
         alt="Powered by Google"
       />      
       <div id="map"></div>
-    <script src="bathroomModel.js"></script>
+    <script type="module" src="bathroomModel.js"></script>
+    <script type="module" src="firebase.js"></script>
 
     <div id="selectedBR">Selected Bathroom Info
         <p id="name"></p>
@@ -97,6 +139,21 @@
     <button onclick="closeDialog(address)">Close</button>
     </div>  
   </dialog>
+
+  <dialog id="addDialog">
+    <input type="text" id="location" placeholder="Enter an address" onfocus="initAutocomplete()"> </input>
+    <input type="text" id="location" placeholder="Enter a place (e.g. Starbucks)"> </input>
+    <div id="title"></div>
+      <ul id="results"></ul>
+   <div class="wrapper">
+      <ul id="results"></ul>
+    </div>
+      <p><span id="prediction"></span></p>
+  </dialog>
+
+<div id="floatingPanel">
+    <input type="button" id="addButton" value="Add a bathroom!">
+</div>
 
 
 </html>
