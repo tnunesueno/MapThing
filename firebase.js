@@ -96,7 +96,7 @@ async function fetchBathrooms() {
   console.log("Array of Bathroom objects:", bathrooms);
   return bathrooms; // Return the array of Bathroom objects
 }
-fetchBathrooms();
+// fetchBathrooms();
 
 export { fetchBathrooms };
 

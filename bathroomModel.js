@@ -1,5 +1,7 @@
 import {writeOneBr} from './firebase.js'
-import { fetchBathrooms } from './firebase.js';
+import { collection, getDocs} from "https://www.gstatic.com/firebasejs/11.5.0/firebase-firestore.js";
+import{db} from './firebase.js';
+//import { fetchBathrooms } from './firebase.js';
 class Bathroom {
     constructor(name, streetAddress, bLatitude, bLongitude, cleanliness, handicapAccesible, babyChangingStation, genderNeutral, notes) {
         this.name = name;  
@@ -110,7 +112,7 @@ async function initMap() {
 initMap();
 
 function geocodeBathroom(Bathroom) {
-       address = Bathroom.getAddress(); 
+       var address = Bathroom.getAddress(); 
        console.log ("address to geocode: "+ address);
         
         if (typeof google === 'undefined') {
@@ -154,21 +156,7 @@ function geocodeBathroom(Bathroom) {
             });
             console.log("Pin created at " + lat + ", " + lng);
 
-            // maybe make only one info window and change the content based on the pin clicked? so two can't be opened at once 
-            const infowindowContent = ` 
-             ${Bathroom.getAddress()} <br/> 
-               <div> <p>Cleanliness: ${Bathroom.getCleanliness()} <br/>
-               Handicap Accessible: ${Bathroom.getHandicapAccesible()} <br/>
-               Baby Changing Station: ${Bathroom.getBabyChangingStation()}<br/>
-                Gender Neutral: ${Bathroom.getGenderNeutral()}</p> 
-            </div> `; 
-            
-        
-            const infowindow = new google.maps.InfoWindow({
-                content: infowindowContent,
-                ariaLabel: Bathroom.getAddress(),
-              });
-        
+            // Add a click event listener to the pin
             pin.addListener("click", () => {
              // map.setCenter(Bathroom.getbLatitude,Bathroom.getbLongitude,17);
             
@@ -202,36 +190,70 @@ function geocodeBathroom(Bathroom) {
              }
 
              if(Bathroom.getNotes()){
-                document.getElementById("notes").innerHTML = Bathroom.getNotes();
+              console.log("notes: "+ Bathroom.getNotes());
+              document.getElementById("notes").innerHTML = Bathroom.getNotes();
+              document.getElementById("notes").style.display = "block";
               } else{
-                document.getElementById("notes").display = "none";
+                document.getElementById("notes").style.display = "none";
               }
               
               popOut.style.display = "block"; // Show the popOut element
 
               });
             }
-            // this is not a function, this is just floating code 
-            fetchBathrooms().then(() => {
-              if (!Array.isArray(bathrooms) || bathrooms.length === 0) {
-                  console.error("No bathrooms found to geocode.");
-                  return;
-              }
-      
-              bathrooms.forEach((bathroom) => {
-                  const address = bathroom.getAddress();
-                  if (!address) {
-                      console.error("Bathroom has no address to geocode.");
-                      return;
-                  }
-      
-                  geocodeBathroom(bathroom);
-                  console.log("Geocoding bathroom from firebase:", bathroom);
-              });
 
-          }).catch((error) => {
-              console.error("Error fetching bathrooms:", error);
-          });
+            async function fetchBathrooms() {
+              console.log("Fetching bathrooms from Firestore...");
+              const querySnapshot = await getDocs(collection(db, "bathrooms"));
+              const bathrooms = []; 
+            
+              for (const doc of querySnapshot.docs) {
+                const data = doc.data();
+                console.log(`${doc.id} => ${JSON.stringify(data)}`);
+            
+                // Create a new Bathroom object using the document data
+                const bathroom = new Bathroom(
+                  data.name,
+                  data.address,
+                  data.latitude,
+                  data.longitude,
+                  data.cleanliness,
+                  data.handicapAccessible,
+                  data.babyChangingStation,
+                  data.genderNeutral,
+                  data.notes
+                );
+                console.log("notes: " + data.notes); 
+                console.log("Bathroom object created:", bathroom.getAddress());
+            
+                bathrooms.push(bathroom); // Add the geocoded Bathroom object to the array
+              }
+            
+              console.log("Array of Bathroom objects:", bathrooms);
+              return bathrooms; // Return the array of Bathroom objects
+            }
+
+            function geocodeAll(bathrooms){
+                console.log("Geocoding all bathrooms...");
+                if (!Array.isArray(bathrooms) || bathrooms.length === 0) {
+                    console.error("No bathrooms found to geocode.");
+                    return;
+                }
+            
+                bathrooms.forEach((bathroom) => {
+                    const address = bathroom.getAddress();
+                    if (!address) {
+                        console.error("Bathroom has no address to geocode.");
+                        return;
+                    }
+            
+                    geocodeBathroom(bathroom);
+                    console.log("Geocoding bathroom from firebase:", bathroom);
+                });
+            }
+
+            // this is not a function, this is just floating code 
+            fetchBathrooms().then((bathrooms) => {geocodeAll(bathrooms)}); // this is the function that gets the bathrooms from firebase and geocodes them
 
           function openDialog(bathroom){
             const dialog = document.getElementById("myDialog");
