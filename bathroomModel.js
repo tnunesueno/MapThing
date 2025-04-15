@@ -319,7 +319,7 @@ function geocodeBathroom(Bathroom) {
         request,
         );
 
-        
+
         request.locationBias= {
           west: 76,
           north: 41,
@@ -416,6 +416,7 @@ async function onPlaceSelected(place) {
 
 
     // to do: 
+    // zoom in on the pin that you're on 
     // make notes work 
     // ADD THE TOILET GRAPHIC
     // delete pin func  
