@@ -256,9 +256,6 @@ function geocodeBathroom(Bathroom) {
             // this is not a function, this is just floating code 
             fetchBathrooms().then((bathrooms) => {geocodeAll(bathrooms)}); // this is the function that gets the bathrooms from firebase and geocodes them
 
-          
-        
-        
         document.addEventListener("DOMContentLoaded", function() {
         document.getElementById("location").addEventListener("input", function() {
         
@@ -279,9 +276,10 @@ function geocodeBathroom(Bathroom) {
         let token;
        
             // Add an initial request body.
+            /*
             let request = {
               input: document.getElementById("location").value,
-             locationRestriction: {
+             locationBias: {
                west: 76,
                north: 41,
                east: 74,
@@ -290,7 +288,7 @@ function geocodeBathroom(Bathroom) {
               origin: { lat: 40, lng: -75 },
               language: "en-US",
               region: "us",
-            };
+            };*/
 
 
       async function initAutocomplete() {   
@@ -304,6 +302,7 @@ function geocodeBathroom(Bathroom) {
         }
        
       async function makeAcRequest(input) {
+        let request; 
           // Reset elements and exit if an empty string is received.
           if (input.target.value == "") {
             title.innerText = "";
@@ -311,7 +310,8 @@ function geocodeBathroom(Bathroom) {
             return;
           }
         // Add the latest char sequence to the request.
-        request.input = input.target.value;
+        request.input = input.target.value; 
+
         // Fetch autocomplete suggestions and show them in a list.
         // @ts-ignore
         const { suggestions } =
@@ -319,6 +319,13 @@ function geocodeBathroom(Bathroom) {
         request,
         );
 
+        
+        request.locationBias= {
+          west: 76,
+          north: 41,
+          east: 74,
+          south:38,
+         }; 
 
        // title.innerText = 'Query predictions for "' + request.input + '"';
         // Clear the list first.
@@ -392,12 +399,9 @@ async function onPlaceSelected(place) {
     return request;
   }
 
-  function closePopOut() {
-    document.getElementById("selectedBR").style.display = "none";
-  }
 
-  export{Bathroom, closePopOut, initMap, geocodeBathroom, addPinToMap, fetchBathrooms};
-  window.closePopOut = closePopOut;
+  export{Bathroom, initMap, geocodeBathroom, addPinToMap, fetchBathrooms};
+  
   //window.openDialog = openDialog;
   //window.closeDialog = closeDialog;
   window.initMap = initMap;
@@ -412,12 +416,10 @@ async function onPlaceSelected(place) {
 
 
     // to do: 
+    // make notes work 
     // ADD THE TOILET GRAPHIC
-    // delete pin func 
-    // save to json + upload from server 
+    // delete pin func  
     // location services
-    // only one infowindow at once? 
-    // list view side pop out 
     // directions to nearest bathroom
     // popout to view all
     // search 

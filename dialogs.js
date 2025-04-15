@@ -59,13 +59,18 @@ function closeDialog(){
 }
 
 
+function closePopOut() {
+    document.getElementById("selectedBR").style.display = "none";
+  }
 
 // making shit global?? didn't have to do this before 
 window.openAddDialog = openAddDialog;
 window.openDialog = openDialog;
 window.closeDialog=closeDialog; 
+window.closePopOut = closePopOut;
 
 // export everything 
 export {openAddDialog};
-export{openDialog}
-export{closeDialog}
+export{openDialog};
+export{closeDialog};
+export {closePopOut}; 
