@@ -31,6 +31,19 @@
          border-radius: 5px; /* Optional: Rounded corners */
         }
 
+        #addDialog{
+   
+   width: 50%;
+   height: 40%;
+   position: absolute; /* or fixed */
+   top: 100px; /* Adjust as needed */
+   left: 20px; /* Adjust as needed */
+   z-index: 10; /* Higher than the map's z-index */
+   background-color: white; /* Optional: for visibility */
+   padding: 10px; 
+   border: 1px solid #ccc; 
+}
+
         #results {
             list-style-type: none;
             padding: 0;
@@ -91,12 +104,6 @@
 <body>
   <h3>Where2Wizz</h3>
     <br>
-
-   <div id="title"></div>
-      <ul id="results"></ul>
-   <!--<div class="wrapper">-->
-      <ul id="results"></ul><!--</div>-->
-      <p><span id="prediction"></span></p>
       <img
         class="powered-by-google"
         src="https://storage.googleapis.com/geo-devrel-public-buckets/powered_by_google_on_white.png"
@@ -142,8 +149,7 @@
   </dialog>
 
   <dialog id="addDialog">
-    <input type="text" id="location" placeholder="Enter an address" onfocus="initAutocomplete()"> </input>
-    <input type="text" id="location" placeholder="Enter a place (e.g. Starbucks)"> </input>
+    <input type="text" id="location" placeholder="Enter a place (e.g. City Hall)" onfocus="initAutocomplete()"> </input>
     <div id="title"></div>
       <ul id="results"></ul>
    <div class="wrapper">

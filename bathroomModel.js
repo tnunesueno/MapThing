@@ -1,6 +1,7 @@
 import {writeOneBr} from './firebase.js'
 import { collection, getDocs} from "https://www.gstatic.com/firebasejs/11.5.0/firebase-firestore.js";
 import{db} from './firebase.js';
+import { openAddDialog } from './dialogs.js';
 //import { fetchBathrooms } from './firebase.js';
 class Bathroom {
     constructor(name, streetAddress, bLatitude, bLongitude, cleanliness, handicapAccesible, babyChangingStation, genderNeutral, notes) {
@@ -255,59 +256,9 @@ function geocodeBathroom(Bathroom) {
             // this is not a function, this is just floating code 
             fetchBathrooms().then((bathrooms) => {geocodeAll(bathrooms)}); // this is the function that gets the bathrooms from firebase and geocodes them
 
-          function openDialog(bathroom){
-            const dialog = document.getElementById("myDialog");
-            dialog.showModal(); 
-      
-            // i think this makes it into a global variable so that it's values can be passed around 
-            window.currentBathroom = bathroom;
-          }
+          
         
-        function closeDialog(){ 
-
-            const bathroom = window.currentBathroom;
-            const address = bathroom.getAddress();
-            console.log("address from text field: "+ address);
-            const newBathroom = new Bathroom(null, address, null, null, null, null, null,null,null);
-            geocodeBathroom(newBathroom);
-            array.push(newBathroom);
-            
-            const dialog = document.getElementById("myDialog");
-            var slider = document.getElementById("myRange");
-            var value = slider.value;
-
-            newBathroom.setCleanliness(value);
-            console.log("cleanliness: "+newBathroom.getCleanliness());
-            
-            if(document.getElementById("HandicapAccesible").checked){
-                console.log("HA box checked");
-              
-                newBathroom.setHandicapAccesible(true);
-               } else {
-                console.log("HA box unchecked")
-                HA = false;
-                newBathroom.setHandicapAccesible(false);
-               }
-
-               if(document.getElementById("GenderNeutral").checked){
-                console.log("GN box checked");
-                newBathroom.setGenderNeutral(true);
-               } else {
-                console.log("GN box unchecked")
-               newBathroom.setGenderNeutral(false); 
-               }
-
-               if(document.getElementById("BabyChanging").checked){
-                console.log("babychaing box checked");
-                newBathroom.setBabyChangingStation(true);
-               } else {
-                console.log("baby changing box unchecked")
-               newBathroom.setBabyChangingStation(false); 
-               }
-
-            dialog.close();
-            document.getElementById("location").value = ""; //not sure why this doesnt work, reet is not a func?
-        }
+        
         document.addEventListener("DOMContentLoaded", function() {
         document.getElementById("location").addEventListener("input", function() {
         
@@ -347,7 +298,7 @@ function geocodeBathroom(Bathroom) {
         title = document.getElementById("title");
         results = document.getElementById("results"); 
         token = new google.maps.places.AutocompleteSessionToken();
-        input = document.querySelector("input"); // not sure how the hell this works but it does 
+        input = document.getElementById("location"); // not sure how the hell this works but it does 
         input.addEventListener("input", makeAcRequest); // This will trigger makeAcRequest on input event
         request = refreshToken(request);
         }
@@ -445,10 +396,10 @@ async function onPlaceSelected(place) {
     document.getElementById("selectedBR").style.display = "none";
   }
 
-  export{Bathroom, closePopOut, openDialog, closeDialog, initMap, geocodeBathroom, addPinToMap, fetchBathrooms};
+  export{Bathroom, closePopOut, initMap, geocodeBathroom, addPinToMap, fetchBathrooms};
   window.closePopOut = closePopOut;
-  window.openDialog = openDialog;
-  window.closeDialog = closeDialog;
+  //window.openDialog = openDialog;
+  //window.closeDialog = closeDialog;
   window.initMap = initMap;
   window.geocodeBathroom = geocodeBathroom;
   window.addPinToMap = addPinToMap;
