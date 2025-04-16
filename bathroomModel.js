@@ -255,8 +255,33 @@ function geocodeBathroom(Bathroom) {
             }
 
             // this is not a function, this is just floating code 
-            fetchBathrooms().then((bathrooms) => {geocodeAll(bathrooms)}); // this is the function that gets the bathrooms from firebase and geocodes them
+        fetchBathrooms().then((bathrooms) => {geocodeAll(bathrooms)}); // this is the function that gets the bathrooms from firebase and geocodes them
 
+
+        // all of this nonsense is ai bs that doens't work FIX IT 
+        document.getElementById("floatingPanel").addEventListener("click", (event) => {
+          const addDialog = document.getElementById("addDialog");
+          if (addDialog) {
+              addDialog.showModal(); // Open the dialog
+              console.log("addDialog opened.");
+          }
+          event.stopPropagation(); // Prevent the click from propagating to the document
+      });
+        document.addEventListener("click", (event) => {
+              const addDialog = document.getElementById("addDialog");
+              const button = document.getElementById("floatingPanel");
+          
+              if (addDialog.open && !addDialog.contains(event.target)) {
+                  addDialog.close();
+                  console.log("addDialog closed because of outside click.");
+              }
+          });
+
+
+
+
+
+// start of autocomplete code
         let title;
         let results;
         let input;
@@ -300,7 +325,6 @@ function geocodeBathroom(Bathroom) {
           west: -76, 
          }; 
 
-        
         const { suggestions } =
         await google.maps.places.AutocompleteSuggestion.fetchAutocompleteSuggestions(
         request,

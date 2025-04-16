@@ -93,21 +93,12 @@ height: auto;
   cursor: pointer; /* Change cursor to pointer on hover */
   border: 1px solid #ccc; /* Optional: Add a border to the buttons */
   border-radius: 5px; /* Optional: Rounded corners for buttons */
-  background-color: #007bff; /* Button background color (blue) */
-  color: white; 
+  color: rgb(0, 0, 0); 
   transition: background-color 0.3s ease; 
 }
 
 #floatingPanel input[type="button"]:hover {
-  background-color: #0056b3; 
-}
-
-#addButton:hover{
-background-color: #0056b3; /* Darker blue on hover */
-}
-
-#floatingPanel:hover {
-background-color: #0056b3; /* Darker blue on hover */
+  background-color: #a9a9a9
 }
 
 #addDialog{
