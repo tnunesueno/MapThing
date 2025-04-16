@@ -257,20 +257,6 @@ function geocodeBathroom(Bathroom) {
             // this is not a function, this is just floating code 
             fetchBathrooms().then((bathrooms) => {geocodeAll(bathrooms)}); // this is the function that gets the bathrooms from firebase and geocodes them
 
-        document.addEventListener("DOMContentLoaded", function() {
-        document.getElementById("location").addEventListener("input", function() {
-        
-        var words = document.getElementById("location").value;
-        var container = document.getElementById("wrapper");
-        if (container){
-        if(words==null || words=="") {
-        container.style.display = "none";}
-        else {
-        container.style.display = "block"; }
-        }
-        })
-        });
-
         let title;
         let results;
         let input;
@@ -305,6 +291,14 @@ function geocodeBathroom(Bathroom) {
           }
         // Add the latest char sequence to the request.
         request.input = input.target.value; 
+        
+        // this makes like a box 
+        request.locationBias= {
+          north: 41, 
+          south: 38, 
+          east: -74, 
+          west: -76, 
+         }; 
 
         // Fetch autocomplete suggestions and show them in a list.
         // @ts-ignore
@@ -314,12 +308,6 @@ function geocodeBathroom(Bathroom) {
         );
 
 
-        request.locationBias= {
-          west: 76,
-          north: 41,
-          east: 74,
-          south:38,
-         }; 
 
        // title.innerText = 'Query predictions for "' + request.input + '"';
         // Clear the list first.
@@ -410,6 +398,7 @@ async function onPlaceSelected(place) {
 
 
     // to do: 
+    // FIX RQUEST SO IT GETS PLACES IN PHILLY 
     // ADD THE TOILET GRAPHIC
     // delete pin func  
     // location services

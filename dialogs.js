@@ -1,4 +1,4 @@
-import {map} from './bathroomModel'; 
+import {map} from './bathroomModel.js'; 
 function openAddDialog (){
     const dialog = document.getElementById("addDialog");
     dialog.showModal();
