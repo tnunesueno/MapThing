@@ -34,7 +34,7 @@ function writeOneBr(bathroom) {
     cleanliness: bathroom.getCleanliness(),
     handicapAccessible: bathroom.getHandicapAccesible(),
     babyChangingStation: bathroom.getBabyChangingStation(),
-    notes: bathroom.notes,
+    notes: bathroom.getNotes(),
   }).then(docRef => { 
     console.log("Document written with ID: ", docRef.id);
   });
@@ -48,8 +48,8 @@ async function writeBathroomsToFirestore(array) {
       addDoc(collection(db, "bathrooms"), {
         name: bathroom.getName(),
         address: bathroom.getAddress(),
-        latitude: bathroom.bLatitude,
-        longitude: bathroom.bLongitude,
+        latitude: bathroom.getbLatitude(),
+        longitude: bathroom.getbLongitude(),
         cleanliness: bathroom.getCleanliness(),
         handicapAccessible: bathroom.getHandicapAccesible(),
         babyChangingStation: bathroom.getBabyChangingStation(),
