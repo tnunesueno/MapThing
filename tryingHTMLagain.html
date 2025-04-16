@@ -21,8 +21,8 @@
     <script type="module" src="bathroomModel.js"></script>
     <script type="module" src="firebase.js"></script>
 
-    <div id="selectedBR">Selected Bathroom Info
-        <p id="name"></p>
+    <div id="selectedBR">
+        <h3 id="name"></h3>
         <p id="address"></p>
         <p id="cleanlinessText"></p>
         <p id="handicap"></p>
@@ -69,7 +69,10 @@
   </dialog>
 
 <div id="floatingPanel">
+  <section>
     <input type="button" id="addButton" value="Add a bathroom!" onclick="openAddDialog()">
+    <input type="button" id="filter" value="Filter">
+  </section>
 </div>
 
 

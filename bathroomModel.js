@@ -173,22 +173,22 @@ function geocodeBathroom(Bathroom) {
               document.getElementById("cleanlinessText").innerHTML = `Cleanliness: ${Bathroom.getCleanliness()}`;
 
               if (Bathroom.getHandicapAccesible()==true){
-                document.getElementById("handicap").innerHTML = `Handicap Accessible: ${Bathroom.getHandicapAccesible()}`;
+                document.getElementById("handicap").innerHTML = `Handicap Accessible`;
               } else {
-                document.getElementById("handicap").innerHTML = `Not Handicap Accessible`;
+               document.getElementById("handicap").style.display = "none"; 
               }
 
               if(Bathroom.getGenderNeutral()==true){
                 document.getElementById("genderNeutral").innerHTML = `Gender Neutral`;
               }
               else{
-                document.getElementById("genderNeutral").innerHTML = `Not Gender Neutral`;
+                document.getElementById("genderNeutral").style.display = "none"; 
               }
               
              if(Bathroom.getBabyChangingStation()==true){
                 document.getElementById("babyChanging").innerHTML = `Baby Changing Station Available`;
              } else{
-                document.getElementById("babyChanging").innerHTML = `Baby Changing Station Not Available`;
+              document.getElementById("babyChanging").style.display = "none"; 
              }
 
              if(Bathroom.getNotes()){
@@ -199,7 +199,7 @@ function geocodeBathroom(Bathroom) {
                 document.getElementById("notes").style.display = "none";
               }
               
-              popOut.style.display = "block"; // Show the popOut element
+              popOut.style.display = "block"; 
 
               });
             }
@@ -392,7 +392,7 @@ async function onPlaceSelected(place) {
 
     // to do: 
     // make the dialogs close when you click outside of them 
-    // sort and filter 
+    // sort and filter - brainstorming: get the pins to dissapear?? make a big list?? 
     // ADD THE TOILET GRAPHIC
     // delete pin func  
     // location services + directions to nearest bathroom
