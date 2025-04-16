@@ -391,9 +391,7 @@ async function onPlaceSelected(place) {
 
 
     // to do: 
-    // make the dialogs work together 
     // make the dialogs close when you click outside of them 
-    // make the true and false work for when uploading to firebase 
     // sort and filter 
     // ADD THE TOILET GRAPHIC
     // delete pin func  
