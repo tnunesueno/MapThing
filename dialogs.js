@@ -1,4 +1,4 @@
-
+import {map} from './bathroomModel'; 
 function openAddDialog (){
     const dialog = document.getElementById("addDialog");
     dialog.showModal();
@@ -61,6 +61,7 @@ function closeDialog(){
 
 function closePopOut() {
     document.getElementById("selectedBR").style.display = "none";
+    map.setZoom(15);
   }
 
 // making shit global?? didn't have to do this before 

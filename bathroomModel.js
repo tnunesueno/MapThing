@@ -159,7 +159,8 @@ function geocodeBathroom(Bathroom) {
 
             // Add a click event listener to the pin
             pin.addListener("click", () => {
-             // map.setCenter(Bathroom.getbLatitude,Bathroom.getbLongitude,17);
+             map.setCenter({lat: lat, lng: lng});
+             map.setZoom(18); // Zoom in on the pin when clicked
             
               const popOut = document.getElementById("selectedBR");
               if(Bathroom.getName()){
@@ -275,20 +276,13 @@ function geocodeBathroom(Bathroom) {
         let input;
         let token;
        
-            // Add an initial request body.
-            /*
+           
             let request = {
               input: document.getElementById("location").value,
-             locationBias: {
-               west: 76,
-               north: 41,
-               east: 74,
-               south:38,
-              },
               origin: { lat: 40, lng: -75 },
               language: "en-US",
               region: "us",
-            };*/
+            };
 
 
       async function initAutocomplete() {   
@@ -302,7 +296,7 @@ function geocodeBathroom(Bathroom) {
         }
        
       async function makeAcRequest(input) {
-        let request; 
+      
           // Reset elements and exit if an empty string is received.
           if (input.target.value == "") {
             title.innerText = "";
@@ -363,7 +357,7 @@ async function onPlaceSelected(place) {
 
  
     let placeText = document.createTextNode(
-      place.displayName + ": " + place.formattedAddress,
+      place.displayName + ": " + place.formattedAddress
     );
  
     results.replaceChildren(placeText);
@@ -400,7 +394,7 @@ async function onPlaceSelected(place) {
   }
 
 
-  export{Bathroom, initMap, geocodeBathroom, addPinToMap, fetchBathrooms};
+  export{Bathroom, initMap, geocodeBathroom, addPinToMap, fetchBathrooms, map};
   
   //window.openDialog = openDialog;
   //window.closeDialog = closeDialog;
@@ -416,8 +410,6 @@ async function onPlaceSelected(place) {
 
 
     // to do: 
-    // zoom in on the pin that you're on 
-    // make notes work 
     // ADD THE TOILET GRAPHIC
     // delete pin func  
     // location services
