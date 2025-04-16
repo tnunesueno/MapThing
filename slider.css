@@ -1,85 +1,117 @@
-.slidecontainer {
-    width: 100%; /* Width of the outside container */
-  } 
-  
-  
-  /* The slider itself */
-  .slider {
-    
-    width: 100%; /* Full-width */
-    height: 10px; /* Specified height */
-    -webkit-transition: .2s; /* 0.2 seconds transition on hover */
-    transition: opacity .2s;
-  }
-  /* Mouse-over effects */
-  .slider:hover {
-    opacity: 1; /* Fully shown on mouse-over */
-  }
-  
-  /* The slider handle (use -webkit- (Chrome, Opera, Safari, Edge) and -moz- (Firefox) to override default look) */
-  .slider::-webkit-slider-thumb {
-    -webkit-appearance: none; /* Override default look */
-    appearance: none;
-    width: 25px; /* Set a specific slider handle width */
-    height: 25px; /* Slider handle height */
-   /* background: url('C:\Users\tnune\Downloads\pngimg.com - toilet_PNG17713 (2).png');*/
-   background:#838383; 
-   ; /* Green background */
-   border-radius: 50%; /* Round slider handle 
-   /*background-size: contain;*/
-    cursor: pointer; /* Cursor on hover */
-  }
-  
-  .slider::-ms-thumb {
-    width: 25px; /* Set a specific slider handle width */
-    height: 25px; /* Slider handle height */
- /*   background: url('C:\Users\tnune\VS Code Stuff\toiletIcon-removebg-preview.png');*/
-     background: #838383; 
-     ; /* Green background */
-    border-radius: 50%; /* Round slider handle */   
-    background-size: contain;
-    cursor: pointer; /* Cursor on hover */
-  }
-  .wrapper{ 
-    position: relative;
-    height: 200px; 
-    overflow:scroll;
-    z-index: 1000; 
-  }
+#map {
+  position: relative;
+  z-index: 0;
+  height: 500px;
+  width: 100%;
+}
 
-  .results {
-    /*overflow: scroll;*/
-    position: relative;
-    justify-content: center;
-    align-items: center;
-    /*max-height: 100px;*/
-  }
+#selectedBR {
+display: none;
+position: absolute; /* or fixed */
+top: 200px; /* Adjust as needed */
+left: 20px; /* Adjust as needed */
+z-index: 10; /* Higher than the map's z-index */
+background-color: white; /* Optional: for visibility */
+padding: 10px; /* Optional: for spacing */
+border: 1px solid #ccc; /* Optional: for visibility */
+width: auto; /* Automatically adjust width to fit content */
+height: auto; /* Automatically adjust height to fit content */
+max-width: 40%; /* Optional: Limit the maximum width */
+max-height: 90%; /* Optional: Limit the maximum height */
+overflow: auto; /* Add scrollbars if content exceeds max dimensions */
+box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2); /* Add a shadow for depth */
+border-radius: 5px; /* Optional: Rounded corners */
+}
 
-  .map{
-    position: relative;
-    z-index: 2;
-  }
+#addDialog{
 
-  .location{
-    display: flex;
-  }
+width: 50%;
+height: 40%;
+position: absolute; /* or fixed */
+top: 100px; /* Adjust as needed */
+left: 20px; /* Adjust as needed */
+z-index: 10; /* Higher than the map's z-index */
+background-color: white; /* Optional: for visibility */
+padding: 10px; 
+border: 1px solid #ccc;
+justify-content: center;
+}
 
-  #selectedBR {
-    display: none;
-    position: absolute; /* or fixed */
-    top: 200px; /* Adjust as needed */
-    left: 20px; /* Adjust as needed */
-    z-index: 10; /* Higher than the map's z-index */
-    background-color: white; /* Optional: for visibility */
-    padding: 10px; /* Optional: for spacing */
-    border: 1px solid #ccc; /* Optional: for visibility */
-    width: auto; /* Automatically adjust width to fit content */
-    height: auto; /* Automatically adjust height to fit content */
-    max-width: 90%; /* Optional: Limit the maximum width */
-    max-height: 90%; /* Optional: Limit the maximum height */
-    overflow: auto; /* Add scrollbars if content exceeds max dimensions */
-    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2); /* Add a shadow for depth */
-    border-radius: 5px; /* Optional: Rounded corners */
-  }
+#location {
+  width: 95%;
+  padding: 10px;
+  margin-bottom: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
 
+#results {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+
+#results li {
+  padding: 10px;
+  border-bottom: 1px solid #ccc;
+  cursor: pointer;
+}
+#results li:hover {
+  background-color: #f0f0f0;
+}
+#title {
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+#floatingPanel{
+ position: absolute; /* Position it relative to the map */
+bottom: 20px; /* Distance from the bottom of the map */
+left: 20px; /* Distance from the left of the map */
+z-index: 10000; /* Ensure it appears above the map */
+background-color: #007bff; /* Button background color (blue) */
+color: white; /* Button text color */
+
+border: none; /* Remove default border */
+border-radius: 5px; /* Rounded corners */
+font-size: 16px; /* Adjust font size */
+cursor: pointer; /* Change cursor to pointer on hover */
+box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2); /* Add a shadow for depth */
+transition: background-color 0.3s ease; /* Smooth hover effect */
+}
+
+#addButton{
+width: 100%;
+height: 100%; /* Make the button fill the floating panel */
+}
+
+#addButton:hover{
+background-color: #0056b3; /* Darker blue on hover */
+}
+
+#floatingPanel:hover {
+background-color: #0056b3; /* Darker blue on hover */
+}
+
+#addDialog{
+justify-content: center;
+width: 50%;
+height: 40%;
+position: absolute; /* or fixed */
+top: 100px; /* Adjust as needed */
+left: 20px; /* Adjust as needed */
+z-index: 10; /* Higher than the map's z-index */
+background-color: white; /* Optional: for visibility */
+padding: 10px; /* Optional: for spacing */
+border: 1px solid #ccc; /* Optional: for visibility */
+}
+
+#notes{
+  width: 95%;
+}
+
+#myRange{
+  width: 80%;
+}
 

@@ -14,12 +14,10 @@ function openDialog(bathroom){
 
 function closeDialog(){ 
 
-    const bathroom = window.currentBathroom;
-    const address = bathroom.getAddress();
+    const newBathroom = window.currentBathroom;
+    const address = newBathroom.getAddress();
     console.log("address from text field: "+ address);
-    const newBathroom = new Bathroom(null, address, null, null, null, null, null,null,null);
     geocodeBathroom(newBathroom);
-    array.push(newBathroom);
     
     const dialog = document.getElementById("myDialog");
     var slider = document.getElementById("myRange");
@@ -33,6 +31,7 @@ function closeDialog(){
       
         newBathroom.setHandicapAccesible(true);
        } else {
+  
         console.log("HA box unchecked")
         HA = false;
         newBathroom.setHandicapAccesible(false);
@@ -54,15 +53,43 @@ function closeDialog(){
        newBathroom.setBabyChangingStation(false); 
        }
 
+       document.getElementById("notes").value = newBathroom.notes;
+       console.log("notes: "+newBathroom.notes);
+
     dialog.close();
-    document.getElementById("location").value = ""; //not sure why this doesnt work, reet is not a func?
+    document.getElementById("location").value = ""; 
 }
+
+function closeAddDialog(){
+    const dialog = document.getElementById("addDialog");
+    dialog.close();
+    openDialog();
+  }
 
 
 function closePopOut() {
     document.getElementById("selectedBR").style.display = "none";
     map.setZoom(15);
   }
+
+
+  function openDialogAndWait(bathroom) {
+    closeAddDialog(); 
+    return new Promise((resolve) => {
+        // Open the dialog
+        openDialog(bathroom);
+        window.currentBathroom = bathroom; // can give it to closedialog
+        const dialog = document.getElementById("myDialog");
+        // Add an event listener for the "close" event
+        dialog.addEventListener(
+            "close", // in theory the fields will already be updated before this closes
+            () => {
+                resolve();
+            },
+            { once: true } // Ensure the listener is only triggered once
+        );
+    });
+}
 
 // making shit global?? didn't have to do this before 
 window.openAddDialog = openAddDialog;
@@ -75,3 +102,5 @@ export {openAddDialog};
 export{openDialog};
 export{closeDialog};
 export {closePopOut}; 
+export {closeAddDialog}
+export{openDialogAndWait}

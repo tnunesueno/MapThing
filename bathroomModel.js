@@ -1,7 +1,7 @@
 import {writeOneBr} from './firebase.js'
 import { collection, getDocs} from "https://www.gstatic.com/firebasejs/11.5.0/firebase-firestore.js";
 import{db} from './firebase.js';
-import { openAddDialog } from './dialogs.js';
+import { openAddDialog, openDialog, closeDialog, closePopOut, closeAddDialog, openDialogAndWait } from './dialogs.js';
 //import { fetchBathrooms } from './firebase.js';
 class Bathroom {
     constructor(name, streetAddress, bLatitude, bLongitude, cleanliness, handicapAccesible, babyChangingStation, genderNeutral, notes) {
@@ -300,16 +300,12 @@ function geocodeBathroom(Bathroom) {
           west: -76, 
          }; 
 
-        // Fetch autocomplete suggestions and show them in a list.
-        // @ts-ignore
+        
         const { suggestions } =
         await google.maps.places.AutocompleteSuggestion.fetchAutocompleteSuggestions(
         request,
         );
 
-
-
-       // title.innerText = 'Query predictions for "' + request.input + '"';
         // Clear the list first.
         results.replaceChildren();
 
@@ -364,14 +360,14 @@ async function onPlaceSelected(place) {
     document.getElementById("location").value = Addy;
     console.log("addy minus pa and zip: "+ Addy);
 
-    // Create a new Bathroom object and set its name field
+  
     const newBathroom = new Bathroom(place.displayName, Addy, null, null, null, null, null, null, null);
     console.log("New Bathroom created with name: " + newBathroom.getName());
 
-    // Proceed with geocoding and adding the bathroom to the map and array
-    geocodeBathroom(newBathroom);
-    array.push(newBathroom);
-  } // send NAME to addpintoaddress with an html element?? 
+    geocodeBathroom(newBathroom); // this doesn't need to wait until the dialog is closed 
+    await openDialogAndWait(newBathroom);
+    writeOneBr(newBathroom); // this is the function that writes to firebase FIX IF TRUE FALSE DONT WORK
+  } 
  
   // Helper function to refresh the session token.
   async function refreshToken(request) {
@@ -381,11 +377,8 @@ async function onPlaceSelected(place) {
     return request;
   }
 
-
   export{Bathroom, initMap, geocodeBathroom, addPinToMap, fetchBathrooms, map};
-  
-  //window.openDialog = openDialog;
-  //window.closeDialog = closeDialog;
+
   window.initMap = initMap;
   window.geocodeBathroom = geocodeBathroom;
   window.addPinToMap = addPinToMap;
@@ -398,11 +391,11 @@ async function onPlaceSelected(place) {
 
 
     // to do: 
-    // FIX RQUEST SO IT GETS PLACES IN PHILLY 
+    // make the dialogs work together 
+    // make the dialogs close when you click outside of them 
+    // make the true and false work for when uploading to firebase 
+    // sort and filter 
     // ADD THE TOILET GRAPHIC
     // delete pin func  
-    // location services
-    // directions to nearest bathroom
+    // location services + directions to nearest bathroom
     // popout to view all
-    // search 
-    // filter 

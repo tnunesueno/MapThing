@@ -34,6 +34,7 @@ function writeOneBr(bathroom) {
     cleanliness: bathroom.getCleanliness(),
     handicapAccessible: bathroom.getHandicapAccesible(),
     babyChangingStation: bathroom.getBabyChangingStation(),
+    notes: bathroom.notes,
   }).then(docRef => { 
     console.log("Document written with ID: ", docRef.id);
   });
