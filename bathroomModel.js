@@ -415,6 +415,9 @@ async function onPlaceSelected(place) {
 
 
     // to do: 
+    // fix selected place 
+    // notes don't quite save
+    // add a rating???? 
     // make the dialogs close when you click outside of them 
     // sort and filter - brainstorming: get the pins to dissapear?? make a big list?? 
     // ADD THE TOILET GRAPHIC

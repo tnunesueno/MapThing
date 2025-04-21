@@ -1,5 +1,6 @@
 import {map} from './bathroomModel.js'; 
 function openAddDialog (){
+    closePopOut(); 
     const dialog = document.getElementById("addDialog");
     dialog.showModal();
 }
