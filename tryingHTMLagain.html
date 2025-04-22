@@ -37,6 +37,7 @@
 <dialog id="myDialog">
     <div>
     <h2>Tell us more about this bathroom!</h2>
+    <h3 id="bathroomName"></h3>
     <p>Cleanliness (1-10): </p>
     <div class="slidecontainer">
         <input type="range" min="1" max="10" value="50" class="slider" id="myRange">
@@ -60,7 +61,7 @@
   </dialog>
 
   <dialog id="addDialog">
-    <input type="text" id="location" placeholder="Enter a place (e.g. City Hall or an address (e.g. 1400 John F Kennedy Blvd)" onfocus="initAutocomplete()"> </input>
+    <input type="text" id="location" placeholder="Enter a place (e.g. City Hall) or an address (e.g. 1400 John F Kennedy Blvd)" onfocus="initAutocomplete()"> </input>
     <div id="title"></div>
       <ul id="results"></ul>
       <ul id="results"></ul>

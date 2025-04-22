@@ -277,10 +277,6 @@ function geocodeBathroom(Bathroom) {
               }
           });
 
-
-
-
-
 // start of autocomplete code
         let title;
         let results;
@@ -359,11 +355,14 @@ function geocodeBathroom(Bathroom) {
 
     // Event handler for clicking on a suggested place.
 async function onPlaceSelected(place) {
+    console.log("onPlaceSelected called");
+    console.log("place: " + place);
+
     await place.fetchFields({
       fields: ["displayName", "formattedAddress"], // put this on the dialog
     });
 
- 
+    // need to clear this so 2 bathrooms can be added in one session
     let placeText = document.createTextNode(
       place.displayName + ": " + place.formattedAddress
     );
@@ -371,6 +370,8 @@ async function onPlaceSelected(place) {
     results.replaceChildren(placeText);
     title.innerText = "Selected Place:";
     input.value = "";
+    
+
     refreshToken(request);
 
     var Addy = place.formattedAddress;
@@ -383,7 +384,6 @@ async function onPlaceSelected(place) {
     Addy = Addy.substring(0, index); // does chop at PA -> avoids postal code weirdness
     document.getElementById("location").value = Addy;
     console.log("addy minus pa and zip: "+ Addy);
-
   
     const newBathroom = new Bathroom(place.displayName, Addy, null, null, null, null, null, null, null);
     console.log("New Bathroom created with name: " + newBathroom.getName());

@@ -6,6 +6,7 @@ function openAddDialog (){
 }
 
 function openDialog(bathroom){
+    //document.getElementById("bathroomName").innerHTML = Bathroom.getName()
     const dialog = document.getElementById("myDialog");
     dialog.showModal(); 
 
