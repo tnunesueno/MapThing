@@ -111,7 +111,7 @@ async function initMap() {
 }
 
 initMap();
-
+let pins = [];
 function geocodeBathroom(Bathroom) {
        var address = Bathroom.getAddress(); 
        console.log ("address to geocode: "+ address);
@@ -154,8 +154,10 @@ function geocodeBathroom(Bathroom) {
                 position: {lat: lat, lng: lng},
                 map: map,
                 title: Bathroom.getAddress(),
+                content: Bathroom ,
             });
             console.log("Pin created at " + lat + ", " + lng);
+            pins.push(pin); // hopefully this stores with the bathroom object 
 
             // Add a click event listener to the pin
             pin.addListener("click", () => {
@@ -254,8 +256,13 @@ function geocodeBathroom(Bathroom) {
                 });
             }
 
+  let bathrooomArray=[]; 
+
             // this is not a function, this is just floating code 
-        fetchBathrooms().then((bathrooms) => {geocodeAll(bathrooms)}); // this is the function that gets the bathrooms from firebase and geocodes them
+        fetchBathrooms().then((bathrooms) => {
+          geocodeAll(bathrooms)
+          bathrooomArray = bathrooms; 
+        }); // this is the function that gets the bathrooms from firebase and geocodes them
 
 
         // all of this nonsense is ai bs that doens't work FIX IT 
@@ -291,6 +298,7 @@ function geocodeBathroom(Bathroom) {
               region: "us",
             };
 
+  // START OF AUTOCOMPLETE CODE
 
       async function initAutocomplete() {   
             
@@ -401,7 +409,92 @@ async function onPlaceSelected(place) {
     return request;
   }
 
-  export{Bathroom, initMap, geocodeBathroom, addPinToMap, fetchBathrooms, map};
+  // START OF FILTER CODE 
+
+  function updateFilterInput() {
+
+    const filterPanel = document.getElementById("filterPanel");
+    filterPanel.style.display = "block";
+    const filterField = document.getElementById("filterField").value;
+    const filterInputContainer = document.getElementById("filterInputContainer");
+
+    // Clear the existing input
+    filterInputContainer.innerHTML = "";
+
+    // Add the appropriate input field based on the selected filter field
+    if (filterField === "cleanliness") {
+        filterInputContainer.innerHTML = `
+            <label for="filterValue">Minimum Cleanliness (1-10):</label>
+            <input type="number" id="filterValue" min="1" max="10" value="5">
+        `;
+    } else if (filterField === "handicapAccessible" || filterField === "genderNeutral" || filterField === "babyChangingStation") {
+        filterInputContainer.innerHTML = `
+            <label for="filterValue">Is ${filterField.replace(/([A-Z])/g, " $1")}?</label>
+            <select id="filterValue">
+                <option value="true">Yes</option>
+                <option value="false">No</option>
+            </select>
+        `;
+    }  else if (filterField === "location") {
+        filterInputContainer.innerHTML = `
+            <label for="filterValue">Location Contains:</label>
+            <input type="text" id="filterValue" placeholder="Enter location">
+        `;
+    }
+}
+
+function applyFilters() {
+    const filterField = document.getElementById("filterField").value;
+    const filterValue = document.getElementById("filterValue").value;
+
+    // Fetch all bathrooms (assuming you have them stored in an array)
+    fetchBathrooms().then((bathrooms) => {
+        const filteredBathrooms = bathrooms.filter((bathroom) => {
+            if (filterField === "cleanliness") {
+                return bathroom.getCleanliness() >= parseInt(filterValue, 10);
+            } else if (filterField === "handicapAccessible") {
+                return bathroom.getHandicapAccesible() === (filterValue === "true");
+            } else if (filterField === "genderNeutral") {
+                return bathroom.getGenderNeutral() === (filterValue === "true");
+            } else if (filterField === "babyChangingStation") {
+                return bathroom.getBabyChangingStation() === (filterValue === "true");
+            } else if (filterField === "notes") {
+                return bathroom.getNotes().toLowerCase().includes(filterValue.toLowerCase());
+            } else if (filterField === "location") {
+                return bathroom.getAddress().toLowerCase().includes(filterValue.toLowerCase());
+            }
+            return true; // Default to include all bathrooms if no filter matches
+        });
+
+        // Update the map or UI with the filtered bathrooms
+        updateMapWithFilteredBathrooms(filteredBathrooms);
+    });
+}
+
+function updateMapWithFilteredBathrooms(filteredBathrooms) {
+    // Clear existing pins from the map
+    clearMapPins();
+
+    // Add pins for the filtered bathrooms
+    filteredBathrooms.forEach((bathroom) => {
+        addPinToMap(bathroom.getbLatitude(), bathroom.getbLongitude(), bathroom);
+    });
+
+    console.log("Filtered bathrooms displayed on the map:", filteredBathrooms);
+}
+
+function clearMapPins(){
+pins.forEach(pin => {
+    pin.setMap(null);
+});
+}
+
+document.getElementById("filter").addEventListener("click", (event) => {
+  event.stopPropagation(); // Prevent the event from propagating
+  updateFilterInput(); // Call the filter input update logic
+});
+
+export{Bathroom, initMap, geocodeBathroom, addPinToMap, fetchBathrooms, map};
 
   window.initMap = initMap;
   window.geocodeBathroom = geocodeBathroom;
@@ -412,6 +505,11 @@ async function onPlaceSelected(place) {
   window.makeAcRequest = makeAcRequest;
   window.replaceAllChars = replaceAllChars;
   window.refreshToken = refreshToken;
+  window.updateFilterInput = updateFilterInput;
+  window.applyFilters = applyFilters;
+  window.updateMapWithFilteredBathrooms = updateMapWithFilteredBathrooms;
+
+  
 
 
     // to do: 
@@ -422,5 +520,6 @@ async function onPlaceSelected(place) {
     // sort and filter - brainstorming: get the pins to dissapear?? make a big list?? 
     // ADD THE TOILET GRAPHIC
     // delete pin func  
+    // find out why the liberty food court geocodes to bumfuck 
     // location services + directions to nearest bathroom
     // popout to view all

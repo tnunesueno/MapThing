@@ -72,8 +72,28 @@
 <div id="floatingPanel">
   <section>
     <input type="button" id="addButton" value="Add a bathroom!" onclick="openAddDialog()">
-    <input type="button" id="filter" value="Filter">
-  </section>
+  </section><section>
+      <input type="button" id="filter" value="Filter" onclick="updateFilterInput(event)">
+    </section>
+</div>
+
+<div id="filterPanel">
+  <h3>Filter Bathrooms</h3>
+  <label for="filterField">Filter by:</label>
+  <select id="filterField" onchange="updateFilterInput()">
+    <option value="cleanliness">Cleanliness (1-10)</option>
+    <option value="handicapAccessible">Handicap Accessible</option>
+    <option value="genderNeutral">Gender Neutral</option>
+    <option value="babyChangingStation">Baby Changing Station</option>
+    <option value="notes">Notes</option>
+    <option value="location">Location</option>
+  </select>
+  <br><br>
+  <div id="filterInputContainer">
+    <!-- Dynamic input will be added here based on the selected field -->
+  </div>
+  <br>
+  <button id="applyFilters" onclick="applyFilters()">Apply Filters</button>
 </div>
 
 

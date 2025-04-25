@@ -100,6 +100,3 @@ async function fetchBathrooms() {
 // fetchBathrooms();
 
 export { fetchBathrooms };
-
-
-

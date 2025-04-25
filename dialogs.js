@@ -35,7 +35,6 @@ function closeDialog(){
        } else {
   
         console.log("HA box unchecked")
-        HA = false;
         newBathroom.setHandicapAccesible(false);
        }
 
@@ -55,7 +54,7 @@ function closeDialog(){
        newBathroom.setBabyChangingStation(false); 
        }
 
-       document.getElementById("notes").value = newBathroom.notes;
+       newBathroom.setNotes(document.getElementById("notes").value);
        console.log("notes: "+newBathroom.notes);
 
     dialog.close();

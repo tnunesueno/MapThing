@@ -122,3 +122,15 @@ border: 1px solid #ccc; /* Optional: for visibility */
   width: 80%;
 }
 
+#filterPanel{
+width: 50%;
+height: 40%;
+position: absolute; /* or fixed */
+top: 100px; /* Adjust as needed */
+left: 20px; /* Adjust as needed */
+z-index: 10; /* Higher than the map's z-index */
+background-color: white; /* Optional: for visibility */
+padding: 10px; 
+border: 1px solid #ccc;
+}
+
