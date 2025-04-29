@@ -154,7 +154,6 @@ function geocodeBathroom(Bathroom) {
                 position: {lat: lat, lng: lng},
                 map: map,
                 title: Bathroom.getAddress(),
-                content: Bathroom ,
             });
             console.log("Pin created at " + lat + ", " + lng);
             pins.push(pin); // hopefully this stores with the bathroom object 
@@ -414,7 +413,7 @@ async function onPlaceSelected(place) {
   function updateFilterInput() {
 
     const filterPanel = document.getElementById("filterPanel");
-    filterPanel.style.display = "block";
+    filterPanel.showModal(); 
     const filterField = document.getElementById("filterField").value;
     const filterInputContainer = document.getElementById("filterInputContainer");
 
@@ -435,7 +434,15 @@ async function onPlaceSelected(place) {
                 <option value="false">No</option>
             </select>
         `;
-    }  else if (filterField === "location") {
+    } else if (filterField === "babyChangingStation") {
+      filterInputContainer.innerHTML = `
+          <label for="filterValue">Contains ${filterField.replace(/([A-Z])/g, " $1")}?</label>
+          <select id="filterValue">
+              <option value="true">Yes</option>
+              <option value="false">No</option>
+          </select>
+      `;
+  }   else if (filterField === "location") {
         filterInputContainer.innerHTML = `
             <label for="filterValue">Location Contains:</label>
             <input type="text" id="filterValue" placeholder="Enter location">
@@ -444,6 +451,9 @@ async function onPlaceSelected(place) {
 }
 
 function applyFilters() {
+    const filterPanel = document.getElementById("filterPanel");
+    filterPanel.close();
+
     const filterField = document.getElementById("filterField").value;
     const filterValue = document.getElementById("filterValue").value;
 
@@ -477,7 +487,10 @@ function updateMapWithFilteredBathrooms(filteredBathrooms) {
 
     // Add pins for the filtered bathrooms
     filteredBathrooms.forEach((bathroom) => {
-        addPinToMap(bathroom.getbLatitude(), bathroom.getbLongitude(), bathroom);
+        console.log("Bathroom Latitude:", bathroom.getbLatitude());
+        console.log("Bathroom Longitude:", bathroom.getbLongitude());
+        //addPinToMap(bathroom.getbLatitude(), bathroom.getbLongitude(), bathroom);
+        geocodeBathroom(bathroom); 
     });
 
     console.log("Filtered bathrooms displayed on the map:", filteredBathrooms);

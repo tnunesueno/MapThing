@@ -73,11 +73,11 @@
   <section>
     <input type="button" id="addButton" value="Add a bathroom!" onclick="openAddDialog()">
   </section><section>
-      <input type="button" id="filter" value="Filter" onclick="updateFilterInput(event)">
+      <input type="button" id="filter" value="Filter" onclick="updateFilterInput()">
     </section>
 </div>
 
-<div id="filterPanel">
+<dialog id="filterPanel">
   <h3>Filter Bathrooms</h3>
   <label for="filterField">Filter by:</label>
   <select id="filterField" onchange="updateFilterInput()">
@@ -94,7 +94,7 @@
   </div>
   <br>
   <button id="applyFilters" onclick="applyFilters()">Apply Filters</button>
-</div>
+</dialog>
 
 
 </html
