@@ -92,11 +92,19 @@ function closePopOut() {
     });
 }
 
+function cancelAdd(){
+    closeAddDialog();
+    const dialog = document.getElementById("myDialog");
+    dialog.close();
+}
+
 // making shit global?? didn't have to do this before 
 window.openAddDialog = openAddDialog;
 window.openDialog = openDialog;
 window.closeDialog=closeDialog; 
 window.closePopOut = closePopOut;
+window.closeAddDialog=closeAddDialog; 
+window.cancelAdd=cancelAdd; 
 
 // export everything 
 export {openAddDialog};

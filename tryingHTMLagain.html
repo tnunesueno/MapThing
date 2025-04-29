@@ -67,6 +67,7 @@
       <ul id="results"></ul>
     </div>
       <p><span id="prediction"></span></p>
+      <button onclick="cancelAdd()">Cancel</button>
   </dialog>
 
 <div id="floatingPanel">
@@ -74,7 +75,9 @@
     <input type="button" id="addButton" value="Add a bathroom!" onclick="openAddDialog()">
   </section><section>
       <input type="button" id="filter" value="Filter" onclick="updateFilterInput()">
-    </section>
+    </section><section>
+    <button id="clearFilters" style ="display: none" onclick="clearFilters()">Clear Filters</button>
+  </section>
 </div>
 
 <dialog id="filterPanel">
@@ -95,6 +98,7 @@
   <br>
   <button id="applyFilters" onclick="applyFilters()">Apply Filters</button>
 </dialog>
+
 
 
 </html

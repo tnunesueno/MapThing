@@ -265,7 +265,7 @@ function geocodeBathroom(Bathroom) {
 
 
         // all of this nonsense is ai bs that doens't work FIX IT 
-        document.getElementById("floatingPanel").addEventListener("click", (event) => {
+        document.getElementById("addButton").addEventListener("click", (event) => {
           const addDialog = document.getElementById("addDialog");
           if (addDialog) {
               addDialog.showModal(); // Open the dialog
@@ -478,6 +478,8 @@ function applyFilters() {
 
         // Update the map or UI with the filtered bathrooms
         updateMapWithFilteredBathrooms(filteredBathrooms);
+        clearFilters = document.getElementById("clearFilters");
+        clearFilters.style.display = "block";
     });
 }
 
@@ -490,10 +492,21 @@ function updateMapWithFilteredBathrooms(filteredBathrooms) {
         console.log("Bathroom Latitude:", bathroom.getbLatitude());
         console.log("Bathroom Longitude:", bathroom.getbLongitude());
         //addPinToMap(bathroom.getbLatitude(), bathroom.getbLongitude(), bathroom);
-        geocodeBathroom(bathroom); 
+        geocodeBathroom(bathroom); // Geocode the bathroom to get its coordinates
     });
 
     console.log("Filtered bathrooms displayed on the map:", filteredBathrooms);
+}
+
+function clearFilters() {
+  clearMapPins();
+  fetchBathrooms().then((bathrooms) => {
+    bathrooms.forEach((bathroom) => {
+        geocodeBathroom(bathroom); // Re-add all bathrooms to the map
+    });
+  });
+  const clearFilters = document.getElementById("clearFilters");
+  clearFilters.style.display = "none"; 
 }
 
 function clearMapPins(){
@@ -504,7 +517,7 @@ pins.forEach(pin => {
 
 document.getElementById("filter").addEventListener("click", (event) => {
   event.stopPropagation(); // Prevent the event from propagating
-  updateFilterInput(); // Call the filter input update logic
+  updateFilterInput(); 
 });
 
 export{Bathroom, initMap, geocodeBathroom, addPinToMap, fetchBathrooms, map};
@@ -520,19 +533,15 @@ export{Bathroom, initMap, geocodeBathroom, addPinToMap, fetchBathrooms, map};
   window.refreshToken = refreshToken;
   window.updateFilterInput = updateFilterInput;
   window.applyFilters = applyFilters;
+  window.clearFilters = clearFilters;
   window.updateMapWithFilteredBathrooms = updateMapWithFilteredBathrooms;
-
-  
-
-
+  window.clearMapPins = clearMapPins;
     // to do: 
     // fix selected place 
     // notes don't quite save
     // add a rating???? 
     // make the dialogs close when you click outside of them 
-    // sort and filter - brainstorming: get the pins to dissapear?? make a big list?? 
     // ADD THE TOILET GRAPHIC
-    // delete pin func  
     // find out why the liberty food court geocodes to bumfuck 
     // location services + directions to nearest bathroom
     // popout to view all
