@@ -100,11 +100,12 @@ async function initMap() {
     //@ts-ignore
     const { Map } = await google.maps.importLibrary("maps");
     const { AdvancedMarkerElement } = await google.maps.importLibrary("marker");
+    const { PinElement } = await google.maps.importLibrary("marker");
     const { InfoWindow } = await google.maps.importLibrary("maps");
     const { Place } = await google.maps.importLibrary("places");
     // The map, centered at Philadelphia
     map = new Map(document.getElementById("map"), {
-        zoom: 15,
+        zoom: 17,
         center: position,
         mapId: "DEMO_MAP_ID",
     });
@@ -149,12 +150,18 @@ function geocodeBathroom(Bathroom) {
                 return;
             }
             
-            const pin = new google.maps.marker.AdvancedMarkerElement({
-              //  glyph: png.pngtree.com/png-vector/20230903/ourmid/pngtree-open-white-toilet-png-image_9951695.png;
+           // const toiletGlyph = document.createElement("img");
+           // toiletGlyph.src = "./glyph.png"; // Path to your toilet icon image
+            const pin = new google.maps.Marker({
+                icon: {
+                  url: "./glyph.png",
+                  scaledSize: new google.maps.Size(45, 45), // Adjust size as neede
+                },
                 position: {lat: lat, lng: lng},
                 map: map,
                 title: Bathroom.getAddress(),
             });
+            
             console.log("Pin created at " + lat + ", " + lng);
             pins.push(pin); // hopefully this stores with the bathroom object 
 
@@ -536,12 +543,13 @@ export{Bathroom, initMap, geocodeBathroom, addPinToMap, fetchBathrooms, map};
   window.clearFilters = clearFilters;
   window.updateMapWithFilteredBathrooms = updateMapWithFilteredBathrooms;
   window.clearMapPins = clearMapPins;
-    // to do: 
+    
+  // to do: 
     // fix selected place 
     // notes don't quite save
     // add a rating???? 
     // make the dialogs close when you click outside of them 
-    // ADD THE TOILET GRAPHIC
+    // ADD THE TOILET GRAPHIC 
     // find out why the liberty food court geocodes to bumfuck 
     // location services + directions to nearest bathroom
     // popout to view all
