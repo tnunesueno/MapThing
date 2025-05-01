@@ -1,6 +1,16 @@
+/* Set the font for all headers (h1, h2, h3, etc.) */
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Nourd BOLD', sans-serif; /* Replace with your desired font for headers */
+}
+
+/* Set the font for all normal text (p, span, etc.) */
+body, p, span, div, input, button, label {
+  font-family: 'Caladea', serif; /* Replace with your desired font for normal text */
+}
+
 #map {
   position: relative;
-  z-index: -10;
+  z-index: 0;
   height: 100vh; /* Full height of the viewport */
   width: 100%;
 }

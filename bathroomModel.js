@@ -108,11 +108,13 @@ async function initMap() {
         zoom: 17,
         center: position,
         mapId: "DEMO_MAP_ID",
+        draggable: true, 
+        scrollwheel: true, 
     });
 }
 
 initMap();
-let pins = [];
+
 function geocodeBathroom(Bathroom) {
        var address = Bathroom.getAddress(); 
        console.log ("address to geocode: "+ address);
@@ -143,32 +145,35 @@ function geocodeBathroom(Bathroom) {
           }); 
 }
 
+let pins = []; 
         function addPinToMap(lat, lng, Bathroom) {
             console.log("addPinToMap function called");
             if (typeof map === 'undefined') {
                 console.error("Map is not defined.");
                 return;
             }
-            
-           // const toiletGlyph = document.createElement("img");
-           // toiletGlyph.src = "./glyph.png"; // Path to your toilet icon image
+          
             const pin = new google.maps.Marker({
                 icon: {
                   url: "./glyph.png",
-                  scaledSize: new google.maps.Size(45, 45), // Adjust size as neede
+                  scaledSize: new google.maps.Size(47, 47), // Adjust size as neede
                 },
                 position: {lat: lat, lng: lng},
                 map: map,
                 title: Bathroom.getAddress(),
             });
+            pins.push(pin); 
             
             console.log("Pin created at " + lat + ", " + lng);
-            pins.push(pin); // hopefully this stores with the bathroom object 
 
             // Add a click event listener to the pin
             pin.addListener("click", () => {
              map.setCenter({lat: lat, lng: lng});
-             map.setZoom(18); // Zoom in on the pin when clicked
+             map.setZoom(19); 
+             pin.setIcon({
+              url: "1-removebg-preview (1).png",
+              scaledSize: new google.maps.Size(47, 47), 
+             });
             
               const popOut = document.getElementById("selectedBR");
               if(Bathroom.getName()){
@@ -208,8 +213,19 @@ function geocodeBathroom(Bathroom) {
               }
               
               popOut.style.display = "block"; 
-
               });
+
+              const closeButton = document.getElementById("closePopOutButton");
+              closeButton.addEventListener("click", () => {
+                //popOut.style.display = "none"; this is done separately - i dont think i need it here anymore
+                map.setZoom(17); // Reset zoom level
+                pin.setIcon({
+                  url: "./glyph.png",
+                  scaledSize: new google.maps.Size(47, 47), // Adjust size as needed
+                });
+                
+              });
+
             }
 
             async function fetchBathrooms() {

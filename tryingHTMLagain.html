@@ -26,7 +26,7 @@
         <p id="genderNeutral"></p>
         <p id="babyChanging"></p> 
         <p id="notes"></p>
-        <input type="button" value="Close" onclick="closePopOut()">
+        <input type="button" value="Close" onclick="closePopOut()" id="closePopOutButton">
     </div>
 
 </body>
@@ -69,7 +69,7 @@
 
 <div id="floatingPanel">
   <section>
-    <input type="button" id="addButton" value="Add a bathroom!" onclick="openAddDialog()">
+    <input type="button" id="addButton" value="Add a bathroom" onclick="openAddDialog()">
   </section><section>
       <input type="button" id="filter" value="Filter" onclick="updateFilterInput()">
     </section><section>
