@@ -318,6 +318,7 @@ let pins = [];
               origin: { lat: 40, lng: -75 },
               language: "en-US",
               region: "us",
+              sessionToken: token,
             };
 
   // START OF AUTOCOMPLETE CODE
@@ -355,6 +356,7 @@ let pins = [];
         await google.maps.places.AutocompleteSuggestion.fetchAutocompleteSuggestions(
         request,
         );
+        console.log("Suggestions:", suggestions);
 
         // Clear the list first.
         results.replaceChildren();
@@ -362,11 +364,14 @@ let pins = [];
 
   for (const suggestion of suggestions) {
     const placePrediction = suggestion.placePrediction;
+    console.log("Place Prediction:", placePrediction);
     // Create a link for the place, add an event handler to fetch the place.
     const a = document.createElement("a"); // do this for the wrapper to put the stuff in? 
 
     a.addEventListener("click", () => {
-      onPlaceSelected(placePrediction.toPlace());
+      const placeObject = placePrediction.toPlace();
+      onPlaceSelected(placeObject);
+      console.log("Place object:", placeObject);
     });
     a.innerText = placePrediction.text.toString();
 
@@ -384,44 +389,44 @@ let pins = [];
       }
 
     // Event handler for clicking on a suggested place.
-async function onPlaceSelected(place) {
-    console.log("onPlaceSelected called");
-    console.log("place: " + place);
-
-    await place.fetchFields({
-      fields: ["displayName", "formattedAddress"], // put this on the dialog
-    });
-
-    // need to clear this so 2 bathrooms can be added in one session
-    let placeText = document.createTextNode(
-      place.displayName + ": " + place.formattedAddress
-    );
- 
-    results.replaceChildren(placeText);
-    title.innerText = "Selected Place:";
-    input.value = "";
-    
-
-    refreshToken(request);
-
-    var Addy = place.formattedAddress;
-    Addy = Addy = replaceAllChars(Addy, ",", ""); // remove commas
-    Addy = Addy = replaceAllChars(Addy, "  ", " ");   // remove double spaces (shouldnt be any)
-    
-    const sequence = " PA";
-    let index = Addy.indexOf(sequence); // should return an int for index
-    console.log(`First occurrence at index: ${index}`);
-    Addy = Addy.substring(0, index); // does chop at PA -> avoids postal code weirdness
-    document.getElementById("location").value = Addy;
-    console.log("addy minus pa and zip: "+ Addy);
+    async function onPlaceSelected(place) {
+      console.log("onPlaceSelected called");
+      console.log("Place object:", place);
+      if (!place.id) {
+          console.error("Place does not have a id.");
+          return;
+      }
   
-    const newBathroom = new Bathroom(place.displayName, Addy, null, null, null, null, null, null, null);
-    console.log("New Bathroom created with name: " + newBathroom.getName());
-
-    geocodeBathroom(newBathroom); // this doesn't need to wait until the dialog is closed 
-    await openDialogAndWait(newBathroom);
-    writeOneBr(newBathroom); // this is the function that writes to firebase FIX IF TRUE FALSE DONT WORK
-  } 
+      const service = new google.maps.places.PlacesService(map);
+      service.getDetails(
+          { placeId: place.place_id, fields: ["name", "formatted_address"] },
+          (result, status) => {
+              if (status === google.maps.places.PlacesServiceStatus.OK) {
+                  console.log("Place details:", result);
+  
+                  const name = result.name;
+                  const address = result.formatted_address;
+  
+                  if (!name || !address) {
+                      console.error("Place does not have a name or formatted address.");
+                      return;
+                  }
+  
+                  console.log("Name:", name, "Address:", address);
+  
+                  const newBathroom = new Bathroom(name, address, null, null, null, null, null, null, null);
+                  console.log("New Bathroom created:", newBathroom);
+  
+                  geocodeBathroom(newBathroom);
+                  openDialogAndWait(newBathroom).then(() => {
+                      writeOneBr(newBathroom);
+                  });
+              } else {
+                  console.error("Failed to fetch place details:", status);
+              }
+          }
+      );
+  }
  
   // Helper function to refresh the session token.
   async function refreshToken(request) {
@@ -561,11 +566,10 @@ export{Bathroom, initMap, geocodeBathroom, addPinToMap, fetchBathrooms, map};
   window.clearMapPins = clearMapPins;
     
   // to do: 
+    // migrate to places.Place instead of placesService
     // fix selected place 
     // notes don't quite save
-    // add a rating???? 
     // make the dialogs close when you click outside of them 
-    // ADD THE TOILET GRAPHIC 
     // find out why the liberty food court geocodes to bumfuck 
     // location services + directions to nearest bathroom
     // popout to view all
