@@ -111,6 +111,8 @@ async function initMap() {
         draggable: true, 
         scrollwheel: true, 
     });
+
+    initAutocomplete(); // hopefully this fixes all the nonsense with the places
 }
 
 initMap();
@@ -319,11 +321,10 @@ let pins = [];
               language: "en-US",
               region: "us",
               sessionToken: token,
+              includeQueryPredictions: true, 
             };
 
-  // START OF AUTOCOMPLETE CODE
-
-      async function initAutocomplete() {   
+  async function initAutocomplete() {   
             
         title = document.getElementById("title");
         results = document.getElementById("results"); 
@@ -369,9 +370,7 @@ let pins = [];
     const a = document.createElement("a"); // do this for the wrapper to put the stuff in? 
 
     a.addEventListener("click", () => {
-      const placeObject = placePrediction.toPlace();
-      onPlaceSelected(placeObject);
-      console.log("Place object:", placeObject);
+      onPlaceSelected(placePrediction);
     });
     a.innerText = placePrediction.text.toString();
 
@@ -388,49 +387,42 @@ let pins = [];
         return str.replaceAll(charToReplace, replacementChar);
       }
 
-    // Event handler for clicking on a suggested place.
-    async function onPlaceSelected(place) {
-      console.log("onPlaceSelected called");
-      console.log("Place object:", place);
-      if (!place.id) {
+    // clicking on a suggested place.
+    async function onPlaceSelected(placePrediction) {
+      console.log("onPlaceSelected called with prediction :", placePrediction);
+
+      const placeId = placePrediction.placeId;
+
+      if (!placePrediction.placeId) {
           console.error("Place does not have a id.");
           return;
       }
+      
+      const place = new google.maps.places.Place({id: placeId});
+      const otherPlace = placePrediction.toPlace();
+
+    
+        await place.fetchFields({ fields : ["displayName", "formattedAddress"] });
+        if (!place.displayName || !place.formattedAddress) {
+        console.error("Place does not have a name or formatted address.");
+        } 
+
+        const name = place.displayName;
+        const address = place.formattedAddress;
+        console.log("Place Name:", name);
+        console.log("Place Address:", address);
+
+        const newBathroom = new Bathroom(name, address, null, null, null, null, null, null, null);
+        console.log("New Bathroom created:", newBathroom);
   
-      const service = new google.maps.places.PlacesService(map);
-      service.getDetails(
-          { placeId: place.place_id, fields: ["name", "formatted_address"] },
-          (result, status) => {
-              if (status === google.maps.places.PlacesServiceStatus.OK) {
-                  console.log("Place details:", result);
-  
-                  const name = result.name;
-                  const address = result.formatted_address;
-  
-                  if (!name || !address) {
-                      console.error("Place does not have a name or formatted address.");
-                      return;
-                  }
-  
-                  console.log("Name:", name, "Address:", address);
-  
-                  const newBathroom = new Bathroom(name, address, null, null, null, null, null, null, null);
-                  console.log("New Bathroom created:", newBathroom);
-  
-                  geocodeBathroom(newBathroom);
-                  openDialogAndWait(newBathroom).then(() => {
-                      writeOneBr(newBathroom);
-                  });
-              } else {
-                  console.error("Failed to fetch place details:", status);
-              }
-          }
-      );
+    geocodeBathroom(newBathroom);
+    await openDialogAndWait(newBathroom);
+    writeOneBr(newBathroom);
+
   }
  
-  // Helper function to refresh the session token.
+  
   async function refreshToken(request) {
-    // Create a new session token and add it to the request.
     token = new google.maps.places.AutocompleteSessionToken();
     request.sessionToken = token;
     return request;
@@ -447,6 +439,7 @@ let pins = [];
 
     // Clear the existing input
     filterInputContainer.innerHTML = "";
+    const formattedFieldName = filterField.replace(/([A-Z])/g, " $1").toLowerCase();
 
     // Add the appropriate input field based on the selected filter field
     if (filterField === "cleanliness") {
@@ -454,9 +447,9 @@ let pins = [];
             <label for="filterValue">Minimum Cleanliness (1-10):</label>
             <input type="number" id="filterValue" min="1" max="10" value="5">
         `;
-    } else if (filterField === "handicapAccessible" || filterField === "genderNeutral" || filterField === "babyChangingStation") {
+    } else if (filterField === "handicapAccessible" || filterField === "genderNeutral") {
         filterInputContainer.innerHTML = `
-            <label for="filterValue">Is ${filterField.replace(/([A-Z])/g, " $1")}?</label>
+            <label for="filterValue">Is ${formattedFieldName}?</label>
             <select id="filterValue">
                 <option value="true">Yes</option>
                 <option value="false">No</option>
@@ -464,19 +457,15 @@ let pins = [];
         `;
     } else if (filterField === "babyChangingStation") {
       filterInputContainer.innerHTML = `
-          <label for="filterValue">Contains ${filterField.replace(/([A-Z])/g, " $1")}?</label>
+          <label for="filterValue">Contains ${formattedFieldName}?</label>
           <select id="filterValue">
               <option value="true">Yes</option>
               <option value="false">No</option>
           </select>
       `;
-  }   else if (filterField === "location") {
-        filterInputContainer.innerHTML = `
-            <label for="filterValue">Location Contains:</label>
-            <input type="text" id="filterValue" placeholder="Enter location">
-        `;
-    }
-}
+   }
+
+  }
 
 function applyFilters() {
     const filterPanel = document.getElementById("filterPanel");
