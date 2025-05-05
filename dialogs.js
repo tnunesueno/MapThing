@@ -14,6 +14,12 @@ function openDialog(bathroom){
     window.currentBathroom = bathroom;
   }
 
+  function closeDialogAndDoJackShit(){
+    const dialog = document.getElementById("myDialog");
+    dialog.close();
+    document.getElementById("location").value = ""; 
+  }
+
 function closeDialog(){ 
 
     const newBathroom = window.currentBathroom;
@@ -59,6 +65,8 @@ function closeDialog(){
 
     dialog.close();
     document.getElementById("location").value = ""; 
+    //const fieldsPopulated = true; 
+   // window.fieldsPopulated = fieldsPopulated; // this is a hacky way to get the value of the boolean to the other file
 }
 
 function closeAddDialog(){
@@ -76,20 +84,70 @@ function closePopOut() {
 
   function openDialogAndWait(bathroom) {
     closeAddDialog(); 
+    openDialog(bathroom);
+   
     return new Promise((resolve) => {
-        // Open the dialog
-        openDialog(bathroom);
-        window.currentBathroom = bathroom; // can give it to closedialog
+       
+        window.currentBathroom = bathroom; // can give it to geocoding and close bathroom? 
         const dialog = document.getElementById("myDialog");
-        // Add an event listener for the "close" event
-        dialog.addEventListener(
-            "close", // in theory the fields will already be updated before this closes
+        const newBathroom = window.currentBathroom;
+
+        dialog.addEventListener('close', 
             () => {
-                resolve();
-            },
-            { once: true } // Ensure the listener is only triggered once
-        );
+
+            const address = newBathroom.getAddress();
+            console.log("address from text field: "+ address);
+            geocodeBathroom(newBathroom);
+            
+            var slider = document.getElementById("myRange");
+            var value = slider.value;
+        
+            newBathroom.setCleanliness(value);
+            console.log("cleanliness: "+newBathroom.getCleanliness());
+            
+            if(document.getElementById("HandicapAccesible").checked){
+                console.log("HA box checked");
+              
+                newBathroom.setHandicapAccesible(true);
+               } else {
+          
+                console.log("HA box unchecked")
+                newBathroom.setHandicapAccesible(false);
+               }
+        
+               if(document.getElementById("GenderNeutral").checked){
+                console.log("GN box checked");
+                newBathroom.setGenderNeutral(true);
+               } else {
+                console.log("GN box unchecked")
+               newBathroom.setGenderNeutral(false); 
+               }
+        
+               if(document.getElementById("BabyChanging").checked){
+                console.log("babychaing box checked");
+                newBathroom.setBabyChangingStation(true);
+               } else {
+                console.log("baby changing box unchecked")
+               newBathroom.setBabyChangingStation(false); 
+               }
+
+               // WHY DO MY NOTES NOT WORK
+               const notesField = document.getElementById("notes");
+               if (notesField) {
+                const notesValue = notesField.value;
+                newBathroom.setNotes(notesValue);
+                console.log("Notes:", notesValue);
+            } else {
+                console.error("Notes field not found in the DOM.");
+            }
+
+            document.getElementById("location").value = ""; 
+            resolve(window.currentBathroom);
+        },
+        {once: true});
     });
+
+   
 }
 
 function cancelAdd(){
@@ -105,6 +163,8 @@ window.closeDialog=closeDialog;
 window.closePopOut = closePopOut;
 window.closeAddDialog=closeAddDialog; 
 window.cancelAdd=cancelAdd; 
+window.closeDialogAndDoJackShit = closeDialogAndDoJackShit; 
+window.openDialogAndWait = openDialogAndWait; 
 
 // export everything 
 export {openAddDialog};
