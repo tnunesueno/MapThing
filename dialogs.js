@@ -1,4 +1,5 @@
 import {map} from './bathroomModel.js'; 
+import { writeOneBr } from './firebase.js';
 function openAddDialog (){
     closePopOut(); 
     const dialog = document.getElementById("addDialog");
@@ -62,7 +63,7 @@ function closeDialog(){
 
        newBathroom.setNotes(document.getElementById("notes").value);
        console.log("notes: "+newBathroom.notes);
-
+    writeOneBr(newBathroom);
     dialog.close();
     document.getElementById("location").value = ""; 
     //const fieldsPopulated = true; 

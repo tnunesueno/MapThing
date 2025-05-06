@@ -416,15 +416,7 @@ let pins = [];
         console.log("New Bathroom created:", newBathroom);
   
     geocodeBathroom(newBathroom);
-    await openDialogAndWait(newBathroom);
-
-    // this is bc shit was undefined and it messed with firestore saving. prob would be smart to move to dialogs 
-    if (typeof newBathroom.getNotes() === 'undefined') {
-      console.warn("Notes field was undefined after dialog, setting to null before saving.");
-      newBathroom.setNotes(null); 
-    }
-
-    writeOneBr(newBathroom);
+    openDialog(newBathroom); // this is the function that opens the dialog
 
   }
  
@@ -562,7 +554,6 @@ export{Bathroom, initMap, geocodeBathroom, addPinToMap, fetchBathrooms, map};
   window.clearMapPins = clearMapPins;
     
   // to do: 
-    // migrate to places.Place instead of placesService
     // fix selected place 
     // notes don't quite save
     // make the dialogs close when you click outside of them 
