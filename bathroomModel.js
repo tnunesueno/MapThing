@@ -208,8 +208,8 @@ let pins = [];
 
              if(Bathroom.getNotes()){
               console.log("notes: "+ Bathroom.getNotes());
-              document.getElementById("notes").innerHTML = Bathroom.getNotes();
-              document.getElementById("notes").style.display = "block";
+              document.getElementById("notesDisplay").innerHTML = Bathroom.getNotes();
+              document.getElementById("notesDisplay").style.display = "block";
               } else{
                 document.getElementById("notes").style.display = "none";
               }
@@ -359,7 +359,6 @@ let pins = [];
         );
         console.log("Suggestions:", suggestions);
 
-        // Clear the list first.
         results.replaceChildren();
 
 

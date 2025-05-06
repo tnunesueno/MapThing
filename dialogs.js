@@ -11,6 +11,21 @@ function openDialog(bathroom){
     const dialog = document.getElementById("myDialog");
     dialog.showModal(); 
 
+    const bathroomNameEl = document.getElementById("bathroomName");
+    if (bathroomNameEl) {
+        bathroomNameEl.innerHTML = bathroom.getName() || "Bathroom Details"; // Display name
+    }
+
+    // not sure if these clear automatically because its a form now - handle during cleanup? 
+    const notesField = document.getElementById("notes");  
+    notesField.value = ""; 
+    const handicapAccesible = document.getElementById("HandicapAccesible");
+    handicapAccesible.checked = false
+    const genderNeutral = document.getElementById("GenderNeutral");
+    genderNeutral.checked = false
+    const babyChanging = document.getElementById("BabyChanging");
+    babyChanging.checked = false
+
     // i think this makes it into a global variable so that it's values can be passed around 
     window.currentBathroom = bathroom;
   }
@@ -28,7 +43,6 @@ document.getElementById("brFields").addEventListener("submit", function(event) {
     const newBathroom = window.currentBathroom;
     const address = newBathroom.getAddress();
     console.log("address from text field: "+ address);
-    geocodeBathroom(newBathroom);
     
     const dialog = document.getElementById("myDialog");
     var slider = document.getElementById("myRange");
