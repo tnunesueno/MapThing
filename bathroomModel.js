@@ -409,17 +409,19 @@ let pins = [];
       const otherPlace = placePrediction.toPlace();
 
     
-        await place.fetchFields({ fields : ["displayName", "formattedAddress"] });
+        await place.fetchFields({ fields : ["displayName", "formattedAddress", "regularOpeningHours"] });
         if (!place.displayName || !place.formattedAddress) {
         console.error("Place does not have a name or formatted address.");
         } 
 
         const name = place.displayName;
         const address = place.formattedAddress;
+        const openingHours = place.regularOpeningHours;
         console.log("Place Name:", name);
         console.log("Place Address:", address);
+        console.log("Place Opening Hours:", openingHours);
 
-        const newBathroom = new Bathroom(name, address, null, null, null, null, null, null, null);
+        const newBathroom = new Bathroom(name, address, null, null, null, null, null, null, null, openingHours);
         console.log("New Bathroom created:", newBathroom);
   
     geocodeBathroom(newBathroom);
@@ -499,7 +501,6 @@ function applyFilters() {
             return true; // Default to include all bathrooms if no filter matches
         });
 
-        // Update the map or UI with the filtered bathrooms
         updateMapWithFilteredBathrooms(filteredBathrooms);
         clearFilters = document.getElementById("clearFilters");
         clearFilters.style.display = "block";
@@ -562,12 +563,7 @@ export{Bathroom, initMap, geocodeBathroom, addPinToMap, fetchBathrooms, map};
     
   // TO DO: 
     // add hours of operation 
+    // start to formmat for mobile
     // find out why the liberty food court geocodes to bumfuck 
     // location services + directions to nearest bathroom
     // popout to view all
-  
-  // FAKE BATHROOMS TO REMOVE 
-    // my house 
-    // clark park 
-    // sla 
-    // mood cafe 

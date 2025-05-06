@@ -1,89 +1,105 @@
 <!DOCTYPE html>
+
+<link rel="stylesheet" href="slider.css">
 <html>
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Welcome to Firebase Hosting</title>
+    <head>
+      <div id="banner">
+        <img 
+        src ="./Project Overview.png"
+        />
+      </div>
+    <title>Find a toilet!</title>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyALRD7VW8Aat0OnS2sc8yX8AKSxH3JFKoA&libraries=places"></script>
 
-    <!-- update the version number as needed -->
-    <script defer src="/__/firebase/11.3.1/firebase-app-compat.js"></script>
-    <!-- include only the Firebase features as you need -->
-    <script defer src="/__/firebase/11.3.1/firebase-auth-compat.js"></script>
-    <script defer src="/__/firebase/11.3.1/firebase-database-compat.js"></script>
-    <script defer src="/__/firebase/11.3.1/firebase-firestore-compat.js"></script>
-    <script defer src="/__/firebase/11.3.1/firebase-functions-compat.js"></script>
-    <script defer src="/__/firebase/11.3.1/firebase-messaging-compat.js"></script>
-    <script defer src="/__/firebase/11.3.1/firebase-storage-compat.js"></script>
-    <script defer src="/__/firebase/11.3.1/firebase-analytics-compat.js"></script>
-    <script defer src="/__/firebase/11.3.1/firebase-remote-config-compat.js"></script>
-    <script defer src="/__/firebase/11.3.1/firebase-performance-compat.js"></script>
-    <!-- 
-      initialize the SDK after all desired features are loaded, set useEmulator to false
-      to avoid connecting the SDK to running emulators.
-    -->
-    <script defer src="/__/firebase/init.js?useEmulator=true"></script>
+</head>
 
-    <style media="screen">
-      body { background: #ECEFF1; color: rgba(0,0,0,0.87); font-family: Roboto, Helvetica, Arial, sans-serif; margin: 0; padding: 0; }
-      #message { background: white; max-width: 360px; margin: 100px auto 16px; padding: 32px 24px; border-radius: 3px; }
-      #message h2 { color: #ffa100; font-weight: bold; font-size: 16px; margin: 0 0 8px; }
-      #message h1 { font-size: 22px; font-weight: 300; color: rgba(0,0,0,0.6); margin: 0 0 16px;}
-      #message p { line-height: 140%; margin: 16px 0 24px; font-size: 14px; }
-      #message a { display: block; text-align: center; background: #039be5; text-transform: uppercase; text-decoration: none; color: white; padding: 16px; border-radius: 4px; }
-      #message, #message a { box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24); }
-      #load { color: rgba(0,0,0,0.4); text-align: center; font-size: 13px; }
-      @media (max-width: 600px) {
-        body, #message { margin-top: 0; background: white; box-shadow: none; }
-        body { border-top: 16px solid #ffa100; }
-      }
-    </style>
-  </head>
-  <body>
-    <div id="message">
-      <h2>Welcome</h2>
-      <h1>Firebase Hosting Setup Complete</h1>
-      <p>You're seeing this because you've successfully setup Firebase Hosting. Now it's time to go build something extraordinary!</p>
-      <a target="_blank" href="https://firebase.google.com/docs/hosting/">Open Hosting Documentation</a>
+<body>
+    <div id="map"></div>
+    <script type="module" src="bathroomModel.js"></script>
+    <script type="module" src="firebase.js"></script>
+
+    <!--<dialog id ="popOut">-->
+    <div id="selectedBR">
+        <h3 id="name"></h3>
+        <p id="address"></p>
+        <p id="cleanlinessText"></p>
+        <p id="handicap"></p>
+        <p id="genderNeutral"></p>
+        <p id="babyChanging"></p> 
+        <p id="notesDisplay"></p>
+        
+        <input type="button" value="Close" onclick="closePopOut()" id="closePopOutButton">
     </div>
-    <p id="load">Firebase SDK Loading&hellip;</p>
+   <!-- </dialog>-->
 
-    <script>
-      document.addEventListener('DOMContentLoaded', function() {
-        const loadEl = document.querySelector('#load');
-        // // 🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥
-        // // The Firebase SDK is initialized and available here!
-        //
-        // firebase.auth().onAuthStateChanged(user => { });
-        // firebase.database().ref('/path/to/ref').on('value', snapshot => { });
-        // firebase.firestore().doc('/foo/bar').get().then(() => { });
-        // firebase.functions().httpsCallable('yourFunction')().then(() => { });
-        // firebase.messaging().requestPermission().then(() => { });
-        // firebase.storage().ref('/path/to/ref').getDownloadURL().then(() => { });
-        // firebase.analytics(); // call to activate
-        // firebase.analytics().logEvent('tutorial_completed');
-        // firebase.performance(); // call to activate
-        //
-        // // 🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥
+</body>
 
-        try {
-          let app = firebase.app();
-          let features = [
-            'auth', 
-            'database', 
-            'firestore',
-            'functions',
-            'messaging', 
-            'storage', 
-            'analytics', 
-            'remoteConfig',
-            'performance',
-          ].filter(feature => typeof app[feature] === 'function');
-          loadEl.textContent = `Firebase SDK loaded with ${features.join(', ')}`;
-        } catch (e) {
-          console.error(e);
-          loadEl.textContent = 'Error loading the Firebase SDK, check the console.';
-        }
-      });
-    </script>
-  </body>
-</html>
+<dialog id="myDialog">
+    <div>
+    <h2>Tell us more about this bathroom!</h2>
+    <h3 id="bathroomName"></h3>
+    <form name="brFields" id="brFields">
+    <p>Cleanliness (1-10): </p>
+    <div class="slidecontainer">
+        <input type="range" min="1" max="10" value="50" class="slider" id="myRange">
+      </div>
+    <p>This bathroom is: </p>   
+    <input type="checkbox" id="HandicapAccesible" name="Handicap Accesible" value="checked"> 
+    <label for="HandicapAccesible">Handicap Accesible</label>
+    <br/> 
+    <input type="checkbox" id="GenderNeutral" name="Gender Neutral" value="checked"> 
+    <label for="GenderNeutral">Gender Neutral</label>
+    <br/> 
+    <input type="checkbox" id="BabyChanging" name="Baby Changing Table" value="checked"> 
+    <label for="BabyChanging">Baby Changing Table</label>
+    <br/> 
+    <br/> 
+    <input type="text" id="notes" placeholder="Notes (optional)"></input>
+    <br/> 
+    <br/> 
+    <button type="submit">Save and Close</button>
+   <!--<button type="button" onclick="closeDialogAndDoJackShit()">Cancel</button>-->
+  </form>
+    </div>  
+  </dialog>
+
+  <dialog id="addDialog">
+    <input type="text" id="location" placeholder="Enter a place (e.g. City Hall) or an address (e.g. 1400 John F Kennedy Blvd)" onfocus="initAutocomplete()"> </input>
+    <div id="title"></div>
+      <ul id="results"></ul>
+      <ul id="results"></ul>
+    </div>
+      <p><span id="prediction"></span></p>
+      <button onclick="cancelAdd()">Cancel</button>
+  </dialog>
+
+<div id="floatingPanel">
+  <section>
+    <input type="button" id="addButton" value="Add a bathroom" onclick="openAddDialog()">
+  </section><section>
+      <input type="button" id="filter" value="Filter" onclick="updateFilterInput()">
+    </section><section>
+    <button id="clearFilters" style ="display: none" onclick="clearFilters()">Clear Filters</button>
+  </section>
+</div>
+
+<dialog id="filterPanel">
+  <h3>Filter Bathrooms</h3>
+  <label for="filterField">Filter by:</label>
+  <select id="filterField" onchange="updateFilterInput()">
+    <option value="cleanliness">Cleanliness (1-10)</option>
+    <option value="handicapAccessible">Handicap Accessible</option>
+    <option value="genderNeutral">Gender Neutral</option>
+    <option value="babyChangingStation">Baby Changing Station</option>
+  </select>
+  <br><br>
+  <div id="filterInputContainer">
+    <!-- Dynamic input will be added here based on the selected field -->
+  </div>
+  <br>
+  <button id="applyFilters" onclick="applyFilters()">Apply Filters</button>
+</dialog>
+
+
+
+</html
