@@ -10,6 +10,7 @@ function openDialog(bathroom){
     //document.getElementById("bathroomName").innerHTML = Bathroom.getName()
     const dialog = document.getElementById("myDialog");
     dialog.showModal(); 
+    enableDialogClose(dialog); 
 
     const bathroomNameEl = document.getElementById("bathroomName");
     if (bathroomNameEl) {
@@ -116,6 +117,27 @@ function cancelAdd(){
     dialog.close();
 }
 
+function enableDialogClose(dialogElement) {
+  console.log("Dialog opened, enabling close on backdrop click");
+  const backdropClickHandler = (event) => {
+    if (event.target === dialogElement) {
+      dialogElement.close();
+      console.log("Backdrop clicked, closing dialog");
+    }
+  };
+
+  dialogElement.addEventListener("click", backdropClickHandler);
+
+ // gets rid of this nonsense when the dialog actually is closed 
+  const closeEventHandler = () => {
+    console.log("Dialog closed from backdrop click");
+    dialogElement.removeEventListener("click", backdropClickHandler);
+    dialogElement.removeEventListener("close", closeEventHandler);
+  };
+  
+  dialogElement.addEventListener("close", closeEventHandler);
+}
+
 // making shit global?? didn't have to do this before 
 window.openAddDialog = openAddDialog;
 window.openDialog = openDialog;
@@ -129,3 +151,4 @@ export {openAddDialog};
 export{openDialog};
 export {closePopOut}; 
 export {closeAddDialog}
+export{enableDialogClose}

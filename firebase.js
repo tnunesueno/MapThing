@@ -40,7 +40,6 @@ function writeOneBr(bathroom) {
   });
 }
 
-export {writeOneBr, db};
 
 async function writeBathroomsToFirestore(array) {
   try {
@@ -97,6 +96,16 @@ async function fetchBathrooms() {
   console.log("Array of Bathroom objects:", bathrooms);
   return bathrooms; // Return the array of Bathroom objects
 }
+
+function updateWithNewStuff() {
+  const bathrooms = fetchBathrooms(); 
+  console.log("Updated bathrooms:", bathrooms); 
+
+  for (const bathroom of bathrooms) {
+    
+  } 
+}
 // fetchBathrooms();
 
 export { fetchBathrooms };
+export {writeOneBr, db};

@@ -1,10 +1,10 @@
 import {writeOneBr} from './firebase.js'
 import { collection, getDocs} from "https://www.gstatic.com/firebasejs/11.5.0/firebase-firestore.js";
 import{db} from './firebase.js';
-import { openAddDialog, openDialog, closePopOut, closeAddDialog} from './dialogs.js';
+import { openAddDialog, openDialog, closePopOut, closeAddDialog, enableDialogClose} from './dialogs.js';
 //import { fetchBathrooms } from './firebase.js';
 class Bathroom {
-    constructor(name, streetAddress, bLatitude, bLongitude, cleanliness, handicapAccesible, babyChangingStation, genderNeutral, notes) {
+    constructor(name, streetAddress, bLatitude, bLongitude, cleanliness, handicapAccesible, babyChangingStation, genderNeutral, notes, hours) {
         this.name = name;  
         this.streetAddress = streetAddress;
         this.bLatitude = bLatitude;
@@ -86,6 +86,14 @@ class Bathroom {
     
     setNotes(newNotes) {  
       this.notes = newNotes;
+    }
+
+    getHours() {
+        return this.hours;
+    }
+
+    setHours(newHours) {
+        this.hours = newHours;
     }
 
 }
@@ -552,14 +560,14 @@ export{Bathroom, initMap, geocodeBathroom, addPinToMap, fetchBathrooms, map};
   window.updateMapWithFilteredBathrooms = updateMapWithFilteredBathrooms;
   window.clearMapPins = clearMapPins;
     
-  // to do: 
-    // notes don't quite save
-    // make the dialogs close when you click outside of them 
+  // TO DO: 
+    // add hours of operation 
     // find out why the liberty food court geocodes to bumfuck 
     // location services + directions to nearest bathroom
     // popout to view all
-
-    // FAKE BATHROOMS TO REMOVE 
+  
+  // FAKE BATHROOMS TO REMOVE 
     // my house 
     // clark park 
     // sla 
+    // mood cafe 
