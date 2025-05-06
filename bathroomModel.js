@@ -1,7 +1,7 @@
 import {writeOneBr} from './firebase.js'
 import { collection, getDocs} from "https://www.gstatic.com/firebasejs/11.5.0/firebase-firestore.js";
 import{db} from './firebase.js';
-import { openAddDialog, openDialog, closeDialog, closePopOut, closeAddDialog, openDialogAndWait } from './dialogs.js';
+import { openAddDialog, openDialog, closePopOut, closeAddDialog} from './dialogs.js';
 //import { fetchBathrooms } from './firebase.js';
 class Bathroom {
     constructor(name, streetAddress, bLatitude, bLongitude, cleanliness, handicapAccesible, babyChangingStation, genderNeutral, notes) {
@@ -554,9 +554,13 @@ export{Bathroom, initMap, geocodeBathroom, addPinToMap, fetchBathrooms, map};
   window.clearMapPins = clearMapPins;
     
   // to do: 
-    // fix selected place 
     // notes don't quite save
     // make the dialogs close when you click outside of them 
     // find out why the liberty food court geocodes to bumfuck 
     // location services + directions to nearest bathroom
     // popout to view all
+
+    // FAKE BATHROOMS TO REMOVE 
+    // my house 
+    // clark park 
+    // sla 

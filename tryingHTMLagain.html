@@ -35,6 +35,7 @@
     <div>
     <h2>Tell us more about this bathroom!</h2>
     <h3 id="bathroomName"></h3>
+    <form name="brFields" id="brFields">
     <p>Cleanliness (1-10): </p>
     <div class="slidecontainer">
         <input type="range" min="1" max="10" value="50" class="slider" id="myRange">
@@ -53,7 +54,9 @@
     <input type="text" id="notes" placeholder="Notes (optional)"></input>
     <br/> 
     <br/> 
-    <button onclick="closeDialog()">Close</button>
+    <button type="submit">Save and Close</button>
+   <!--<button type="button" onclick="closeDialogAndDoJackShit()">Cancel</button>-->
+  </form>
     </div>  
   </dialog>
 
