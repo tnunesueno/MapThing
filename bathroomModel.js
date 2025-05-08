@@ -176,7 +176,7 @@ let pins = [];
             
             console.log("Pin created at " + lat + ", " + lng);
 
-            // Add a click event listener to the pin
+            // Add a click event listener to the pin 
             pin.addListener("click", () => {
              map.setCenter({lat: lat, lng: lng});
              map.setZoom(19); 
