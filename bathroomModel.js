@@ -162,11 +162,13 @@ let pins = [];
                 console.error("Map is not defined.");
                 return;
             }
+
+            const pinSize = window.innerWidth <= 768 ? 64 : 47; // Larger size for mobile (<=768px)
           
             const pin = new google.maps.Marker({
                 icon: {
                   url: "./glyph.png",
-                  scaledSize: new google.maps.Size(47, 47), // Adjust size as neede
+                  scaledSize: new google.maps.Size(pinSize, pinSize), // Adjust size as neede
                 },
                 position: {lat: lat, lng: lng},
                 map: map,

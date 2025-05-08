@@ -59,6 +59,7 @@ input[type="text"], input[type="number"], select {
     max-height: 100vh;
     padding: 15px; /* Slightly smaller padding */
     font-size: 0.9em; /* Slightly smaller base font if needed */
+    z-index: 1000; 
   }
 
   #selectedBR h3 {
@@ -143,24 +144,24 @@ body {
 }
 
 dialog {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  max-width: 100vw !important; /* Ensure it doesn't exceed viewport width */
-  max-height: 100vh !important;/* Ensure it doesn't exceed viewport height */
-  margin: 0;
-  padding: 20px;
-  background-color: white;
-  border: none; /* Remove default dialog border */
-  box-shadow: 0 0 20px rgba(0,0,0,0.2);
-  z-index: 10000;
-  overflow-y: auto; /* Allow vertical scrolling within dialog */
-  overscroll-behavior: contain; /* Prevent body scroll when dialog is open */
+  position: fixed; /* Fix the dialog to the viewport */
+  top: 50%; /* Center vertically */
+  left: 50%; /* Center horizontally */
+  transform: translate(-50%, -50%); /* Adjust position to truly center */
+  width: 50%; /* Set a default width (adjust as needed) */
+  max-width: 90%; /* Ensure it doesn't exceed the viewport width */
+  max-height: 90%; /* Ensure it doesn't exceed the viewport height */
+  margin: 0; /* Remove default margin */
+  padding: 20px; /* Add padding for content */
+  background-color: white; /* Background color for the dialog */
+  border: none; /* Remove default border */
+  border-radius: 8px; /* Optional: Add rounded corners */
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2); /* Add a shadow for depth */
+  z-index: 10000; /* Ensure it appears above other elements */
+  overflow-y: auto; /* Allow scrolling if content exceeds height */
 }
 dialog::backdrop {
-  background-color: rgba(0, 0, 0, 0.5);
+  background-color: rgba(0, 0, 0, 0.5); /* Dim the background */
 }
 
 dialog h2, dialog h3 {
@@ -273,7 +274,7 @@ dialog button.cancel-button:hover {
   position: absolute;
   top: 200px;
   left: 20px;
-  z-index: 10;
+  z-index: 1000;
   background-color: #ffffff; /* Clean white background */
   padding: 20px; /* Add more padding for spacing */
   border: 1px solid #ddd; /* Subtle border */
