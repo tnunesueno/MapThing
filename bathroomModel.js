@@ -224,7 +224,7 @@ let pins = [];
                 document.getElementById("notes").style.display = "none";
               }
               
-              popOut.style.display = "block"; 
+              popOut.classList.add('visible');
               });
 
               const closeButton = document.getElementById("closePopOutButton");

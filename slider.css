@@ -1,29 +1,37 @@
+/* slider.css */
+
+/* --- GLOBAL & MOBILE-FIRST STYLES --- */
+
 /* Set the font for all headers (h1, h2, h3, etc.) */
 h1, h2, h3, h4, h5, h6 {
-  font-family: 'Nourd BOLD', sans-serif; /* Replace with your desired font for headers */
+  font-family: 'Nourd BOLD', sans-serif;
 }
 
 /* Set the font for all normal text (p, span, etc.) */
 body, p, span, div, input, button, label {
-  font-family: 'Caladea', serif; /* Replace with your desired font for normal text */
+  font-family: 'Caladea', serif;
 }
 
 * {
-  box-sizing: border-box; /* Easier layout math */
+  box-sizing: border-box;
   margin: 0;
   padding: 0;
 }
 
 html, body {
   height: 100%;
-  overflow-x: hidden; /* Prevent horizontal scroll on body */
+  overflow-x: hidden;
   margin: 0;
-  padding: 0; 
+  padding: 0;
+}
+
+body {
+  font-size: 16px; /* Base font size for mobile */
 }
 
 button, input[type="button"], input[type="submit"] {
   font-family: 'Caladea', serif;
-  font-size: 1em; /* Relative to parent */
+  font-size: 1em;
   padding: 12px 15px;
   border: none;
   border-radius: 5px;
@@ -51,39 +59,10 @@ input[type="text"], input[type="number"], select {
   font-size: 1em;
 }
 
-  #selectedBR {
-    position: fixed; /* Fix it to the viewport */
-    bottom: 0; /* Start at the bottom of the screen */
-    left: 0; /* Align to the left */
-    width: 100%; /* Full width of the screen */
-    max-height: 70vh; /* Limit height to 70% of the viewport */
-    background-color: #ffffff; /* Clean white background */
-    padding: 20px; /* Add padding for spacing */
-    border-top-left-radius: 15px; /* Rounded corners at the top */
-    border-top-right-radius: 15px;
-    box-shadow: 0px -4px 12px rgba(0, 0, 0, 0.15); /* Add a shadow for depth */
-    z-index: 1000; /* Ensure it appears above other elements */
-    overflow-y: auto; /* Allow scrolling if content exceeds height */
-    transform: translateY(100%); /* Initially hidden below the screen */
-    transition: transform 0.3s ease-in-out; 
-  }
-
-  #selectedBR h3 {
-    font-size: 18px; /* Adjust heading size */
-  }
-
-  #selectedBR p {
-    font-size: 15px; /* Adjust paragraph size */
-  }
-
-body {
-  font-size: 16px;
-}
-
 #map {
   position: relative;
-  z-index: 0;
-  height: 100vh; /* Full height of the viewport */
+  z-index: 0; /* Base layer */
+  height: 100vh;
   width: 100%;
 }
 
@@ -91,54 +70,51 @@ body {
   width: 100%;
   background-color: #f8f9fa;
   text-align: center;
-  padding: 5px 0; /* Reduced padding for mobile */
+  padding: 5px 0; /* Mobile padding */
   border-bottom: 1px solid #ddd;
   position: fixed;
   top: 0;
   left: 0;
-  z-index: 1000;
+  z-index: 1000; /* Above map and most elements, but below dialogs */
 }
 
 #banner img {
   width: 100%;
-  max-height: 60px; /* Smaller max-height for mobile banner */
-  object-fit: contain; /* Use contain to ensure whole logo is visible */
+  max-height: 60px; /* Mobile banner height */
+  object-fit: contain; /* Ensure whole logo is visible on mobile */
 }
 
+/* --- MOBILE: Selected Bathroom Panel (Slide-up) --- */
 #selectedBR {
-  display: none;
-  position: relative; /* Fixed to viewport */
-  bottom: 0;       /* Start from bottom */
+  position: fixed;
+  bottom: 0;
   left: 0;
-  width: 100%;     /* Full width */
-  max-height: 70vh; /* Max 70% of viewport height, adjust as needed */
+  width: 100%;
+  max-height: 70vh;
   background-color: #ffffff;
   padding: 20px;
-  padding-bottom: 80px; /* Extra padding at bottom to not overlap floatingPanel if it's visible */
-  border-top-left-radius: 15px; /* Rounded corners at the top */
+  padding-bottom: 80px; /* Extra padding for floatingPanel clearance */
+  border-top-left-radius: 15px;
   border-top-right-radius: 15px;
   box-shadow: 0px -4px 12px rgba(0, 0, 0, 0.15);
-  z-index: 900; /* Below dialogs but above map */
+  z-index: 950; /* Above map & floatingPanel, below banner & dialogs */
   overflow-y: auto;
   transform: translateY(100%); /* Initially hidden below screen */
   transition: transform 0.3s ease-in-out;
+  /* Do NOT use display: none if you want the transform transition */
 }
 
 #selectedBR.visible {
   transform: translateY(0); /* Slide up into view */
 }
 
-#selectedBR.visible { /* Add this class via JS to show */
-  transform: translateY(0);
-}
-
 #selectedBR h3 {
-  font-size: 1.25em; /* 20px if base is 16px */
+  font-size: 1.25em; /* Approx 20px if base is 16px */
   margin-bottom: 10px;
 }
 
 #selectedBR p {
-  font-size: 1em; /* 16px */
+  font-size: 1em; /* Approx 16px */
   margin-bottom: 8px;
 }
 
@@ -148,51 +124,67 @@ body {
   right: 10px;
   background: none;
   border: none;
-  font-size: 1.5em;
+  font-size: 1.5em; /* Large, easy to tap */
   color: #888;
   padding: 5px;
+  line-height: 1; /* Prevents button from being too tall */
 }
 
+/* --- DIALOG Base Styles (Mobile & Desktop) --- */
 dialog {
-  position: fixed; /* Fix the dialog to the viewport */
-  top: 50%; /* Center vertically */
-  left: 50%; /* Center horizontally */
-  transform: translate(-50%, -50%); /* Adjust position to truly center */
-  width: 50%; /* Set a default width (adjust as needed) */
-  max-width: 90%; /* Ensure it doesn't exceed the viewport width */
-  max-height: 90%; /* Ensure it doesn't exceed the viewport height */
-  margin: 0; /* Remove default margin */
-  padding: 20px; /* Add padding for content */
-  background-color: white; /* Background color for the dialog */
-  border: none; /* Remove default border */
-  border-radius: 8px; /* Optional: Add rounded corners */
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2); /* Add a shadow for depth */
-  z-index: 10000; /* Ensure it appears above other elements */
-  overflow-y: auto; /* Allow scrolling if content exceeds height */
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 90%; /* More suitable for mobile */
+  max-width: 500px; /* Max width for larger mobile / smaller desktop */
+  max-height: 90vh;
+  margin: 0;
+  padding: 20px;
+  background-color: white;
+  border: none;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  z-index: 10000; /* Highest */
+  overflow-y: auto;
 }
 dialog::backdrop {
-  background-color: rgba(0, 0, 0, 0.5); /* Dim the background */
+  background-color: rgba(0, 0, 0, 0.5);
 }
 
 dialog h2, dialog h3 {
   margin-top: 0;
 }
 
+dialog form button[type="submit"],
+dialog button {
+  display: block;
+  width: 100%;
+  margin-top: 15px;
+}
+dialog form button[type="submit"] {
+    margin-bottom: 10px;
+}
+dialog button.cancel-button {
+    background-color: #6c757d;
+}
+dialog button.cancel-button:hover {
+    background-color: #5a6268;
+}
+
 /* Specifics for #addDialog */
 #addDialog #location {
   margin-bottom: 15px;
 }
-
 #addDialog #results {
   list-style-type: none;
   padding: 0;
   margin: 0 0 15px 0;
-  max-height: 40vh; /* Limit height of results list */
+  max-height: 30vh; /* Adjusted from 40vh for better fit */
   overflow-y: auto;
   border: 1px solid #eee;
   border-radius: 4px;
 }
-
 #addDialog #results li {
   padding: 10px;
   border-bottom: 1px solid #eee;
@@ -204,38 +196,23 @@ dialog h2, dialog h3 {
 #addDialog #results li:hover {
   background-color: #f0f0f0;
 }
-
-#addDialog #title {
+#addDialog #title { /* This was inside #addDialog in CSS, assuming it's a general title style */
   font-size: 1.1em;
   font-weight: bold;
   margin-bottom: 5px;
 }
 
-dialog form button[type="submit"],
-dialog button { /* For cancel buttons etc. */
-  display: block;
-  width: 100%;
-  margin-top: 15px;
-}
-dialog form button[type="submit"] {
-    margin-bottom: 10px; /* Add some space below the submit button if there's a cancel */
-}
-dialog button.cancel-button { /* Add class="cancel-button" to cancel buttons */
-    background-color: #6c757d; /* A different color for cancel */
-}
-dialog button.cancel-button:hover {
-    background-color: #5a6268;
-}
 
+/* --- MOBILE: Floating Panel --- */
 #floatingPanel {
   display: flex;
-  align-items: center; /* Vertically center items if they have different heights */
-  justify-content: space-around; /* Distribute space, or use space-between */
-  position: fixed; /* Fixed to viewport */
+  align-items: center;
+  justify-content: center;
+  position: fixed;
   bottom: 0;
   left: 0;
-  width: 100%;     /* Full width */
-  z-index: 850;    /* Above map, potentially below #selectedBR if it slides up */
+  width: 100%;
+  z-index: 900; /* Above map, below selectedBR slide-up */
   background-color: #ffffff;
   padding: 10px;
   border-top: 1px solid #ddd;
@@ -243,20 +220,21 @@ dialog button.cancel-button:hover {
 }
 
 #floatingPanel section {
-  flex: 1; /* Each section takes equal width */
-  padding: 0 5px; /* Spacing between buttons if needed */
+  flex: 1;
+  padding: 0 5px;
 }
 
 #floatingPanel input[type="button"],
 #floatingPanel button {
-  width: 100%; /* Make buttons in sections take full width of their section */
-  padding: 12px 5px; /* Adjust padding for smaller text or more buttons */
-  font-size: 0.9em; /* Slightly smaller font if needed to fit text */
-  white-space: nowrap; /* Prevent text from wrapping, adjust if too long */
+  width: 100%;
+  padding: 12px 5px;
+  font-size: 0.9em;
+  white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 }
 
+/* Slider styles */
 .slidecontainer {
   width: 100%;
   margin-bottom: 15px;
@@ -265,235 +243,162 @@ dialog button.cancel-button:hover {
   width: 100%;
 }
 
-#filterPanel label {
+/* Filter Panel (treated as a dialog) general label */
+#filterPanel label { /* This is for the filterPanel dialog */
   display: block;
   margin-bottom: 5px;
   font-weight: bold;
 }
 
 
+/* --- DESKTOP STYLES (min-width: 768px) --- */
 @media (min-width: 768px) {
 
   body {
-    font-size: 17px; /* Slightly larger base font */
+    font-size: 17px; /* Slightly larger base font for desktop */
   }
 
-/* Styling for the selected bathroom pop-out */
-#selectedBR {
-  display: none;
-  position: absolute;
-  top: 200px;
-  left: 20px;
-  z-index: 1000;
-  background-color: #ffffff; /* Clean white background */
-  padding: 20px; /* Add more padding for spacing */
-  border: 1px solid #ddd; /* Subtle border */
-  border-radius: 8px; /* Rounded corners */
-  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1); /* Soft shadow for depth */
-  font-family: 'Caladea', serif; /* Use the normal text font */
-  max-width: 40%; /* Limit the width */
-  max-height: 80%; /* Limit the height */
-  overflow-y: auto; /* Add scrollbars if content exceeds height */
-}
+  #banner {
+    padding: 10px 0; /* Desktop padding */
+  }
+  #banner img {
+    max-height: 100px; /* Desktop banner height */
+    object-fit: cover; /* Can be different from mobile if desired */
+  }
 
-#selectedBR h3 {
-  font-family: 'Nourd BOLD', sans-serif; /* Use the header font */
-  font-size: 20px; /* Adjust font size */
-  margin-bottom: 10px; /* Add spacing below the header */
-  color: #333; /* Darker text for better readability */
-}
+  /* --- DESKTOP: Selected Bathroom Panel (Static Info Box) --- */
+  #selectedBR {
+    position: absolute; /* Relative to map or a positioned ancestor */
+    top: 120px;  /* Below banner (banner max-height 100px + padding) */
+    left: 20px;
+    width: auto; /* Let content define width up to max-width */
+    max-width: 380px; /* Or desired fixed width e.g. 30% */
+    max-height: calc(100vh - 140px); /* Viewport height minus top offset & some margin */
+    bottom: auto; /* Override mobile `bottom: 0` */
+    
+    padding: 20px; /* Reset padding if different from mobile (e.g. padding-bottom) */
+    border: 1px solid #ddd; /* Add border for desktop */
+    border-radius: 8px; /* Standard border-radius for desktop box */
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    z-index: 990; /* Below banner/dialogs, but above map. Ensure it's above map markers if they have z-index. */
+    
+    transform: translateY(0); /* Ensure it's visible and not affected by mobile's transform */
+    /* If JS is used to toggle display: none/block and not just .visible class for transform: */
+    /* display: none;  You'd show it with JS by setting display: block or display: flex */
+  }
 
-#selectedBR p {
-  font-family: 'Caladea', serif; /* Use the normal text font */
-  font-size: 16px; /* Adjust font size */
-  margin-bottom: 10px; /* Add spacing between paragraphs */
-  color: #555; /* Subtle gray for text */
-}
+  /* If .visible class is still used to show/hide on desktop */
+  #selectedBR.visible {
+    transform: translateY(0); /* Ensures it's in position */
+    /* display: block; /* Or flex, if base #selectedBR on desktop has display:none */
+  }
 
-#selectedBR button {
-  font-family: 'Caladea', serif; /* Use the normal text font */
-  font-size: 16px;
-  padding: 10px 20px;
-  background-color: #007bff; /* Professional blue button */
-  color: #ffffff; /* White text */
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-}
+  #selectedBR h3 {
+    font-size: 20px;
+    color: #333;
+  }
 
-#selectedBR button:hover {
-  background-color: #0056b3; /* Darker blue on hover */
-}
+  #selectedBR p {
+    font-size: 16px;
+    color: #555;
+  }
 
-#addDialog {
-  width: 50%;
-  height: 40%;
-  position: absolute; /* or fixed */
-  top: 100px; /* Adjust as needed */
-  left: 20px; /* Adjust as needed */
-  z-index: 10; /* Higher than the map's z-index */
-  background-color: white; /* Optional: for visibility */
-  padding: 10px; 
-  border: 1px solid #ccc;
-  justify-content: center;
-}
+  /* For the close button within #selectedBR on desktop */
+  #selectedBR #closePopOutButton {
+    position: static; /* Default position in flow */
+    display: block; /* Or inline-block if preferred */
+    width: 100%; /* Make it full width of its container */
+    margin-top: 15px;
+    padding: 10px 20px; /* Standard button padding */
+    font-size: 1em; /* Match other buttons */
+    color: #ffffff;
+    background-color: #007bff; /* Standard button color */
+    border: none;
+    border-radius: 5px;
+  }
+  #selectedBR #closePopOutButton:hover {
+    background-color: #0056b3;
+  }
 
-#location {
-  width: 95%;
-  padding: 10px;
-  margin-bottom: 10px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-}
+  /* Dialogs on Desktop */
+  dialog {
+    width: 50%; /* Larger default width for dialogs on desktop */
+    max-width: 600px; /* But not excessively wide */
+  }
 
-/* Styling for the results list */
-#results {
-  list-style-type: none;
-  padding: 0;
-  margin: 0;
-  font-family: 'Caladea', serif;
-}
+  /* #addDialog Desktop - already uses general dialog styles.
+     If #addDialog needs specific desktop overrides, add them here.
+     The z-index:10 from original CSS was problematic.
+  */
+  #addDialog #location { /* No specific desktop changes needed if mobile is fine */
+    width: 100%; /* Already 100% from general input style */
+  }
+  #addDialog #results { /* No specific desktop changes needed if mobile is fine */
+    max-height: 40vh; /* Can be taller on desktop */
+  }
+  #addDialog #title { /* No specific desktop changes needed if mobile is fine */
+    font-size: 24px; /* Larger title for desktop dialog */
+  }
 
-#results li {
-  padding: 10px;
-  border-bottom: 1px solid #ddd;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-}
 
-#results li:hover {
-  background-color: #f0f0f0;
-}
+  /* --- DESKTOP: Floating Panel (Static Control Box) --- */
+  #floatingPanel {
+    position: absolute; /* Position relative to map or a container */
+    bottom: 20px;
+    left: 20px;
+    width: auto; /* Adjust width based on content */
+    flex-direction: row; /* Default is row, ensure items are side-by-side */
+    padding: 15px 20px;
+    border-radius: 8px;
+    z-index: 990; /* Same level as desktop #selectedBR or slightly above/below as needed */
+  }
 
-/* Styling for the title */
-#title {
-  font-family: 'Nourd BOLD', sans-serif;
-  font-size: 24px;
-  font-weight: bold;
-  margin-bottom: 10px;
-  color: #333;
-}
+  #floatingPanel section {
+    flex: 0 1 auto; /* Don't grow, allow shrink, base on content */
+    margin: 0 5px; /* Spacing between sections/buttons */
+  }
+  #floatingPanel input[type="button"],
+  #floatingPanel button {
+    width: auto; /* Fit content */
+    padding: 10px 15px; /* Adjust padding */
+    font-size: 1em; /* Reset from mobile's 0.9em if needed */
+  }
 
-/* Styling for the floating panel */
-#floatingPanel {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  position: absolute;
-  bottom: 20px;
-  left: 20px;
-  z-index: 10000;
-  background-color: #ffffff; /* Clean white background */
-  padding: 15px 20px;
-  border: 1px solid #ddd;
-  border-radius: 8px;
-  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
-  font-family: 'Caladea', serif;
-}
+  /* Input field 'notes' assuming it's in myDialog or similar */
+  #notes { /* Usually an id for a textarea or input */
+    width: 100%; /* Already 100% from general input style */
+  }
 
-#floatingPanel input[type="button"],
-#floatingPanel button {
-  flex: 1;
-  margin: 0 5px;
-  padding: 10px;
-  font-size: 16px;
-  font-family: 'Caladea', serif;
-  background-color: #007bff;
-  color: #ffffff;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-}
+  /* Slider range for desktop, if needs change */
+  #myRange {
+    width: 100%; /* Usually fine, but can be constrained if needed e.g. 80% */
+  }
 
-#floatingPanel input[type="button"]:hover,
-#floatingPanel button:hover {
-  background-color: #0056b3;
-}
 
-#notes {
-  width: 95%;
-}
-
-#myRange {
-  width: 80%;
-}
-
-/* Styling for the filter panel */
-#filterPanel {
-  width: 50%;
-  height: auto;
-  position: absolute;
-  top: 100px;
-  left: 20px;
-  z-index: 10;
-  background-color: #ffffff;
-  padding: 20px;
-  border: 1px solid #ddd;
-  border-radius: 8px;
-  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
-  font-family: 'Caladea', serif;
-}
-
-#filterPanel h3 {
-  font-family: 'Nourd BOLD', sans-serif;
-  font-size: 20px;
-  margin-bottom: 10px;
-  color: #333;
-}
-
-#filterPanel label {
-  font-family: 'Caladea', serif;
-  font-size: 16px;
-  margin-bottom: 5px;
-  display: block;
-  color: #555;
-}
-
-#filterPanel input[type="text"],
-#filterPanel select {
-  width: 100%;
-  padding: 10px;
-  margin-bottom: 10px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  font-family: 'Caladea', serif;
-  font-size: 16px;
-}
-
-#filterPanel button {
-  font-family: 'Caladea', serif;
-  font-size: 16px;
-  padding: 10px 20px;
-  background-color: #007bff;
-  color: #ffffff;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-}
-
-#filterPanel button:hover {
-  background-color: #0056b3;
-}
-
-#banner {
-  width: 100%; /* Make the banner span the full width of the page */
-  height: auto; /* Adjust height based on content */
-  background-color: #f8f9fa; /* Optional: Add a background color */
-  text-align: center; /* Center the content inside the banner */
-  padding: 10px 0; /* Add padding for spacing */
-  border-bottom: 1px solid #ddd; /* Optional: Add a bottom border for separation */
-  position: fixed; /* Fix the banner at the top of the page */
-  top: 0; /* Position it at the very top */
-  z-index: 1000; /* Ensure it stays above other content */
-}
-
-#banner img {
-  width: 100%; /* Ensure the image scales responsively */
-  max-height: 100px; /* Maintain the aspect ratio of the image */
-  object-fit: cover;
-}
-  
+  /* --- DESKTOP: Filter Panel (Dialog) --- */
+  /* #filterPanel is a dialog, so it gets base dialog styles.
+     The z-index:10 from original CSS was problematic.
+     It will use the general dialog z-index: 10000.
+     If it needs specific desktop sizing or layout, add here.
+  */
+  #filterPanel {
+      /* Example: if you want filter panel to be narrower on desktop than other dialogs */
+      /* width: 350px; */
+      /* max-width: 40%; */
+  }
+  #filterPanel h3 {
+    font-size: 20px;
+    color: #333;
+  }
+  #filterPanel label {
+    font-size: 16px;
+    color: #555;
+  }
+  #filterPanel input[type="text"], /* Already styled by general input */
+  #filterPanel select { /* Already styled by general select */
+    font-size: 1em; /* Ensure consistency */
+  }
+  #filterPanel button { /* Already styled by general dialog button */
+    font-size: 1em;
+  }
 }
