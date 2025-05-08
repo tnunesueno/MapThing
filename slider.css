@@ -52,14 +52,20 @@ input[type="text"], input[type="number"], select {
 }
 
   #selectedBR {
-    top: 120px; /* Bring it up a bit */
-    left: 5%;   /* Center it more, or use left: 50%; transform: translateX(-50%); */
-    width: 90%; /* Make it wider to use screen space */
-    max-width: 100vw;
-    max-height: 100vh;
-    padding: 15px; /* Slightly smaller padding */
-    font-size: 0.9em; /* Slightly smaller base font if needed */
-    z-index: 1000; 
+    position: fixed; /* Fix it to the viewport */
+    bottom: 0; /* Start at the bottom of the screen */
+    left: 0; /* Align to the left */
+    width: 100%; /* Full width of the screen */
+    max-height: 70vh; /* Limit height to 70% of the viewport */
+    background-color: #ffffff; /* Clean white background */
+    padding: 20px; /* Add padding for spacing */
+    border-top-left-radius: 15px; /* Rounded corners at the top */
+    border-top-right-radius: 15px;
+    box-shadow: 0px -4px 12px rgba(0, 0, 0, 0.15); /* Add a shadow for depth */
+    z-index: 1000; /* Ensure it appears above other elements */
+    overflow-y: auto; /* Allow scrolling if content exceeds height */
+    transform: translateY(100%); /* Initially hidden below the screen */
+    transition: transform 0.3s ease-in-out; 
   }
 
   #selectedBR h3 {
@@ -116,6 +122,10 @@ body {
   overflow-y: auto;
   transform: translateY(100%); /* Initially hidden below screen */
   transition: transform 0.3s ease-in-out;
+}
+
+#selectedBR.visible {
+  transform: translateY(0); /* Slide up into view */
 }
 
 #selectedBR.visible { /* Add this class via JS to show */
