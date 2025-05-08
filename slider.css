@@ -77,7 +77,192 @@ body {
   width: 100%;
 }
 
+#banner {
+  width: 100%;
+  background-color: #f8f9fa;
+  text-align: center;
+  padding: 5px 0; /* Reduced padding for mobile */
+  border-bottom: 1px solid #ddd;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 1000;
+}
+
+#banner img {
+  width: 100%;
+  max-height: 60px; /* Smaller max-height for mobile banner */
+  object-fit: contain; /* Use contain to ensure whole logo is visible */
+}
+
+#selectedBR {
+  display: none;
+  position: fixed; /* Fixed to viewport */
+  bottom: 0;       /* Start from bottom */
+  left: 0;
+  width: 100%;     /* Full width */
+  max-height: 70vh; /* Max 70% of viewport height, adjust as needed */
+  background-color: #ffffff;
+  padding: 20px;
+  padding-bottom: 80px; /* Extra padding at bottom to not overlap floatingPanel if it's visible */
+  border-top-left-radius: 15px; /* Rounded corners at the top */
+  border-top-right-radius: 15px;
+  box-shadow: 0px -4px 12px rgba(0, 0, 0, 0.15);
+  z-index: 900; /* Below dialogs but above map */
+  overflow-y: auto;
+  transform: translateY(100%); /* Initially hidden below screen */
+  transition: transform 0.3s ease-in-out;
+}
+
+#selectedBR.visible { /* Add this class via JS to show */
+  transform: translateY(0);
+}
+
+#selectedBR h3 {
+  font-size: 1.25em; /* 20px if base is 16px */
+  margin-bottom: 10px;
+}
+
+#selectedBR p {
+  font-size: 1em; /* 16px */
+  margin-bottom: 8px;
+}
+
+#selectedBR #closePopOutButton {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: none;
+  border: none;
+  font-size: 1.5em;
+  color: #888;
+  padding: 5px;
+}
+
+dialog {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  max-width: 100vw !important; /* Ensure it doesn't exceed viewport width */
+  max-height: 100vh !important;/* Ensure it doesn't exceed viewport height */
+  margin: 0;
+  padding: 20px;
+  background-color: white;
+  border: none; /* Remove default dialog border */
+  box-shadow: 0 0 20px rgba(0,0,0,0.2);
+  z-index: 10000;
+  overflow-y: auto; /* Allow vertical scrolling within dialog */
+  overscroll-behavior: contain; /* Prevent body scroll when dialog is open */
+}
+dialog::backdrop {
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+dialog h2, dialog h3 {
+  margin-top: 0;
+}
+
+/* Specifics for #addDialog */
+#addDialog #location {
+  margin-bottom: 15px;
+}
+
+#addDialog #results {
+  list-style-type: none;
+  padding: 0;
+  margin: 0 0 15px 0;
+  max-height: 40vh; /* Limit height of results list */
+  overflow-y: auto;
+  border: 1px solid #eee;
+  border-radius: 4px;
+}
+
+#addDialog #results li {
+  padding: 10px;
+  border-bottom: 1px solid #eee;
+  cursor: pointer;
+}
+#addDialog #results li:last-child {
+  border-bottom: none;
+}
+#addDialog #results li:hover {
+  background-color: #f0f0f0;
+}
+
+#addDialog #title {
+  font-size: 1.1em;
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+dialog form button[type="submit"],
+dialog button { /* For cancel buttons etc. */
+  display: block;
+  width: 100%;
+  margin-top: 15px;
+}
+dialog form button[type="submit"] {
+    margin-bottom: 10px; /* Add some space below the submit button if there's a cancel */
+}
+dialog button.cancel-button { /* Add class="cancel-button" to cancel buttons */
+    background-color: #6c757d; /* A different color for cancel */
+}
+dialog button.cancel-button:hover {
+    background-color: #5a6268;
+}
+
+#floatingPanel {
+  display: flex;
+  align-items: center; /* Vertically center items if they have different heights */
+  justify-content: space-around; /* Distribute space, or use space-between */
+  position: fixed; /* Fixed to viewport */
+  bottom: 0;
+  left: 0;
+  width: 100%;     /* Full width */
+  z-index: 950;    /* Above map, potentially below #selectedBR if it slides up */
+  background-color: #ffffff;
+  padding: 10px;
+  border-top: 1px solid #ddd;
+  box-shadow: 0px -2px 8px rgba(0, 0, 0, 0.1);
+}
+
+#floatingPanel section {
+  flex: 1; /* Each section takes equal width */
+  padding: 0 5px; /* Spacing between buttons if needed */
+}
+
+#floatingPanel input[type="button"],
+#floatingPanel button {
+  width: 100%; /* Make buttons in sections take full width of their section */
+  padding: 12px 5px; /* Adjust padding for smaller text or more buttons */
+  font-size: 0.9em; /* Slightly smaller font if needed to fit text */
+  white-space: nowrap; /* Prevent text from wrapping, adjust if too long */
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.slidecontainer {
+  width: 100%;
+  margin-bottom: 15px;
+}
+#myRange { /* The slider itself */
+  width: 100%;
+}
+
+#filterPanel label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: bold;
+}
+
+
 @media (min-width: 768px) {
+
+  body {
+    font-size: 17px; /* Slightly larger base font */
+  }
 
 /* Styling for the selected bathroom pop-out */
 #selectedBR {
