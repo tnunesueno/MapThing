@@ -111,12 +111,11 @@ function closePopOut() {
     selectedBR.style.display = "none";
     popOut.classList.remove('visible');
     map.setZoom(15);
-  }
+}
 
 function cancelAdd(){
-    closeAddDialog();
-    const dialog = document.getElementById("myDialog");
-    dialog.close();
+    const addDialog = document.getElementById("addDialog");
+    addDialog.close();
 }
 
 function enableDialogClose(dialogElement) {

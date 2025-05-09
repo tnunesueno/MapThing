@@ -101,8 +101,6 @@ class Bathroom {
 let map;
 
 async function initMap() {
-
-    // The location of Philadelphia
     const position = { lat: 39.9526, lng: -75.1652 };
     // Request needed libraries.
     //@ts-ignore
@@ -355,12 +353,12 @@ let pins = [];
         // Add the latest char sequence to the request.
         request.input = input.target.value; 
         
-        // this makes like a box 
+        // this makes like a circle 
         request.locationBias= {
-          north: 41, 
-          south: 38, 
-          east: -74, 
-          west: -76, 
+          circle:{
+            center: { lat: 40, lng: -75 },
+            radius: 10000, // 10 km radius
+          }
          }; 
 
         const { suggestions } =
