@@ -108,7 +108,7 @@ function closeAddDialog(){
 
 function closePopOut() {
     const popOut = document.getElementById("selectedBR");
-    selectedBRElement.classList.remove('visible');
+    popOut.classList.remove('visible');
     map.setZoom(15);
   }
 

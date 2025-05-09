@@ -566,6 +566,5 @@ export{Bathroom, initMap, geocodeBathroom, addPinToMap, fetchBathrooms, map};
   // TO DO: 
     // add hours of operation 
     // start to formmat for mobile
-    // find out why the liberty food court geocodes to bumfuck 
     // location services + directions to nearest bathroom
     // popout to view all
