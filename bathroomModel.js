@@ -321,6 +321,13 @@ let pins = [];
         let results;
         let input;
         let token;
+
+        const philadelphiaBounds = {
+          north: 40.15,
+          south: 39.87,
+          east: -74.95,
+          west: -75.28,
+        };
        
            
             let request = {
@@ -353,13 +360,8 @@ let pins = [];
         // Add the latest char sequence to the request.
         request.input = input.target.value; 
         
-        // this makes like a circle 
-        request.locationBias= {
-          circle:{
-            center: { lat: 40, lng: -75 },
-            radius: 10000, // 10 km radius
-          }
-         }; 
+        // this makes like a box 
+        request.locationBias = philadelphiaBounds; 
 
         const { suggestions } =
         await google.maps.places.AutocompleteSuggestion.fetchAutocompleteSuggestions(
