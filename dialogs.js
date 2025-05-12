@@ -4,6 +4,7 @@ function openAddDialog (){
     closePopOut(); 
     const dialog = document.getElementById("addDialog");
     dialog.showModal();
+    enableDialogClose(dialog); 
 }
 
 function openDialog(bathroom){

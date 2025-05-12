@@ -250,9 +250,70 @@ dialog button.cancel-button:hover {
   font-weight: bold;
 }
 
+/* Navbar styles */
+.navbar {
+  background-color: #333;
+  color: white;
+  padding: 10px 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: relative;
+}
+
+.nav-list {
+  list-style: none;
+  display: none;
+  gap: 20px;
+}
+
+.nav-list li {
+  display: none;
+}
+
+.nav-list a {
+  color: white;
+  text-decoration: none;
+  padding: 10px 15px;
+}
+
+.nav-list a:hover {
+  background-color: #555;
+  border-radius: 5px;
+}
+
+/* Hamburger menu styles */
+.menu-toggle {
+  display: flex;
+  flex-direction: column;
+  cursor: pointer;
+}
+
+.menu-toggle .bar {
+  background-color: white;
+  height: 3px;
+  width: 25px;
+  margin: 3px 0;
+  transition: 0.3s;
+}
+
 
 /* --- DESKTOP STYLES (min-width: 768px) --- */
 @media (min-width: 768px) {
+
+  .menu-toggle {
+    display: none; /* Hide hamburger menu on desktop */
+  }
+
+  .nav-list {
+    list-style: none;
+    display: flex;
+    gap: 20px;
+  }
+  
+  .nav-list li {
+    display: flex;
+  }
 
   body {
     font-size: 17px; /* Slightly larger base font for desktop */
@@ -375,13 +436,6 @@ dialog button.cancel-button:hover {
     width: 100%; /* Usually fine, but can be constrained if needed e.g. 80% */
   }
 
-
-  /* --- DESKTOP: Filter Panel (Dialog) --- */
-  /* #filterPanel is a dialog, so it gets base dialog styles.
-     The z-index:10 from original CSS was problematic.
-     It will use the general dialog z-index: 10000.
-     If it needs specific desktop sizing or layout, add here.
-  */
   #filterPanel {
       /* Example: if you want filter panel to be narrower on desktop than other dialogs */
       /* width: 350px; */
@@ -403,3 +457,4 @@ dialog button.cancel-button:hover {
     font-size: 1em;
   }
 }
+

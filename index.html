@@ -4,16 +4,27 @@
 <html>
 
 <head>
-  <div id="banner">
+  <!---<div id="banner">
     <img 
     src ="./Project_Overview.png"
-    />
+    />-->
+
+    <nav class="navbar">
+      <div class="menu-toggle" id="mobile-menu">
+        <span class="bar"></span>
+        <span class="bar"></span>
+        <span class="bar"></span>
+      </div>
+      <ul class="nav-list">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="about.html">About</a></li>
+      </ul>
+    </nav>
   </div>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Find a toilet!</title>
   <link rel="stylesheet" href="./slider.css">
-  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyALRD7VW8Aat0OnS2sc8yX8AKSxH3JFKoA&libraries=places"></script> <!-- Replace YOUR_API_KEY -->
-  <!-- other head elements -->
+  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyALRD7VW8Aat0OnS2sc8yX8AKSxH3JFKoA&libraries=places"></script>
 </head>
 
 <body>
@@ -102,7 +113,5 @@
   <br>
   <button id="applyFilters" onclick="applyFilters()">Apply Filters</button>
 </dialog>
-
-
 
 </html
