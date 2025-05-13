@@ -252,6 +252,7 @@ dialog button.cancel-button:hover {
 
 /* Navbar styles */
 .navbar {
+  z-index: 10000; 
   background-color: #333;
   color: white;
   padding: 10px 20px;
@@ -263,12 +264,22 @@ dialog button.cancel-button:hover {
 
 .nav-list {
   list-style: none;
-  display: none;
+  display: flex;
+  flex-direction: column;
   gap: 20px;
+  position: absolute; 
+  top: 100%; 
+  left: 0; 
+  width: 100%;
+  transform: translateY(-150%);
+  opacity: 0; 
+  pointer-events: none;
 }
 
-.nav-list li {
-  display: none;
+.nav-list.active {
+  transform: translateY(0); /* Slide down into view */
+  opacity: 1; /* Make it visible */
+  pointer-events: auto; 
 }
 
 .nav-list a {
@@ -297,23 +308,64 @@ dialog button.cancel-button:hover {
   transition: 0.3s;
 }
 
+/* Hamburger to X Transformation */
+.menu-toggle.active .bar:nth-child(1) {
+  transform: translateY(8px) rotate(45deg); /* Adjusted for new height/spacing */
+}
+
+.menu-toggle.active .bar:nth-child(2) {
+  opacity: 0;
+}
+
+.menu-toggle.active .bar:nth-child(3) {
+  transform: translateY(-8px) rotate(-45deg); /* Adjusted */
+}
+
+/*gallery bs FIX THIS IT SUCKS*/
+.gallery {
+  display: flex;
+  flex-wrap: wrap; /* Allow items to wrap to the next line */
+  justify-content: space-around; /* Distribute space evenly */
+  /* Add other styling as desired, e.g., padding, margin */
+}
+
+.gallery-item {
+  flex: 0 1 calc(25% - 20px); /* Adjust width and margin as needed */
+  max-width: calc(25% - 20px);
+  margin: 10px; /* Space between items */
+  overflow: hidden; /* To handle image cropping/scrolling */
+  /* Add border-radius, shadow, or other styling */
+}
+
+.gallery-item img {
+  width: 100%;
+  height: auto;
+  display: block; 
+}
+
 
 /* --- DESKTOP STYLES (min-width: 768px) --- */
 @media (min-width: 768px) {
+
+  .nav-list li {
+    display: flex; 
+    transform: translateY(0); 
+  }
 
   .menu-toggle {
     display: none; /* Hide hamburger menu on desktop */
   }
 
   .nav-list {
-    list-style: none;
-    display: flex;
-    gap: 20px;
+    display: flex; /* Show nav items in a row on desktop */
+    flex-direction: row; /* Align items horizontally */
+    position: static; /* Remove dropdown behavior */
+    gap: 20px; /* Add spacing between items */
+    opacity: 1; /* Ensure visibility */
+    pointer-events: auto; /* Ensure links are clickable */
+    transform: none; /* Reset transform */
   }
-  
-  .nav-list li {
-    display: flex;
-  }
+
 
   body {
     font-size: 17px; /* Slightly larger base font for desktop */

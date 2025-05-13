@@ -4,23 +4,18 @@
 <html>
 
 <head>
-  <!---<div id="banner">
-    <img 
-    src ="./Project_Overview.png"
-    />-->
-
     <nav class="navbar">
       <div class="menu-toggle" id="mobile-menu">
         <span class="bar"></span>
         <span class="bar"></span>
         <span class="bar"></span>
       </div>
-      <ul class="nav-list">
-        <li><a href="index.html">Home</a></li>
-        <li><a href="about.html">About</a></li>
+      <ul class="nav-list" id="nav-list">
+        <li><a href="index.html" class="nav-link">Home</a></li>
+        <li><a href="about.html" class="nav-link">About</a></li>
+        <li><a href="gallery.html" class="nav-link">Gallery</a></li>
       </ul>
     </nav>
-  </div>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Find a toilet!</title>
   <link rel="stylesheet" href="./slider.css">
@@ -108,7 +103,6 @@
   </select>
   <br><br>
   <div id="filterInputContainer">
-    <!-- Dynamic input will be added here based on the selected field -->
   </div>
   <br>
   <button id="applyFilters" onclick="applyFilters()">Apply Filters</button>

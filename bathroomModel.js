@@ -197,6 +197,7 @@ let pins = [];
 
               if (Bathroom.getHandicapAccesible()==true){
                 document.getElementById("handicap").innerHTML = `Handicap Accessible`;
+               //document.getElementById("handicap").innerHTML = "<img src=\"./wheelchair.svg\" width=\"400px\" height=\"150px\">";
               } else {
                document.getElementById("handicap").style.display = "none"; 
               }
@@ -444,6 +445,7 @@ let pins = [];
 
     const filterPanel = document.getElementById("filterPanel");
     filterPanel.showModal(); 
+    enableDialogClose(filterPanel);
     const filterField = document.getElementById("filterField").value;
     const filterInputContainer = document.getElementById("filterInputContainer");
 
@@ -565,6 +567,5 @@ export{Bathroom, initMap, geocodeBathroom, addPinToMap, fetchBathrooms, map};
     
   // TO DO: 
     // add hours of operation 
-    // start to formmat for mobile
     // location services + directions to nearest bathroom
-    // popout to view all
+    // popout to view all bathrooms in a list

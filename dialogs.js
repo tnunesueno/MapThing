@@ -140,6 +140,36 @@ function enableDialogClose(dialogElement) {
   dialogElement.addEventListener("close", closeEventHandler);
 }
 
+
+// mobile hamberger menu 
+const hamburger = document.getElementById("mobile-menu");
+const navMenu = document.getElementById("nav-list"); 
+const navLink = document.querySelectorAll(".nav-link");
+
+if (hamburger && navMenu) { // Check if elements exist
+  hamburger.addEventListener("click", mobileMenu);
+}
+
+navLink.forEach(link => {
+  link.addEventListener("click", closeMenu);
+});
+
+hamburger.addEventListener("click", mobileMenu);
+navLink.forEach(n => n.addEventListener("click", closeMenu));
+
+function mobileMenu() {
+  console.log("hamburger clicked")
+    hamburger.classList.toggle("active");
+    navMenu.classList.toggle("active");
+}
+
+function closeMenu() {
+  if (hamburger.classList.contains("active")) {
+    hamburger.classList.remove("active");
+    navMenu.classList.remove("active");
+  }
+}
+
 // making shit global?? didn't have to do this before 
 window.openAddDialog = openAddDialog;
 window.openDialog = openDialog;
