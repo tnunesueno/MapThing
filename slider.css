@@ -306,9 +306,8 @@ dialog button.cancel-button:hover {
   transition: 0.3s;
 }
 
-/* Hamburger to X Transformation */
 .menu-toggle.active .bar:nth-child(1) {
-  transform: translateY(8px) rotate(45deg); /* Adjusted for new height/spacing */
+  transform: translateY(9px) rotate(45deg); 
 }
 
 .menu-toggle.active .bar:nth-child(2) {
@@ -316,7 +315,7 @@ dialog button.cancel-button:hover {
 }
 
 .menu-toggle.active .bar:nth-child(3) {
-  transform: translateY(-8px) rotate(-45deg); /* Adjusted */
+  transform: translateY(-9px) rotate(-45deg); /* Adjusted */
 }
 
 /*gallery bs FIX THIS IT SUCKS*/
