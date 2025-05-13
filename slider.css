@@ -268,12 +268,16 @@ dialog button.cancel-button:hover {
   transform: translateY(-150%);
   opacity: 0; 
   pointer-events: none;
+  z-index: 1000; 
+  background-color: #004AAD;
 }
 
 .nav-list.active {
   transform: translateY(0); /* Slide down into view */
   opacity: 1; /* Make it visible */
   pointer-events: auto; 
+  z-index: 1000; 
+  background-color: #004AAD; 
 }
 
 .nav-list a {
