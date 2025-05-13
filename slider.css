@@ -1,13 +1,7 @@
-/* slider.css */
-
-/* --- GLOBAL & MOBILE-FIRST STYLES --- */
-
-/* Set the font for all headers (h1, h2, h3, etc.) */
 h1, h2, h3, h4, h5, h6 {
   font-family: 'Nourd BOLD', sans-serif;
 }
 
-/* Set the font for all normal text (p, span, etc.) */
 body, p, span, div, input, button, label {
   font-family: 'Caladea', serif;
 }
@@ -42,11 +36,11 @@ button, input[type="button"], input[type="submit"] {
 }
 
 button:hover, input[type="button"]:hover, input[type="submit"]:hover {
-  background-color: #0056b3;
+  background-color: #004AAD;
 }
 
 button:active, input[type="button"]:active, input[type="submit"]:active {
-  background-color: #004080;
+  background-color: #004AAD;
 }
 
 input[type="text"], input[type="number"], select {
@@ -166,7 +160,7 @@ dialog form button[type="submit"] {
     margin-bottom: 10px;
 }
 dialog button.cancel-button {
-    background-color: #6c757d;
+    background-color: #004AAD;
 }
 dialog button.cancel-button:hover {
     background-color: #5a6268;
@@ -253,7 +247,7 @@ dialog button.cancel-button:hover {
 /* Navbar styles */
 .navbar {
   z-index: 10000; 
-  background-color: #333;
+  background-color: #004AAD;
   color: white;
   padding: 10px 20px;
   display: flex;
@@ -426,7 +420,7 @@ dialog button.cancel-button:hover {
     padding: 10px 20px; /* Standard button padding */
     font-size: 1em; /* Match other buttons */
     color: #ffffff;
-    background-color: #007bff; /* Standard button color */
+    background-color: #004AAD; /* Standard button color */
     border: none;
     border-radius: 5px;
   }
