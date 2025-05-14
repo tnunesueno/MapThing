@@ -32,7 +32,7 @@ button, input[type="button"], input[type="submit"] {
   border: none;
   border-radius: 5px;
   cursor: pointer;
-  background-color: #007bff;
+  background-color: #004AAD;
   color: #ffffff;
   transition: background-color 0.3s ease;
 }
@@ -320,40 +320,39 @@ dialog button.cancel-button:hover {
   transform: translateY(-9px) rotate(-45deg); /* Adjusted */
 }
 
+.grid {
+  display: grid;
+  gap: 20px; /* Space between grid items */
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); /* Responsive columns */
+  margin: 20px;
+}
+
+.grid-item {
+  text-align: center; /* Center-align content */
+}
+
+.grid-item img {
+  width: 100%; /* Make images responsive */
+  height: auto; /* Maintain aspect ratio */
+  border-radius: 8px; /* Optional: Rounded corners */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Optional: Add shadow */
+}
+
+.grid-item figcaption {
+  margin-top: 10px; /* Space between image and caption */
+  font-size: 1em; /* Adjust font size */
+}
+
+.grid-item a {
+  text-decoration: none; /* Remove underline from links */
+  color: #004AAD; /* Link color */
+}
+
+.grid-item a:hover {
+  text-decoration: underline; /* Add underline on hover */
+}
 /* --- DESKTOP STYLES (min-width: 768px) --- */
 @media (min-width: 768px) {
-
-  .grid {
-    display: grid;
-    gap: 20px; /* Space between grid items */
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); /* Responsive columns */
-    margin: 20px;
-  }
-  
-  .grid-item {
-    text-align: center; /* Center-align content */
-  }
-  
-  .grid-item img {
-    width: 100%; /* Make images responsive */
-    height: auto; /* Maintain aspect ratio */
-    border-radius: 8px; /* Optional: Rounded corners */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Optional: Add shadow */
-  }
-  
-  .grid-item figcaption {
-    margin-top: 10px; /* Space between image and caption */
-    font-size: 1em; /* Adjust font size */
-  }
-  
-  .grid-item a {
-    text-decoration: none; /* Remove underline from links */
-    color: #004AAD; /* Link color */
-  }
-  
-  .grid-item a:hover {
-    text-decoration: underline; /* Add underline on hover */
-  }
 
   .nav-list li {
     display: flex; 
@@ -440,7 +439,7 @@ dialog button.cancel-button:hover {
     border-radius: 5px;
   }
   #selectedBR #closePopOutButton:hover {
-    background-color: #0056b3;
+    background-color:#004AAD;
   }
 
   /* Dialogs on Desktop */
