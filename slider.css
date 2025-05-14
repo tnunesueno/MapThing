@@ -1,11 +1,11 @@
 h1, h2, h3, h4, h5, h6 {
   font-family: 'Nourd BOLD', sans-serif;
-  margin: 5px; 
+  margin: 10px; 
 }
 
 body, p, span, div, input, button, label {
   font-family: 'Caladea', serif;
-  margin: 5px; 
+  margin: 10px; 
 }
 
 * {
@@ -320,31 +320,40 @@ dialog button.cancel-button:hover {
   transform: translateY(-9px) rotate(-45deg); /* Adjusted */
 }
 
-/*gallery bs FIX THIS IT SUCKS*/
-.gallery {
-  display: flex;
-  flex-wrap: wrap; /* Allow items to wrap to the next line */
-  justify-content: space-around; /* Distribute space evenly */
-  /* Add other styling as desired, e.g., padding, margin */
-}
-
-.gallery-item {
-  flex: 0 1 calc(25% - 20px); /* Adjust width and margin as needed */
-  max-width: calc(25% - 20px);
-  margin: 10px; /* Space between items */
-  overflow: hidden; /* To handle image cropping/scrolling */
-  /* Add border-radius, shadow, or other styling */
-}
-
-.gallery-item img {
-  width: 100%;
-  height: auto;
-  display: block; 
-}
-
-
 /* --- DESKTOP STYLES (min-width: 768px) --- */
 @media (min-width: 768px) {
+
+  .grid {
+    display: grid;
+    gap: 20px; /* Space between grid items */
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); /* Responsive columns */
+    margin: 20px;
+  }
+  
+  .grid-item {
+    text-align: center; /* Center-align content */
+  }
+  
+  .grid-item img {
+    width: 100%; /* Make images responsive */
+    height: auto; /* Maintain aspect ratio */
+    border-radius: 8px; /* Optional: Rounded corners */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Optional: Add shadow */
+  }
+  
+  .grid-item figcaption {
+    margin-top: 10px; /* Space between image and caption */
+    font-size: 1em; /* Adjust font size */
+  }
+  
+  .grid-item a {
+    text-decoration: none; /* Remove underline from links */
+    color: #004AAD; /* Link color */
+  }
+  
+  .grid-item a:hover {
+    text-decoration: underline; /* Add underline on hover */
+  }
 
   .nav-list li {
     display: flex; 
@@ -364,6 +373,7 @@ dialog button.cancel-button:hover {
     pointer-events: auto; /* Ensure links are clickable */
     transform: none; /* Reset transform */
   }
+
 
 
   body {
