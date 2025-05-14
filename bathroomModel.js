@@ -322,15 +322,7 @@ let pins = [];
         let results;
         let input;
         let token;
-
-        const philadelphiaBounds = {
-          north: 40.15,
-          south: 39.87,
-          east: -74.95,
-          west: -75.28,
-        };
        
-           
             let request = {
               input: document.getElementById("location").value,
               origin: { lat: 40, lng: -75 },
@@ -351,6 +343,13 @@ let pins = [];
         }
        
       async function makeAcRequest(input) {
+
+        const philadelphiaBounds = {
+          north: 40.15,
+          south: 39.87,
+          east: -74.95,
+          west: -75.28,
+        };
       
           // Reset elements and exit if an empty string is received.
           if (input.target.value == "") {
@@ -548,7 +547,7 @@ document.getElementById("filter").addEventListener("click", (event) => {
   updateFilterInput(); 
 });
 
-export{Bathroom, initMap, geocodeBathroom, addPinToMap, fetchBathrooms, map};
+export{Bathroom, initMap, geocodeBathroom, addPinToMap, fetchBathrooms, map, makeAcRequest, replaceAllChars, refreshToken, updateFilterInput, applyFilters, clearFilters, updateMapWithFilteredBathrooms, clearMapPins};
 
   window.initMap = initMap;
   window.geocodeBathroom = geocodeBathroom;
@@ -564,6 +563,7 @@ export{Bathroom, initMap, geocodeBathroom, addPinToMap, fetchBathrooms, map};
   window.clearFilters = clearFilters;
   window.updateMapWithFilteredBathrooms = updateMapWithFilteredBathrooms;
   window.clearMapPins = clearMapPins;
+  window.makeAcRequest = makeAcRequest;
     
   // TO DO: 
     // add hours of operation 

@@ -2,22 +2,25 @@
 <html>
 
 <head>
-    <link rel="stylesheet" href="./slider.css">
-    <nav class="navbar">
-      <div class="menu-toggle" id="mobile-menu">
-        <span class="bar"></span>
-        <span class="bar"></span>
-        <span class="bar"></span>
-      </div>
-      <ul class="nav-list" id="nav-list">
-        <li><a href="index.html" class="nav-link">Home</a></li>
-        <li><a href="about.html" class="nav-link">About</a></li>
-        <li><a href="gallery.html" class="nav-link">Gallery</a></li>
-      </ul>
-    </nav>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <!--<title>Gallery - Where2Wizz</title> Added a title -->
+  <link rel="stylesheet" href="./slider.css">
 </head>
 
 <body>
+  <nav class="navbar">
+    <div class="menu-toggle" id="mobile-menu">
+      <span class="bar"></span>
+      <span class="bar"></span>
+      <span class="bar"></span>
+    </div>
+    <ul class="nav-list" id="nav-list">
+      <li><a href="index.html" class="nav-link">Home</a></li>
+      <li><a href="about.html" class="nav-link">About</a></li>
+      <li><a href="gallery.html" class="nav-link">Gallery</a></li>
+    </ul>
+  </nav>
     <h2>Gallery</h2>
     <br>
     <p>
@@ -38,6 +41,23 @@
         <img src="./tdbr4.jpeg" alt="bathroom flick 2">
     </div>
      </div>
+
+     <script>
+      document.addEventListener('DOMContentLoaded', () => {
+        const menuToggle = document.getElementById('mobile-menu');
+        const navList = document.getElementById('nav-list');
+
+        if (menuToggle && navList) {
+          menuToggle.addEventListener('click', () => {
+            menuToggle.classList.toggle('active');
+            navList.classList.toggle('active');
+          });
+        } else {
+          console.error('Menu toggle or nav list element not found!');
+        }
+      });
+      
+    </script>
 
 </body>
 

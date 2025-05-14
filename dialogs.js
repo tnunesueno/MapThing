@@ -146,7 +146,7 @@ const hamburger = document.getElementById("mobile-menu");
 const navMenu = document.getElementById("nav-list"); 
 const navLink = document.querySelectorAll(".nav-link");
 
-if (hamburger && navMenu) { // Check if elements exist
+if (hamburger && navMenu) { 
   hamburger.addEventListener("click", mobileMenu);
 }
 

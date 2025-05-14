@@ -3,10 +3,13 @@
 
 <head>
     <link rel="stylesheet" href="./slider.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- <title>About - Where2Wizz</title> Added a title -->
+
 </head>
 
 <body>
-
     <nav class="navbar">
         <div class="menu-toggle" id="mobile-menu">
           <span class="bar"></span>
@@ -47,6 +50,21 @@
     <p>
         If you have any questions, comments, or suggestions, please reach out at tnunesueno@gmail.com. 
     </p>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+          const menuToggle = document.getElementById('mobile-menu');
+          const navList = document.getElementById('nav-list');
+  
+          if (menuToggle && navList) {
+            menuToggle.addEventListener('click', () => {
+              menuToggle.classList.toggle('active');
+              navList.classList.toggle('active');
+            });
+          } else {
+            console.error('Menu toggle or nav list element not found!');
+          }
+        });
+      </script>
 
 </body>
 </html>

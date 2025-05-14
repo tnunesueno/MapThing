@@ -5,7 +5,7 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/11.5.0/firebase-app.js";
 import { getFirestore } from "https://www.gstatic.com/firebasejs/11.5.0/firebase-firestore.js";
 import { addDoc } from "https://www.gstatic.com/firebasejs/11.5.0/firebase-firestore.js"; 
-import { Bathroom } from "./bathroomModel.js"; // Import the Bathroom class
+import { Bathroom, makeAcRequest } from "./bathroomModel.js"; // Import the Bathroom class
 import { collection, getDocs } from "https://www.gstatic.com/firebasejs/11.5.0/firebase-firestore.js";
 
 // Your web app's Firebase configuration
@@ -26,6 +26,10 @@ const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
 function writeOneBr(bathroom) {
+
+  if (!bathroom.getHours()){
+    bathroom.setHours("Unable to find hours of operation");
+  }
   addDoc(collection(db, "bathrooms"), {
     name: bathroom.getName(),
     address: bathroom.getAddress(),
@@ -35,7 +39,8 @@ function writeOneBr(bathroom) {
     handicapAccessible: bathroom.getHandicapAccesible(),
     babyChangingStation: bathroom.getBabyChangingStation(),
     notes: bathroom.getNotes(),
-  }).then(docRef => { 
+    hours: bathroom.getHours(),
+    }).then(docRef => { 
     console.log("Document written with ID: ", docRef.id);
   });
 }
@@ -99,13 +104,13 @@ async function fetchBathrooms() {
 
 function updateWithNewStuff() {
   const bathrooms = fetchBathrooms(); 
-  console.log("Updated bathrooms:", bathrooms); 
-
   for (const bathroom of bathrooms) {
-    
+  const address = bathroom.getAddress();
+  
+  //makeAcRequest(address)
+
   } 
 }
-// fetchBathrooms();
 
 export { fetchBathrooms };
 export {writeOneBr, db};
