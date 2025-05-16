@@ -260,6 +260,18 @@ dialog button.cancel-button:hover {
   font-weight: bold;
 }
 
+
+#filterPanel input[type="text"],
+#filterPanel select {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-family: 'Caladea', serif;
+  font-size: 1em;
+}
+
 /* Navbar styles */
 .navbar {
   z-index: 10000; 
