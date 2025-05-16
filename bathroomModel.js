@@ -1,6 +1,7 @@
 import {writeOneBr} from './firebase.js'
 import { collection, getDocs} from "https://www.gstatic.com/firebasejs/11.5.0/firebase-firestore.js";
 import{db} from './firebase.js';
+
 import { openAddDialog, openDialog, closePopOut, closeAddDialog, enableDialogClose} from './dialogs.js';
 //import { fetchBathrooms } from './firebase.js';
 class Bathroom {
@@ -445,7 +446,7 @@ let pins = [];
     const filterPanel = document.getElementById("filterPanel");
     filterPanel.showModal(); 
 
-    
+
     enableDialogClose(filterPanel);
     const filterField = document.getElementById("filterField").value;
     const filterInputContainer = document.getElementById("filterInputContainer");

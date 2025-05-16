@@ -137,7 +137,6 @@ input[type="text"], input[type="number"], select {
 dialog {  
   display: none; /* Hidden by default */
 
-
   position: fixed;
   top: 50%;
   left: 50%;
@@ -428,8 +427,6 @@ dialog button.cancel-button:hover {
     padding-bottom: 0;
   }
 
-
-
   body {
     font-size: 17px; /* Slightly larger base font for desktop */
   }
@@ -437,6 +434,7 @@ dialog button.cancel-button:hover {
   #banner {
     padding: 10px 0; /* Desktop padding */
   }
+
   #banner img {
     max-height: 100px; /* Desktop banner height */
     object-fit: cover; /* Can be different from mobile if desired */
@@ -458,16 +456,8 @@ dialog button.cancel-button:hover {
     border-radius: 8px; /* Standard border-radius for desktop box */
     box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
     z-index: 990; /* Below banner/dialogs, but above map. Ensure it's above map markers if they have z-index. */
-    
-    transform: translateY(0); /* Ensure it's visible and not affected by mobile's transform */
-    /* If JS is used to toggle display: none/block and not just .visible class for transform: */
-    /* display: none;  You'd show it with JS by setting display: block or display: flex */
-  }
-
-  /* If .visible class is still used to show/hide on desktop */
-  #selectedBR.visible {
-    transform: translateY(0); /* Ensures it's in position */
-    /* display: block; /* Or flex, if base #selectedBR on desktop has display:none */
+    margin: auto; 
+    transform: translateY(0); 
   }
 
   #selectedBR h3 {
