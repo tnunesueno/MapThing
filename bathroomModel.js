@@ -223,7 +223,7 @@ let pins = [];
               } else{
                 document.getElementById("notes").style.display = "none";
               }
-              popOut.style.display = "block"; 
+              popOut.style.display = "flex"; 
               popOut.classList.add('visible');
               });
 
