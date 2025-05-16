@@ -456,22 +456,27 @@ dialog button.cancel-button:hover {
     border-radius: 8px; /* Standard border-radius for desktop box */
     box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
     z-index: 990; /* Below banner/dialogs, but above map. Ensure it's above map markers if they have z-index. */
-    margin: auto; 
+    
     transform: translateY(0); 
   }
 
   #selectedBR h3 {
+    margin: auto; 
     font-size: 20px;
+    width: 100%;
     color: #333;
   }
 
   #selectedBR p {
+    margin: auto; 
+    width: auto;
     font-size: 16px;
     color: #555;
   }
 
   /* For the close button within #selectedBR on desktop */
   #selectedBR #closePopOutButton {
+    margin: auto; 
     position: static; /* Default position in flow */
     display: block; /* Or inline-block if preferred */
     width: 100%; /* Make it full width of its container */
@@ -492,10 +497,6 @@ dialog button.cancel-button:hover {
     width: 50%; /* Larger default width for dialogs on desktop */
     max-width: 600px; /* But not excessively wide */
   }
-
-  /* #addDialog Desktop - already uses general dialog styles.
-     If #addDialog needs specific desktop overrides, add them here.
-     The z-index:10 from original CSS was problematic.
   */
   #addDialog #location { /* No specific desktop changes needed if mobile is fine */
     width: 100%; /* Already 100% from general input style */
