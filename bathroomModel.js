@@ -444,6 +444,8 @@ let pins = [];
 
     const filterPanel = document.getElementById("filterPanel");
     filterPanel.showModal(); 
+
+    
     enableDialogClose(filterPanel);
     const filterField = document.getElementById("filterField").value;
     const filterInputContainer = document.getElementById("filterInputContainer");
