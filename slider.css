@@ -253,6 +253,25 @@ dialog button.cancel-button:hover {
   width: 100%;
 }
 
+
+#filterPanel {
+  display: none; /* Hidden by default */
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 90%; /* More suitable for mobile */
+  max-width: 500px; /* Max width for larger mobile / smaller desktop */
+  max-height: 90vh;
+  margin: 0 auto;
+  padding: 20px;
+  background-color: white;
+  border: none;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  z-index: 10000; /* Highest */
+}
+
 /* Filter Panel (treated as a dialog) general label */
 #filterPanel label { /* This is for the filterPanel dialog */
   display: block;
@@ -260,9 +279,7 @@ dialog button.cancel-button:hover {
   font-weight: bold;
 }
 
-
-#filterPanel input[type="text"],
-#filterPanel select {
+#filterField, #filterInputContainer {
   width: 100%;
   padding: 10px;
   margin-bottom: 10px;
