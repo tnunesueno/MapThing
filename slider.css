@@ -95,7 +95,6 @@ input[type="text"], input[type="number"], select {
   max-height: 70vh;
   background-color: #ffffff;
   padding: 0;
-  padding-bottom: 80px; /* Extra padding for floatingPanel clearance */
   border-top-left-radius: 15px;
   border-top-right-radius: 15px;
   box-shadow: 0px -4px 12px rgba(0, 0, 0, 0.15);
