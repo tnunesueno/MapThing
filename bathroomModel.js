@@ -566,6 +566,7 @@ export{Bathroom, initMap, geocodeBathroom, addPinToMap, fetchBathrooms, map, mak
   window.makeAcRequest = makeAcRequest;
     
   // TO DO: 
+    // add the little icons to the fields 
     // add hours of operation 
     // location services + directions to nearest bathroom
     // popout to view all bathrooms in a list

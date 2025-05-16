@@ -16,7 +16,9 @@ body, p, span, div, input, label {
 
 html, body {
   height: 100%;
+  width: 100%;
   overflow-x: hidden;
+  overflow-y: hidden;
   margin: 0;
   padding: 0;
 }
@@ -60,6 +62,10 @@ input[type="text"], input[type="number"], select {
   z-index: 0; /* Base layer */
   height: 100vh;
   width: 100%;
+  margin: 0; 
+  padding: 0; 
+  box-sizing: border-box; 
+  overflow: hidden; 
 }
 
 #banner {
@@ -95,9 +101,10 @@ input[type="text"], input[type="number"], select {
   box-shadow: 0px -4px 12px rgba(0, 0, 0, 0.15);
   z-index: 950; /* Above map & floatingPanel, below banner & dialogs */
   overflow-y: auto;
+  overflow-x:hidden; 
   transform: translateY(100%); /* Initially hidden below screen */
   transition: transform 0.3s ease-in-out;
-  /* Do NOT use display: none if you want the transform transition */
+  box-sizing: border-box; 
 }
 
 #selectedBR.visible {
@@ -135,7 +142,7 @@ dialog {
   width: 90%; /* More suitable for mobile */
   max-width: 500px; /* Max width for larger mobile / smaller desktop */
   max-height: 90vh;
-  margin: 0;
+  margin: 0 auto;
   padding: 20px;
   background-color: white;
   border: none;
@@ -143,6 +150,13 @@ dialog {
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
   z-index: 10000; /* Highest */
   overflow-y: auto;
+  overflow-x: hidden; 
+  box-sizing: border-box;
+
+  display: flex; 
+  flex-direction: column; /* Stack elements vertically */
+  justify-content: center; /* Center content vertically */
+  align-items: center; /* Center content horizontally */
 }
 dialog::backdrop {
   background-color: rgba(0, 0, 0, 0.5);
@@ -256,6 +270,9 @@ dialog button.cancel-button:hover {
   justify-content: space-between;
   align-items: center;
   position: relative;
+
+  margin: 0; 
+  box-sizing: border-box;
 }
 
 .nav-list {
