@@ -38,6 +38,14 @@ function openDialog(bathroom){
     document.getElementById("location").value = ""; 
   }
 
+  function updateSliderValue() {
+  const slider = document.getElementById("myRange");
+  const output = document.getElementById("sliderValue");
+  output.textContent = slider.value;
+}
+document.getElementById("myRange").addEventListener("input", updateSliderValue);
+
+
 document.getElementById("brFields").addEventListener("submit", function(event) {
 
     event.preventDefault(); 
