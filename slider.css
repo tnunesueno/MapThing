@@ -67,23 +67,6 @@ input[type="text"], input[type="number"], select {
   overflow: hidden; 
 }
 
-#banner {
-  width: 100%;
-  background-color: #f8f9fa;
-  text-align: center;
-  padding: 5px 0; /* Mobile padding */
-  border-bottom: 1px solid #ddd;
-  position: fixed;
-  top: 0;
-  left: 0;
-  z-index: 1000; /* Above map and most elements, but below dialogs */
-}
-
-#banner img {
-  width: 100%;
-  max-height: 60px; /* Mobile banner height */
-  object-fit: contain; /* Ensure whole logo is visible on mobile */
-}
 
 /* --- MOBILE: Selected Bathroom Panel (Slide-up) --- */
 #selectedBR {
@@ -159,7 +142,7 @@ dialog[open]{
   display: flex; /* Show dialog when open */
   flex-direction: column; /* Stack elements vertically */
   justify-content: center; /* Center content vertically */
-  align-items: center; /* Center content horizontally */
+
 }
 dialog::backdrop {
   background-color: rgba(0, 0, 0, 0.5);
@@ -458,7 +441,7 @@ dialog button.cancel-button:hover {
     
   flex-direction: column; 
   justify-content: center;
-  align-items: center; /* Center content horizontally */
+  /*align-items: center;  Center content horizontally */
   text-align: center; /* Center text */
   }
 
