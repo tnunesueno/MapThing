@@ -447,14 +447,14 @@ dialog button.cancel-button:hover {
 
 
   #selectedBR h3 {
-    margin: auto; 
+    
     font-size: 20px;
     width: 100%;
     color: #333;
   }
 
   #selectedBR p {
-    margin: auto; 
+   
     width: auto;
     font-size: 16px;
     color: #555;
