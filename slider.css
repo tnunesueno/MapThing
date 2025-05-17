@@ -440,7 +440,7 @@ dialog button.cancel-button:hover {
     z-index: 990; /* Below banner/dialogs, but above map. Ensure it's above map markers if they have z-index. */
     
   flex-direction: column; 
-  justify-content: center;
+  /*justify-content: center;*/
   /*align-items: center;  Center content horizontally */
   /*text-align: center;  Center text */
   }
