@@ -442,7 +442,7 @@ dialog button.cancel-button:hover {
   flex-direction: column; 
   justify-content: center;
   /*align-items: center;  Center content horizontally */
-  text-align: center; /* Center text */
+  /*text-align: center;  Center text */
   }
 
 
