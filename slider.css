@@ -263,6 +263,10 @@ dialog button.cancel-button:hover {
   border-radius: 8px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
   z-index: 10000; /* Highest */
+
+  overflow-x: hidden;
+  overflow-y: auto;
+  align-items: center;
 }
 
 /* Filter Panel (treated as a dialog) general label */
@@ -274,10 +278,9 @@ dialog button.cancel-button:hover {
 
 #filterField, #filterInputContainer {
   width: 100%;
-  padding: 10px;
+  /*padding: 10px;
   margin-bottom: 10px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
+  border-radius: 4px;*/
   font-family: 'Caladea', serif;
   font-size: 1em;
 }
