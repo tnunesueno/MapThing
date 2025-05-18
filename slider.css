@@ -285,6 +285,7 @@ dialog button.cancel-button:hover {
 
 /* Navbar styles */
 .navbar {
+  font-family: 'Nourd BOLD', sans-serif;
   z-index: 10000; 
   background-color: #004AAD;
   color: white;
