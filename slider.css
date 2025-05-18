@@ -278,11 +278,9 @@ dialog button.cancel-button:hover {
 
 #filterField, #filterInputContainer {
   width: 100%;
-  /*padding: 10px;
-  margin-bottom: 10px;
-  border-radius: 4px;*/
   font-family: 'Caladea', serif;
   font-size: 1em;
+  align-self: center;
 }
 
 /* Navbar styles */
