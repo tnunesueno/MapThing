@@ -27,8 +27,8 @@ body {
 }
 
 body.no-scroll {
-  overflow-y: hidden !important;
-  height: 100vh; /* Prevents accidental scroll from content overflow */
+  overflow-y: hidden;
+  height: 100vh; 
 }
 
 button, input[type="button"], input[type="submit"] {
