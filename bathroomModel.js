@@ -200,20 +200,20 @@ let pins = [];
                 document.getElementById("handicap").innerHTML = `Handicap Accessible`;
                //document.getElementById("handicap").innerHTML = "<img src=\"./wheelchair.svg\" width=\"400px\" height=\"150px\">";
               } else {
-               document.getElementById("handicap").style.display = "none"; 
+               document.getElementById("handicapBigThing").style.display = "none"; 
               }
 
               if(Bathroom.getGenderNeutral()==true){
                 document.getElementById("genderNeutral").innerHTML = `Gender Neutral`;
               }
               else{
-                document.getElementById("genderNeutral").style.display = "none"; 
+                document.getElementById("genderNeutralBigThing").style.display = "none"; 
               }
               
              if(Bathroom.getBabyChangingStation()==true){
                 document.getElementById("babyChanging").innerHTML = `Baby Changing Station Available`;
              } else{
-              document.getElementById("babyChanging").style.display = "none"; 
+              document.getElementById("babyChangingBigThing").style.display = "none";
              }
 
              if(Bathroom.getNotes()){
