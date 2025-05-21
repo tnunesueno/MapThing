@@ -106,7 +106,7 @@ input[type="text"], input[type="number"], select {
 }
 
 #selectedBR #closePopOutButton {
-  position: relative;
+  position: absolute;
   top: 10px;
   right: 10px;
   background: none;
