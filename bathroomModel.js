@@ -221,7 +221,7 @@ let pins = [];
               document.getElementById("notesDisplay").innerHTML = Bathroom.getNotes();
               document.getElementById("notesDisplay").style.display = "block";
               } else{
-                document.getElementById("notes").style.display = "none";
+                document.getElementById("notesDisplay").style.display = "none";
               }
               popOut.style.display = "flex"; 
               popOut.classList.add('visible');
