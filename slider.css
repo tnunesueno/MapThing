@@ -26,6 +26,11 @@ body {
   font-size: 16px; /* Base font size for mobile */
 }
 
+body.no-vertical-scroll {
+  overflow-y: hidden !important;
+  height: 100vh; /* Prevents accidental scroll from content overflow */
+}
+
 button, input[type="button"], input[type="submit"] {
   font-family: 'Nourd BOLD', sans-serif;
   font-size: 1em;
@@ -419,15 +424,6 @@ dialog button.cancel-button:hover {
 
   body {
     font-size: 17px; /* Slightly larger base font for desktop */
-  }
-
-  #banner {
-    padding: 10px 0; /* Desktop padding */
-  }
-
-  #banner img {
-    max-height: 100px; /* Desktop banner height */
-    object-fit: cover; /* Can be different from mobile if desired */
   }
 
   /* --- DESKTOP: Selected Bathroom Panel (Static Info Box) --- */
