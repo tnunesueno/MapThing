@@ -124,7 +124,6 @@ input[type="text"], input[type="number"], select {
 /* --- DIALOG Base Styles (Mobile & Desktop) --- */
 dialog {  
   display: none; /* Hidden by default */
-
   position: fixed;
   top: 50%;
   left: 50%;
@@ -148,6 +147,7 @@ dialog[open]{
   display: flex; /* Show dialog when open */
   flex-direction: column; /* Stack elements vertically */
   justify-content: center; /* Center content vertically */
+  align-items: center; /* Center content horizontally */
 
 }
 dialog::backdrop {
