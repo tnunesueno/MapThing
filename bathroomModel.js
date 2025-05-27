@@ -1,11 +1,9 @@
-import {writeOneBr} from './firebase.js'
-import { collection, getDocs} from "https://www.gstatic.com/firebasejs/11.5.0/firebase-firestore.js";
-import{db} from './firebase.js';
+import{db, fetchBathrooms, collection, getDocs, writeBathroomsToFirestore, writeOneBr} from './firebase.js';
 
 import { openAddDialog, openDialog, closePopOut, closeAddDialog, enableDialogClose} from './dialogs.js';
 //import { fetchBathrooms } from './firebase.js';
 class Bathroom {
-    constructor(name, streetAddress, bLatitude, bLongitude, cleanliness, handicapAccesible, babyChangingStation, genderNeutral, notes, hours) {
+    constructor(name, streetAddress, bLatitude, bLongitude, cleanliness, handicapAccesible, babyChangingStation, genderNeutral, notes, hours, id) {
         this.name = name;  
         this.streetAddress = streetAddress;
         this.bLatitude = bLatitude;
@@ -15,6 +13,7 @@ class Bathroom {
         this.babyChangingStation = babyChangingStation;
         this.genderNeutral = genderNeutral;
         this.notes = notes;
+        this.id = id;
     }
 
     getName() {
@@ -97,6 +96,14 @@ class Bathroom {
         this.hours = newHours;
     }
 
+    getId() {
+        return this.id;
+    } 
+
+    setId(newId) {
+        this.id = newId;
+    }
+
 }
 // Initialize and add the map
 let map;
@@ -112,7 +119,7 @@ async function initMap() {
     const { Place } = await google.maps.importLibrary("places");
     // The map, centered at Philadelphia
     map = new Map(document.getElementById("map"), {
-        zoom: 17,
+        zoom: 12,
         center: position,
         mapId: "DEMO_MAP_ID",
         draggable: true, 
@@ -123,6 +130,7 @@ async function initMap() {
 }
 
 initMap();
+addBathroomsToMap(); // this is the function that adds the bathrooms to the map
 
 function geocodeBathroom(Bathroom) {
        var address = Bathroom.getAddress(); 
@@ -140,7 +148,7 @@ function geocodeBathroom(Bathroom) {
             var latitude= results[0].geometry.location.lat();
             var longitude = results[0].geometry.location.lng();
               console.log("should be geocoding");
-              console.log(latitude+ ", "+longitude);
+  
               Bathroom.setbLatitude(latitude);
               Bathroom.setbLongitude(longitude);
 
@@ -173,10 +181,8 @@ let pins = [];
                 map: map,
                 title: Bathroom.getAddress(),
             });
-            pins.push(pin); 
-            
-            console.log("Pin created at " + lat + ", " + lng);
-
+            pins.push(pin);
+            console.log("FIN CREATED IN ADD PIN FUNC " + lat + ", " + lng);
             // Add a click event listener to the pin 
             pin.addListener("click", () => {
              map.setCenter({lat: lat, lng: lng});
@@ -238,66 +244,57 @@ let pins = [];
                 
               });
 
-            }
-
-            async function fetchBathrooms() {
-              console.log("Fetching bathrooms from Firestore...");
-              const querySnapshot = await getDocs(collection(db, "bathrooms"));
-              const bathrooms = []; 
-            
-              for (const doc of querySnapshot.docs) {
-                const data = doc.data();
-                console.log(`${doc.id} => ${JSON.stringify(data)}`);
-            
-                // Create a new Bathroom object using the document data
-                const bathroom = new Bathroom(
-                  data.name,
-                  data.address,
-                  data.latitude,
-                  data.longitude,
-                  data.cleanliness,
-                  data.handicapAccessible,
-                  data.babyChangingStation,
-                  data.genderNeutral,
-                  data.notes
-                );
-                console.log("notes: " + data.notes); 
-                console.log("Bathroom object created:", bathroom.getAddress());
-            
-                bathrooms.push(bathroom); // Add the geocoded Bathroom object to the array
-              }
-            
-              console.log("Array of Bathroom objects:", bathrooms);
-              return bathrooms; // Return the array of Bathroom objects
-            }
-
-            function geocodeAll(bathrooms){
-                console.log("Geocoding all bathrooms...");
-                if (!Array.isArray(bathrooms) || bathrooms.length === 0) {
-                    console.error("No bathrooms found to geocode.");
-                    return;
-                }
-            
-                bathrooms.forEach((bathroom) => {
-                    const address = bathroom.getAddress();
-                    if (!address) {
-                        console.error("Bathroom has no address to geocode.");
-                        return;
-                    }
-            
-                    geocodeBathroom(bathroom);
-                    console.log("Geocoding bathroom from firebase:", bathroom);
-                });
-            }
+        }
 
   let bathrooomArray=[]; 
+  
+  async function addBathroomsToMap() {
+    console.log("Starting to add bathrooms to map...");
+    try {
+        const bathrooms = await fetchBathrooms();
+        console.log(`Fetched ${bathrooms.length} bathrooms.`);
 
-            // this is not a function, this is just floating code 
-        fetchBathrooms().then((bathrooms) => {
-          geocodeAll(bathrooms)
-          bathrooomArray = bathrooms; 
-        }); // this is the function that gets the bathrooms from firebase and geocodes them
+        for (const bathroom of bathrooms) {
+            const lat = bathroom.getbLatitude();
+            const lng = bathroom.getbLongitude();
 
+            // Helper to check if a coordinate is a valid number
+            const isValidCoordinate = (coord) => typeof coord === 'number' && !isNaN(coord);
+
+            if (isValidCoordinate(lat) && isValidCoordinate(lng)) {
+                // Coordinates are valid, add pin directly
+                console.log(`Bathroom "${bathroom.getName() || bathroom.getAddress()}" has valid coordinates: ${lat}, ${lng}. Adding pin.`);
+                addPinToMap(lat, lng, bathroom);
+            } else {
+                // Coordinates are invalid or missing, attempt to geocode
+                console.log(`Bathroom "${bathroom.getName() || bathroom.getAddress()}" needs geocoding. Current lat/lng: ${lat}, ${lng}.`);
+                try {
+                    await geocodeBathroom(bathroom); // This will call addPinToMap internally if successful
+                    // After successful geocoding, bathroom object has updated lat/lng.
+                    // Now, update Firestore.
+                    const newLat = bathroom.getbLatitude();
+                    const newLng = bathroom.getbLongitude();
+
+                    if (bathroom.getId() && isValidCoordinate(newLat) && isValidCoordinate(newLng)) {
+                        const brDocRef = doc(db, "bathrooms", bathroom.getId());
+                        await updateDoc(brDocRef, {
+                            latitude: newLat,
+                            longitude: newLng,
+                        });
+                        console.log(`Firestore updated for bathroom "${bathroom.getName() || bathroom.getAddress()}" with new coordinates: ${newLat}, ${newLng}.`);
+                    } else {
+                        console.warn(`Skipping Firestore update for "${bathroom.getName() || bathroom.getAddress()}". Missing ID or invalid new coordinates after geocoding. ID: ${bathroom.getId()}, Lat: ${newLat}, Lng: ${newLng}`);
+                    }
+                } catch (error) {
+                    console.error(`Error geocoding or updating Firestore for bathroom "${bathroom.getName() || bathroom.getAddress()}":`, error);
+                }
+            }
+        }
+        console.log("Finished processing all bathrooms for the map.");
+    } catch (error) {
+        console.error("Error fetching bathrooms in addBathroomsToMap:", error);
+    }
+}
 
         // all of this nonsense is ai bs that doens't work FIX IT 
         document.getElementById("addButton").addEventListener("click", (event) => {
@@ -521,7 +518,7 @@ function updateMapWithFilteredBathrooms(filteredBathrooms) {
     filteredBathrooms.forEach((bathroom) => {
         console.log("Bathroom Latitude:", bathroom.getbLatitude());
         console.log("Bathroom Longitude:", bathroom.getbLongitude());
-        //addPinToMap(bathroom.getbLatitude(), bathroom.getbLongitude(), bathroom);
+        
         geocodeBathroom(bathroom); // Geocode the bathroom to get its coordinates
     });
 

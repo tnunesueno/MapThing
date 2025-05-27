@@ -90,11 +90,12 @@ async function fetchBathrooms() {
       data.handicapAccessible,
       data.babyChangingStation,
       data.genderNeutral,
-      data.notes
+      data.notes,
+      data.hours, 
+      doc.id
     );
 
-    console.log("Bathroom object created:", bathroom.getAddress());
-
+    console.log("Bathroom object created:", bathroom.getName(), "ID: ",  bathroom.getId())
     bathrooms.push(bathroom); // Add the geocoded Bathroom object to the array
   }
 
@@ -102,15 +103,14 @@ async function fetchBathrooms() {
   return bathrooms; // Return the array of Bathroom objects
 }
 
-function updateWithNewStuff() {
+function updateOneWithNewStuff() {
   const bathrooms = fetchBathrooms(); 
   for (const bathroom of bathrooms) {
   const address = bathroom.getAddress();
   
   //makeAcRequest(address)
-
   } 
 }
 
 export { fetchBathrooms };
-export {writeOneBr, db};
+export {writeOneBr, db, collection, getDocs}; // Export the Firestore collection and getDocs function
