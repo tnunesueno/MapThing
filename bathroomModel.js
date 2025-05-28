@@ -2,7 +2,7 @@ import{db, fetchBathrooms, collection, getDocs, writeBathroomsToFirestore, write
 import { Analytics } from "@vercel/analytics/next" 
 import { openAddDialog, openDialog, closePopOut, closeAddDialog, enableDialogClose} from './dialogs.js';
 
-export default function RootLayout({ children }) {
+/*export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <head>
@@ -14,7 +14,7 @@ export default function RootLayout({ children }) {
       </body>
     </html>
   );
-}
+}*/
 
 //import { fetchBathrooms } from './firebase.js';
 class Bathroom {
