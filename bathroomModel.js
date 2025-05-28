@@ -1,5 +1,5 @@
 import{db, fetchBathrooms, collection, getDocs, writeBathroomsToFirestore, writeOneBr} from './firebase.js';
-import { Analytics } from "@vercel/analytics/next" 
+//import { Analytics } from "@vercel/analytics/next" 
 import { openAddDialog, openDialog, closePopOut, closeAddDialog, enableDialogClose} from './dialogs.js';
 
 /*export default function RootLayout({ children }) {
