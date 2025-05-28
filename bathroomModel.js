@@ -1,6 +1,21 @@
 import{db, fetchBathrooms, collection, getDocs, writeBathroomsToFirestore, writeOneBr} from './firebase.js';
-
+import { Analytics } from "@vercel/analytics/next" 
 import { openAddDialog, openDialog, closePopOut, closeAddDialog, enableDialogClose} from './dialogs.js';
+
+export default function RootLayout({ children }) {
+  return (
+    <html lang="en">
+      <head>
+        <title>Next.js</title>
+      </head>
+      <body>
+        {children}
+        <Analytics />
+      </body>
+    </html>
+  );
+}
+
 //import { fetchBathrooms } from './firebase.js';
 class Bathroom {
     constructor(name, streetAddress, bLatitude, bLongitude, cleanliness, handicapAccesible, babyChangingStation, genderNeutral, notes, hours, id) {
@@ -269,9 +284,7 @@ let pins = [];
                 // Coordinates are invalid or missing, attempt to geocode
                 console.log(`Bathroom "${bathroom.getName() || bathroom.getAddress()}" needs geocoding. Current lat/lng: ${lat}, ${lng}.`);
                 try {
-                    await geocodeBathroom(bathroom); // This will call addPinToMap internally if successful
-                    // After successful geocoding, bathroom object has updated lat/lng.
-                    // Now, update Firestore.
+                    await geocodeBathroom(bathroom); 
                     const newLat = bathroom.getbLatitude();
                     const newLng = bathroom.getbLongitude();
 
