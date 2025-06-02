@@ -1,4 +1,5 @@
 import{db, fetchBathrooms, collection, getDocs, writeBathroomsToFirestore, writeOneBr} from './firebase.js';
+import { doc, updateDoc } from "https://www.gstatic.com/firebasejs/11.5.0/firebase-firestore.js";
 //import { Analytics } from "@vercel/analytics/next" 
 import { openAddDialog, openDialog, closePopOut, closeAddDialog, enableDialogClose} from './dialogs.js';
 
@@ -148,6 +149,7 @@ initMap();
 addBathroomsToMap(); // this is the function that adds the bathrooms to the map
 
 function geocodeBathroom(Bathroom) {
+    return new Promise((resolve, reject) => {
        var address = Bathroom.getAddress(); 
        console.log ("address to geocode: "+ address);
         
@@ -170,11 +172,13 @@ function geocodeBathroom(Bathroom) {
               console.log("BATHROOM LAT " + Bathroom.bLatitude + "BATHROOM LONG " + Bathroom.bLongitude);
             
               addPinToMap(latitude, longitude, Bathroom);
+              resolve({latitude, longitude}); // Resolve the promise after adding the pin
             } else {
                 console.error("Geocode was not successful for the following reason: " + status);
+                reject(status)
             }
-
           }); 
+        }); 
 }
 
 let pins = []; 
@@ -284,9 +288,7 @@ let pins = [];
                 // Coordinates are invalid or missing, attempt to geocode
                 console.log(`Bathroom "${bathroom.getName() || bathroom.getAddress()}" needs geocoding. Current lat/lng: ${lat}, ${lng}.`);
                 try {
-                    await geocodeBathroom(bathroom); 
-                    const newLat = bathroom.getbLatitude();
-                    const newLng = bathroom.getbLongitude();
+                    const {latitude: newLat, longitude: newLng} = await geocodeBathroom(bathroom);
 
                     if (bathroom.getId() && isValidCoordinate(newLat) && isValidCoordinate(newLng)) {
                         const brDocRef = doc(db, "bathrooms", bathroom.getId());
