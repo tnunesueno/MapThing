@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="./slider.css">
+</head>
+
+<body>
+    <nav class="navbar">
+        <div class="menu-toggle" id="mobile-menu">
+          <span class="bar"></span>
+          <span class="bar"></span>
+          <span class="bar"></span>
+        </div>
+        <ul class="nav-list" id="nav-list" style="margin: 0px">
+          <li><a href="index.html" class="nav-link">Home</a></li>
+          <li><a href="about.html" class="nav-link">About</a></li>
+          <li><a href="gallery.html" class="nav-link">Resources</a></li>
+            <li><a href="guidelines.html" class="nav-link">Guidelines</a></li>
+        </ul>
+      </nav>
+
+       <h1>Guidelines for Bathroom Submissions</h1>
+    <p>
+        Thank you for your interest in submitting a bathroom to Where2Wizz! We are excited to expand our map of accessible restrooms in Philadelphia. To ensure that the information we provide is accurate and helpful, please follow these guidelines when submitting a bathroom:
+    </p>
+    <br>
+    <ul>
+        <li><strong>Location:</strong> The bathroom must be located within Philadelphia city limits.</li>
+        <li><strong>Public Access:</strong> The bathroom should be publicly accessible without requiring a purchase or membership.</li>
+        <li><strong>Cleanliness:</strong> Please provide an honest assessment of the bathroom's cleanliness on a scale from 1 to 10. Be nice to our city - a New York 6 is a Philadelphia 10!</li>
+        <li><strong>Accessibility Features:</strong> Indicate if the bathroom is handicap accessible. A handicap accessible bathroom should have features such as grab bars, a wide door, and enough space for a wheelchair to maneuver. The building and floor where the bathroom is located must also be handicap accessible for that bathroom to be counted.</li>
+<script>
+        document.addEventListener('DOMContentLoaded', () => {
+          const menuToggle = document.getElementById('mobile-menu');
+          const navList = document.getElementById('nav-list');
+  
+          if (menuToggle && navList) {
+            menuToggle.addEventListener('click', () => {
+              menuToggle.classList.toggle('active');
+              navList.classList.toggle('active');
+            });
+          } else {
+            console.error('Menu toggle or nav list element not found!');
+          }
+        });
+      </script>
+</body>
+</html>

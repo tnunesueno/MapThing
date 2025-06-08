@@ -5,8 +5,19 @@ h1, h2, h3, h4, h5, button, h6 {
 
 body, p, span, div, input, label {
   font-family: 'Caladea', serif;
-  margin: 10px; 
 }
+
+h1, h2, p, ul{
+  margin-left: 32px;
+  margin-right: 32px;
+}
+
+    ul {
+      list-style-type: disc;
+    }
+    li {
+      margin-bottom: 10px;
+    }
 
 * {
   box-sizing: border-box;
@@ -419,6 +430,8 @@ dialog button.cancel-button:hover {
   .nav-list li {
     display: flex; 
     transform: translateY(0); 
+    align-items: center; /* Center items vertically */
+    height: 100%;
   }
 
   .menu-toggle {
@@ -426,7 +439,9 @@ dialog button.cancel-button:hover {
   }
 
   .nav-list {
+    height: 100%;
     display: flex; /* Show nav items in a row on desktop */
+    align-items: center; /* Center items vertically */
     flex-direction: row; /* Align items horizontally */
     position: static; /* Remove dropdown behavior */
     gap: 20px; /* Add spacing between items */
