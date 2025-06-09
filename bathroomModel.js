@@ -2,6 +2,7 @@ import{db, fetchBathrooms, collection, getDocs, writeBathroomsToFirestore, write
 import { doc, updateDoc } from "https://www.gstatic.com/firebasejs/11.5.0/firebase-firestore.js";
 //import { Analytics } from "@vercel/analytics/next" 
 import { openAddDialog, openDialog, closePopOut, closeAddDialog, enableDialogClose} from './dialogs.js';
+import{getLocation, showPosition, showError } from './geolocator.js';
 
 /*export default function RootLayout({ children }) {
   return (
@@ -143,6 +144,7 @@ async function initMap() {
     });
 
     initAutocomplete(); // hopefully this fixes all the nonsense with the places
+    getLocation(); // this is the function that gets the user's location
 }
 
 initMap();
@@ -584,3 +586,6 @@ export{Bathroom, initMap, geocodeBathroom, addPinToMap, fetchBathrooms, map, mak
     // add hours of operation 
     // location services + directions to nearest bathroom
     // popout to view all bathrooms in a list
+    // search by name 
+    // mess arounf with margins 
+         // more margin on bulleted lists, less margin on titles/headings 
