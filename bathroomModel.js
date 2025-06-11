@@ -2,7 +2,7 @@ import{db, fetchBathrooms, collection, getDocs, writeBathroomsToFirestore, write
 import { doc, updateDoc } from "https://www.gstatic.com/firebasejs/11.5.0/firebase-firestore.js";
 //import { Analytics } from "@vercel/analytics/next" 
 import { openAddDialog, openDialog, closePopOut, closeAddDialog, enableDialogClose} from './dialogs.js';
-import{getLocation, showPosition, showError } from './geolocator.js';
+import{getLocation, showPosition, showError, distanceFormula, findNearestBathroom, User } from './geolocator.js';
 
 /*export default function RootLayout({ children }) {
   return (
@@ -18,7 +18,6 @@ import{getLocation, showPosition, showError } from './geolocator.js';
   );
 }*/
 
-//import { fetchBathrooms } from './firebase.js';
 class Bathroom {
     constructor(name, streetAddress, bLatitude, bLongitude, cleanliness, handicapAccesible, babyChangingStation, genderNeutral, notes, hours, id) {
         this.name = name;  
@@ -135,8 +134,9 @@ async function initMap() {
     const { InfoWindow } = await google.maps.importLibrary("maps");
     const { Place } = await google.maps.importLibrary("places");
     // The map, centered at Philadelphia
+    await getLocation(); 
     map = new Map(document.getElementById("map"), {
-        zoom: 12,
+        zoom: 15,
         center: position,
         mapId: "DEMO_MAP_ID",
         draggable: true, 
@@ -144,7 +144,6 @@ async function initMap() {
     });
 
     initAutocomplete(); // hopefully this fixes all the nonsense with the places
-    getLocation(); // this is the function that gets the user's location
 }
 
 initMap();
@@ -153,7 +152,6 @@ addBathroomsToMap(); // this is the function that adds the bathrooms to the map
 function geocodeBathroom(Bathroom) {
     return new Promise((resolve, reject) => {
        var address = Bathroom.getAddress(); 
-       console.log ("address to geocode: "+ address);
         
         if (typeof google === 'undefined') {
             console.error("Google Maps API is not loaded.");
@@ -166,12 +164,9 @@ function geocodeBathroom(Bathroom) {
             if (status == google.maps.GeocoderStatus.OK) {
             var latitude= results[0].geometry.location.lat();
             var longitude = results[0].geometry.location.lng();
-              console.log("should be geocoding");
   
               Bathroom.setbLatitude(latitude);
               Bathroom.setbLongitude(longitude);
-
-              console.log("BATHROOM LAT " + Bathroom.bLatitude + "BATHROOM LONG " + Bathroom.bLongitude);
             
               addPinToMap(latitude, longitude, Bathroom);
               resolve({latitude, longitude}); // Resolve the promise after adding the pin
@@ -185,7 +180,6 @@ function geocodeBathroom(Bathroom) {
 
 let pins = []; 
         function addPinToMap(lat, lng, Bathroom) {
-            console.log("addPinToMap function called");
             if (typeof map === 'undefined') {
                 console.error("Map is not defined.");
                 return;
@@ -203,7 +197,6 @@ let pins = [];
                 title: Bathroom.getAddress(),
             });
             pins.push(pin);
-            console.log("FIN CREATED IN ADD PIN FUNC " + lat + ", " + lng);
             // Add a click event listener to the pin 
             pin.addListener("click", () => {
              map.setCenter({lat: lat, lng: lng});
@@ -244,7 +237,6 @@ let pins = [];
              }
 
              if(Bathroom.getNotes()){
-              console.log("notes: "+ Bathroom.getNotes());
               document.getElementById("notesDisplay").innerHTML = Bathroom.getNotes();
               document.getElementById("notesDisplay").style.display = "block";
               } else{
@@ -266,11 +258,10 @@ let pins = [];
               });
 
         }
+                   
+ let bathroomArray = []; 
 
-  let bathrooomArray=[]; 
-  
   async function addBathroomsToMap() {
-    console.log("Starting to add bathrooms to map...");
     try {
         const bathrooms = await fetchBathrooms();
         console.log(`Fetched ${bathrooms.length} bathrooms.`);
@@ -284,7 +275,6 @@ let pins = [];
 
             if (isValidCoordinate(lat) && isValidCoordinate(lng)) {
                 // Coordinates are valid, add pin directly
-                console.log(`Bathroom "${bathroom.getName() || bathroom.getAddress()}" has valid coordinates: ${lat}, ${lng}. Adding pin.`);
                 addPinToMap(lat, lng, bathroom);
             } else {
                 // Coordinates are invalid or missing, attempt to geocode
@@ -305,9 +295,11 @@ let pins = [];
                 } catch (error) {
                     console.error(`Error geocoding or updating Firestore for bathroom "${bathroom.getName() || bathroom.getAddress()}":`, error);
                 }
+              }
+        
+            bathroomArray.push(bathroom); 
+            
             }
-        }
-        console.log("Finished processing all bathrooms for the map.");
     } catch (error) {
         console.error("Error fetching bathrooms in addBathroomsToMap:", error);
     }
@@ -318,7 +310,6 @@ let pins = [];
           const addDialog = document.getElementById("addDialog");
           if (addDialog) {
               addDialog.showModal(); // Open the dialog
-              console.log("addDialog opened.");
           }
           event.stopPropagation(); // Prevent the click from propagating to the document
       });
@@ -460,7 +451,6 @@ let pins = [];
     const filterPanel = document.getElementById("filterPanel");
     filterPanel.showModal(); 
 
-
     enableDialogClose(filterPanel);
     const filterField = document.getElementById("filterField").value;
     const filterInputContainer = document.getElementById("filterInputContainer");
@@ -493,6 +483,11 @@ let pins = [];
       `;
    }
 
+   // change the onaction ot be clearing the filters 
+    const filterButton = document.getElementById("filter");
+    filterButton.textContent = "Clear Filters";
+    filterButton.onclick = clearFilters(); // Change the button's onclick to clearFilters
+
   }
 
 function applyFilters() {
@@ -522,8 +517,6 @@ function applyFilters() {
         });
 
         updateMapWithFilteredBathrooms(filteredBathrooms);
-        clearFilters = document.getElementById("clearFilters");
-        clearFilters.style.display = "block";
     });
 }
 
@@ -541,16 +534,18 @@ function updateMapWithFilteredBathrooms(filteredBathrooms) {
 
     console.log("Filtered bathrooms displayed on the map:", filteredBathrooms);
 }
-
+                          
 function clearFilters() {
+  const filterButton = document.getElementById("filter");
+  filterButton.textContent = "Filter"; 
+  filterButton.onclick = updateFilterInput(); 
+
   clearMapPins();
   fetchBathrooms().then((bathrooms) => {
     bathrooms.forEach((bathroom) => {
         geocodeBathroom(bathroom); // Re-add all bathrooms to the map
     });
   });
-  const clearFilters = document.getElementById("clearFilters");
-  clearFilters.style.display = "none"; 
 }
 
 function clearMapPins(){
@@ -589,3 +584,5 @@ export{Bathroom, initMap, geocodeBathroom, addPinToMap, fetchBathrooms, map, mak
     // search by name 
     // mess arounf with margins 
          // more margin on bulleted lists, less margin on titles/headings 
+
+  // add find nearest button to the floating panel at the bototm, and make clearFilters button replace filter button when filters are applied 
