@@ -79,7 +79,7 @@ async function getLocation(){
 const pinSize = window.innerWidth <= 768 ? 64 : 47; // Larger size for mobile (<=768px)
 // not sure if js will be happy if i make it WORD but i htink it works like this 
 let userMarker = new google.maps.Marker({
-	position: { lat: 0, lng: 0 }, // will be updated later
+	position: null, // will be updated later
 	title: "You are here", 
 	icon: {
 		url: "./pee-removebg-preview (1).png", // path to your icon
@@ -93,13 +93,20 @@ async function addUserMarker() {
 			
 			// resetting attributes of existing marker instead of creating a new one 
 			userMarker.scaledSize = new google.maps.Size(pinSize, pinSize);
-
 			userMarker.setPosition({
 				lat: position.coords.latitude,
 				lng: position.coords.longitude
 			});
 
 			userMarker.setMap(map);
+
+			if (window.user){
+				console.log("window user exists, updating position");
+				window.user.setPosition(position);
+			} else {
+				const user = new User(position);
+				window.user = user; // store the user object globally
+			}
 		}, 
 		(error) => {
 			showError(error);
@@ -145,6 +152,23 @@ async function findNearestBathroom() {
     return nearestBathroom; 
 }
 
+async function specificDistance(bathroom){
+	let SD = null; // default value for specific distance
+	const thisUser = window.user; // get the user object from the global scope
+	if(!thisUser) {
+		console.error("User object is not defined, cannot calculate distance.");
+		return;
+	}
+	// i def need to keep better track of my users 
+	const userLat = thisUser.getPosition().coords.latitude;
+	const userLon = thisUser.getPosition().coords.longitude;
+
+	SD = await distanceFormula(userLat, userLon, bathroom.getbLatitude(), bathroom.getbLongitude());
+	console.warn("Specfic distance for bathroom" + bathroom.getName() + " is" + SD);
+	SD = SD.toFixed(2); // round to 2 decimal places
+	return SD;
+}
+
 async function openNearestBathroom(bathroom){
 	const pin = bathroom.getPin();
 
@@ -173,7 +197,7 @@ function deg2rad(deg) {
     return deg * (Math.PI / 180);
 }
 
-export { getLocation, showError, findNearestBathroom, distanceFormula, User, addUserMarker, Distance };
+export { getLocation, showError, findNearestBathroom, distanceFormula, User, addUserMarker, Distance, specificDistance };
 
 window.findNearestBathroom = findNearestBathroom;
 window.getLocation = getLocation;

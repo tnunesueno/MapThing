@@ -5,7 +5,7 @@
 
 <head>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Find a toilet!</title>
+  <title>Where2Wizz Home</title>
   <link rel="stylesheet" href="./slider.css">
   <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyALRD7VW8Aat0OnS2sc8yX8AKSxH3JFKoA&libraries=places"></script>
 </head>
@@ -32,6 +32,7 @@
     <div id="selectedBR">
         <h3 id="name"></h3>
         <p id="address"></p>
+        <p id="distance"></p>
         <p id="cleanlinessText"></p>
         <p id="handicapBigThing"> 
           <img id="handicapIcon" src="wheelchair.svg" width="24" height="24" viewBox="0 0 24 24"></img>
@@ -95,7 +96,7 @@
 
 <div id="floatingPanel">
   <section>
-    <input type="button" id="addButton" value="Add bathroom" onclick="openAddDialog()">
+    <input type="button" id="addButton" value="Add Bathroom" onclick="openAddDialog()">
   </section><section>
       <input type="button" id="filter" value="Filter" onclick="updateFilterInput()">
     </section><section>

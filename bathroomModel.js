@@ -2,7 +2,7 @@ import{db, fetchBathrooms, collection, getDocs, writeBathroomsToFirestore, write
 import { doc, updateDoc } from "https://www.gstatic.com/firebasejs/11.5.0/firebase-firestore.js";
 //import { Analytics } from "@vercel/analytics/next" 
 import { openAddDialog, openDialog, closePopOut, closeAddDialog, enableDialogClose} from './dialogs.js';
-import{getLocation, showError, distanceFormula, findNearestBathroom, User, addUserMarker } from './geolocator.js';
+import{getLocation, showError, distanceFormula, findNearestBathroom, User, addUserMarker, specificDistance } from './geolocator.js';
 
 /*export default function RootLayout({ children }) {
   return (
@@ -225,7 +225,7 @@ let pins = [];
             pins.push(pin);
             Bathroom.setPin(pin);
             // Add a click event listener to the pin 
-          pin.addListener("click", () => {
+          pin.addListener("click", async () => {
              map.setCenter({lat: lat, lng: lng});
              map.setZoom(19); 
              pin.setIcon({
@@ -239,6 +239,10 @@ let pins = [];
               } else {
                 document.getElementById("name").display = "none";
               }
+
+
+              const SD = await specificDistance(Bathroom); // this is the distance from the user to the bathroom, not the distance between two bathrooms
+              document.getElementById("distance").innerHTML = `Distance: ${SD} miles`; // this is the distance from the user to the bathroom, not the distance between two bathrooms
         // it should alwsy have an address and cleanliness is a number 
               document.getElementById("address").innerHTML = Bathroom.getAddress();
               document.getElementById("cleanlinessText").innerHTML = `Cleanliness: ${Bathroom.getCleanliness()}`;
@@ -271,6 +275,7 @@ let pins = [];
               }
               popOut.style.display = "flex"; 
               popOut.classList.add('visible');
+        
               });
 
               const closeButton = document.getElementById("closePopOutButton");
@@ -283,6 +288,7 @@ let pins = [];
                 });
                 
               });    
+            
 
         }
                    
@@ -611,12 +617,10 @@ export{Bathroom, initMap, geocodeBathroom, addPinToMap, fetchBathrooms, map, mak
   window.makeAcRequest = makeAcRequest;
     
   // TO DO: 
-   // make hte filter button turn into the clear filters button when filters are applied 
-  // get the user marker to go away when hte site is closed or reloaded - only one user marker at a time 
+    // make the popout look more interesting
+    // make the usermarker load faster OR add a loading animation
     // add hours of operation 
-    // popout to view all bathrooms in a list
     // search by name 
     // mess arounf with margins 
          // more margin on bulleted lists, less margin on titles/headings 
 
-  // add find nearest button to the floating panel at the bototm, and make clearFilters button replace filter button when filters are applied 
