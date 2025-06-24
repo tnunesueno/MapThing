@@ -2,7 +2,7 @@ import{db, fetchBathrooms, collection, getDocs, writeBathroomsToFirestore, write
 import { doc, updateDoc } from "https://www.gstatic.com/firebasejs/11.5.0/firebase-firestore.js";
 //import { Analytics } from "@vercel/analytics/next" 
 import { openAddDialog, openDialog, closePopOut, closeAddDialog, enableDialogClose} from './dialogs.js';
-import{getLocation, showPosition, showError, distanceFormula, findNearestBathroom, User } from './geolocator.js';
+import{getLocation, showError, distanceFormula, findNearestBathroom, User, addUserMarker } from './geolocator.js';
 
 /*export default function RootLayout({ children }) {
   return (
@@ -19,7 +19,7 @@ import{getLocation, showPosition, showError, distanceFormula, findNearestBathroo
 }*/
 
 class Bathroom {
-    constructor(name, streetAddress, bLatitude, bLongitude, cleanliness, handicapAccesible, babyChangingStation, genderNeutral, notes, hours, id) {
+    constructor(name, streetAddress, bLatitude, bLongitude, cleanliness, handicapAccesible, babyChangingStation, genderNeutral, notes, hours, id, pin) {
         this.name = name;  
         this.streetAddress = streetAddress;
         this.bLatitude = bLatitude;
@@ -120,12 +120,32 @@ class Bathroom {
         this.id = newId;
     }
 
+    getPin() {
+        return this.pin;
+    }
+
+    setPin(newPin) {
+        this.pin = newPin;
+    }
+
 }
 // Initialize and add the map
 let map;
+let position; 
+let locationAllowed;
 
 async function initMap() {
-    const position = { lat: 39.9526, lng: -75.1652 };
+
+  if (navigator.geolocation) {
+    locationAllowed = true; 
+    position = await getLocation(); 
+    console.log("mwhahahah location allowed");
+  } else {
+    locationAllowed = false;
+    position = { lat: 39.9526, lng: -75.1652 }; // set the center to philly city hall if location is off
+
+  }
+    
     // Request needed libraries.
     //@ts-ignore
     const { Map } = await google.maps.importLibrary("maps");
@@ -134,21 +154,27 @@ async function initMap() {
     const { InfoWindow } = await google.maps.importLibrary("maps");
     const { Place } = await google.maps.importLibrary("places");
     // The map, centered at Philadelphia
-    await getLocation(); 
+    const userCoords = {
+        lat: position.coords.latitude,
+        lng: position.coords.longitude
+    }; 
     map = new Map(document.getElementById("map"), {
         zoom: 15,
-        center: position,
         mapId: "DEMO_MAP_ID",
         draggable: true, 
         scrollwheel: true, 
     });
+    console.error("User Position:", userCoords);
+    map.setCenter(userCoords); // Set the map center to the user's location
 
     initAutocomplete(); // hopefully this fixes all the nonsense with the places
+    addBathroomsToMap(); // this is the function that adds the bathrooms to the map
+    addUserMarker(); 
 }
 
 initMap();
-addBathroomsToMap(); // this is the function that adds the bathrooms to the map
 
+// only used when a new bathroom is added, not when the map is initialized
 function geocodeBathroom(Bathroom) {
     return new Promise((resolve, reject) => {
        var address = Bathroom.getAddress(); 
@@ -197,15 +223,16 @@ let pins = [];
                 title: Bathroom.getAddress(),
             });
             pins.push(pin);
+            Bathroom.setPin(pin);
             // Add a click event listener to the pin 
-            pin.addListener("click", () => {
+          pin.addListener("click", () => {
              map.setCenter({lat: lat, lng: lng});
              map.setZoom(19); 
              pin.setIcon({
               url: "1-removebg-preview (1).png",
               scaledSize: new google.maps.Size(47, 47), 
-             });
-            
+             }); 
+
               const popOut = document.getElementById("selectedBR");
               if(Bathroom.getName()){
                 document.getElementById("name").innerHTML = Bathroom.getName();
@@ -255,7 +282,7 @@ let pins = [];
                   scaledSize: new google.maps.Size(47, 47), // Adjust size as needed
                 });
                 
-              });
+              });    
 
         }
                    
@@ -298,11 +325,12 @@ let pins = [];
               }
         
             bathroomArray.push(bathroom); 
-            
+            console.log("BATHROOM PIN: " + bathroom.getPin())
             }
     } catch (error) {
         console.error("Error fetching bathrooms in addBathroomsToMap:", error);
     }
+     
 }
 
         // all of this nonsense is ai bs that doens't work FIX IT 
@@ -481,23 +509,30 @@ let pins = [];
               <option value="false">No</option>
           </select>
       `;
-   }
-
-   // change the onaction ot be clearing the filters 
-    const filterButton = document.getElementById("filter");
-    filterButton.textContent = "Clear Filters";
-    filterButton.onclick = clearFilters(); // Change the button's onclick to clearFilters
+    }
 
   }
 
 function applyFilters() {
+
+  // not sure why this doesn't work 
+    const filtersApplied = true; 
+    window.filtersApplied = filtersApplied; // im aware that this is dumb 
+
+    // change the onaction ot be clearing the filters 
+    const filterButton = document.getElementById("filter");
+    filterButton.value = "Clear Filters";
+  
+    filterButton.onclick = null; // trying to remove the apply fil
+    filterButton.onclick = clearFilters; 
+
     const filterPanel = document.getElementById("filterPanel");
     filterPanel.close();
 
     const filterField = document.getElementById("filterField").value;
     const filterValue = document.getElementById("filterValue").value;
 
-    // Fetch all bathrooms (assuming you have them stored in an array)
+    // replace this so you don't have to fetch from firebase again 
     fetchBathrooms().then((bathrooms) => {
         const filteredBathrooms = bathrooms.filter((bathroom) => {
             if (filterField === "cleanliness") {
@@ -537,8 +572,11 @@ function updateMapWithFilteredBathrooms(filteredBathrooms) {
                           
 function clearFilters() {
   const filterButton = document.getElementById("filter");
-  filterButton.textContent = "Filter"; 
-  filterButton.onclick = updateFilterInput(); 
+  filterButton.value = "Filter"; 
+  filterButton.onclick = updateFilterInput; 
+  filtersApplied = false;
+  window.filtersApplied = filtersApplied; 
+
 
   clearMapPins();
   fetchBathrooms().then((bathrooms) => {
@@ -554,12 +592,7 @@ pins.forEach(pin => {
 });
 }
 
-document.getElementById("filter").addEventListener("click", (event) => {
-  event.stopPropagation(); // Prevent the event from propagating
-  updateFilterInput(); 
-});
-
-export{Bathroom, initMap, geocodeBathroom, addPinToMap, fetchBathrooms, map, makeAcRequest, replaceAllChars, refreshToken, updateFilterInput, applyFilters, clearFilters, updateMapWithFilteredBathrooms, clearMapPins};
+export{Bathroom, initMap, geocodeBathroom, addPinToMap, fetchBathrooms, map, makeAcRequest, replaceAllChars, refreshToken, updateFilterInput, applyFilters, clearFilters, updateMapWithFilteredBathrooms, clearMapPins, bathroomArray};
 
   window.initMap = initMap;
   window.geocodeBathroom = geocodeBathroom;
@@ -578,8 +611,9 @@ export{Bathroom, initMap, geocodeBathroom, addPinToMap, fetchBathrooms, map, mak
   window.makeAcRequest = makeAcRequest;
     
   // TO DO: 
+   // make hte filter button turn into the clear filters button when filters are applied 
+  // get the user marker to go away when hte site is closed or reloaded - only one user marker at a time 
     // add hours of operation 
-    // location services + directions to nearest bathroom
     // popout to view all bathrooms in a list
     // search by name 
     // mess arounf with margins 

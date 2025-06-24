@@ -78,7 +78,6 @@ async function fetchBathrooms() {
 
   for (const doc of querySnapshot.docs) {
     const data = doc.data();
-    console.log(`${doc.id} => ${JSON.stringify(data)}`);
 
     // Create a new Bathroom object using the document data
     const bathroom = new Bathroom(
@@ -94,8 +93,6 @@ async function fetchBathrooms() {
       data.hours, 
       doc.id
     );
-
-    console.log("Bathroom object created:", bathroom.getName(), "ID: ",  bathroom.getId())
     bathrooms.push(bathroom); // Add the geocoded Bathroom object to the array
   }
 

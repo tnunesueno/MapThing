@@ -1,4 +1,4 @@
-import { map } from './bathroomModel.js';
+import { map, bathroomArray, Bathroom } from './bathroomModel.js';
 import { fetchBathrooms } from './firebase.js';
 
 class User {
@@ -56,45 +56,74 @@ setDistance(distance) {
 
 }
 
+
 async function getLocation(){
-    if(navigator.geolocation){
-        navigator.geolocation.getCurrentPosition(showPosition, showError);
-    } else {
-       console.error("Geolocation is not supported by this browser.");
-    }
+	return new Promise((resolve, reject) => {
+	if(navigator.geolocation){
+		navigator.geolocation.getCurrentPosition(async (position) => {
+			const user = new User(position);
+			window.user = user; // store the user object globally, this is kind of hacky
+		resolve(position);
+		return position; 
+		}, (error) => {
+			showError(error);
+			reject(error);
+		});
+	} else {
+	   console.error("Geolocation is not supported by this browser.");
+	   reject(new Error("Geolocation is not supported by this browser."));
+	}
+}); 
 }
 
-async function showPosition(position) {
-    console.log("User Latitude: " + position.coords.latitude +
-        "\nUser Longitude: " + position.coords.longitude); 
-     
-    const user = new User(position);
-    const usermarker = new google.maps.Marker({
-     position: {
-        lat: position.coords.latitude,
-        lng: position.coords.longitude
-     },
-    map: map,
-    title: "You are here!"
+const pinSize = window.innerWidth <= 768 ? 64 : 47; // Larger size for mobile (<=768px)
+// not sure if js will be happy if i make it WORD but i htink it works like this 
+let userMarker = new google.maps.Marker({
+	position: { lat: 0, lng: 0 }, // will be updated later
+	title: "You are here", 
+	icon: {
+		url: "./pee-removebg-preview (1).png", // path to your icon
+		scaledSize: new google.maps.Size(pinSize, pinSize) // default size, will be updated later
+	},
 });
 
-window.user = user; // store the user object globally, this is kind of hacky
-findNearestBathroom(user); // find the nearest bathroom after getting the user's location
-return user; 
-} 
+async function addUserMarker() {
+	if(navigator.geolocation){
+		navigator.geolocation.watchPosition(async (position) => {
+			
+			// resetting attributes of existing marker instead of creating a new one 
+			userMarker.scaledSize = new google.maps.Size(pinSize, pinSize);
+
+			userMarker.setPosition({
+				lat: position.coords.latitude,
+				lng: position.coords.longitude
+			});
+
+			userMarker.setMap(map);
+		}, 
+		(error) => {
+			showError(error);
+			reject(error);
+		});  
+	} else {
+		console.error("Geolocation is not supported by this browser.");
+	   reject(new Error("Geolocation is not supported by this browser."));
+	}
+}
 
 function showError(error) {
     console.error("Error occurred. Error code: " + error.code);
 }
 
 
-async function findNearestBathroom(user) {
+async function findNearestBathroom() {
+    user = window.user; // get the user object from the global scope
     console.log("Finding nearest bathroom...");
-    const userLat = user.getPosition().coords.latitude;
-    const userLon = user.getPosition().coords.longitude;
+    const userLat = user.position.coords.latitude;
+    const userLon = user.position.coords.longitude;
     
     const distances = [];
-    const bathrooms = await fetchBathrooms(); 
+    const bathrooms = bathroomArray;
     for (const bathroom of bathrooms) {
     const distance = distanceFormula(userLat, userLon, bathroom.getbLatitude(), bathroom.getbLongitude());
     if(distance==0) {
@@ -111,9 +140,19 @@ async function findNearestBathroom(user) {
     console.log(distances);
     console.log("Nearest bathroom found: " + distances[0].getBathroom().getName() + " at a distance of " + distances[0].getDistance() + " miles");
 
-    return distances[0].getBathroom(); // return the nearest bathroom
+	const nearestBathroom = distances[0].getBathroom();
+	openNearestBathroom(nearestBathroom); // open the nearest bathroom
+    return nearestBathroom; 
 }
 
+async function openNearestBathroom(bathroom){
+	const pin = bathroom.getPin();
+
+	console.log("Opening nearest bathroom, this is hte pin: ", pin);
+	google.maps.event.trigger(pin, 'click');
+}
+
+// mathy shit below here 
 function distanceFormula(lat1, lon1, lat2, lon2) {
     
         let dLat = deg2rad((lat2 - lat1));
@@ -130,16 +169,14 @@ function distanceFormula(lat1, lon1, lat2, lon2) {
   const d = R * c; // convert to miles 
   return d;
 }
-
 function deg2rad(deg) {
     return deg * (Math.PI / 180);
 }
 
-export { getLocation, showPosition, showError, findNearestBathroom, distanceFormula, User };
+export { getLocation, showError, findNearestBathroom, distanceFormula, User, addUserMarker, Distance };
 
 window.findNearestBathroom = findNearestBathroom;
 window.getLocation = getLocation;
-window.showPosition = showPosition;
 window.showError = showError;
 window.User = User;
 window.Distance = Distance;
