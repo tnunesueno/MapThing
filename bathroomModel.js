@@ -141,6 +141,7 @@ async function initMap() {
     position = await getLocation(); 
     console.log("mwhahahah location allowed");
   } else {
+    console.log("Geolocation is not supported by this browser.");
     locationAllowed = false;
     position = { lat: 39.9526, lng: -75.1652 }; // set the center to philly city hall if location is off
 
@@ -617,8 +618,9 @@ export{Bathroom, initMap, geocodeBathroom, addPinToMap, fetchBathrooms, map, mak
   window.makeAcRequest = makeAcRequest;
     
   // TO DO: 
+    // make the shit load when users reject location services 
     // make the popout look more interesting
-    // make the usermarker load faster OR add a loading animation
+    // make the site (esp usermarker) load faster OR add a loading animation
     // add hours of operation 
     // search by name 
     // mess arounf with margins 

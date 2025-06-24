@@ -7,7 +7,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Where2Wizz Home</title>
   <link rel="stylesheet" href="./slider.css">
-  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyALRD7VW8Aat0OnS2sc8yX8AKSxH3JFKoA&libraries=places"></script>
+  <script defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyALRD7VW8Aat0OnS2sc8yX8AKSxH3JFKoA&libraries=places"></script>
 </head>
 
 <body class="no-scroll">
@@ -25,8 +25,6 @@
     </ul>
   </nav>
     <div id="map"></div>
-    <script type="module" src="./bathroomModel.js"></script>
-    <script type="module" src="./firebase.js"></script>
 
     <!--<dialog id ="popOut">-->
     <div id="selectedBR">
@@ -50,9 +48,6 @@
         
         <input type="button" value="Close" onclick="closePopOut()" id="closePopOutButton">
     </div>
-   <!-- </dialog>-->
-
-</body>
 
 <dialog id="myDialog">
     <div>
@@ -120,5 +115,10 @@
   <br>
   <button id="applyFilters" onclick="applyFilters()">Apply Filters</button>
 </dialog>
+
+<script type="module" src="./bathroomModel.js"></script>
+    <script type="module" src="./firebase.js"></script>
+
+</body>
 
 </html>
