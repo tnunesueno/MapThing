@@ -132,20 +132,15 @@ class Bathroom {
 // Initialize and add the map
 let map;
 let position; 
-let locationAllowed;
 
 async function initMap() {
-
-  if (navigator.geolocation) {
-    locationAllowed = true; 
+   
+  try{
     position = await getLocation(); 
-    console.log("mwhahahah location allowed");
-  } else {
-    console.log("Geolocation is not supported by this browser.");
-    locationAllowed = false;
-    position = { lat: 39.9526, lng: -75.1652 }; // set the center to philly city hall if location is off
-
-  }
+    } catch(error){
+      position = { coords: { latitude: 39.9526, longitude: -75.1652 } }; // set the center to philly city hall if location is off
+      console.error("Error getting location CAUGHT:", error);
+    }
     
     // Request needed libraries.
     //@ts-ignore
@@ -154,7 +149,8 @@ async function initMap() {
     const { PinElement } = await google.maps.importLibrary("marker");
     const { InfoWindow } = await google.maps.importLibrary("maps");
     const { Place } = await google.maps.importLibrary("places");
-    // The map, centered at Philadelphia
+   
+    // this line changes it into a google maps compatible coord obj
     const userCoords = {
         lat: position.coords.latitude,
         lng: position.coords.longitude
@@ -242,15 +238,15 @@ let pins = [];
               }
 
 
-              const SD = await specificDistance(Bathroom); // this is the distance from the user to the bathroom, not the distance between two bathrooms
-              document.getElementById("distance").innerHTML = `Distance: ${SD} miles`; // this is the distance from the user to the bathroom, not the distance between two bathrooms
+              const SD = await specificDistance(Bathroom); 
+              document.getElementById("distance").innerHTML = `${SD} miles`; 
         // it should alwsy have an address and cleanliness is a number 
               document.getElementById("address").innerHTML = Bathroom.getAddress();
               document.getElementById("cleanlinessText").innerHTML = `Cleanliness: ${Bathroom.getCleanliness()}`;
 
               if (Bathroom.getHandicapAccesible()==true){
                 document.getElementById("handicap").innerHTML = `Handicap Accessible`;
-               //document.getElementById("handicap").innerHTML = "<img src=\"./wheelchair.svg\" width=\"400px\" height=\"150px\">";
+               
               } else {
                document.getElementById("handicapBigThing").style.display = "none"; 
               }
@@ -332,7 +328,6 @@ let pins = [];
               }
         
             bathroomArray.push(bathroom); 
-            console.log("BATHROOM PIN: " + bathroom.getPin())
             }
     } catch (error) {
         console.error("Error fetching bathrooms in addBathroomsToMap:", error);
@@ -618,7 +613,7 @@ export{Bathroom, initMap, geocodeBathroom, addPinToMap, fetchBathrooms, map, mak
   window.makeAcRequest = makeAcRequest;
     
   // TO DO: 
-    // make the shit load when users reject location services 
+     // figure out how to prompt another permission request from the warning 
     // make the popout look more interesting
     // make the site (esp usermarker) load faster OR add a loading animation
     // add hours of operation 

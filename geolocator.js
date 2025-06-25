@@ -1,5 +1,6 @@
 import { map, bathroomArray, Bathroom } from './bathroomModel.js';
 import { fetchBathrooms } from './firebase.js';
+import { enableDialogClose } from './dialogs.js';
 
 class User {
 constructor(position){
@@ -56,20 +57,24 @@ setDistance(distance) {
 
 }
 
-
+let locationAllowed = false; // global variable to track if location is allowed
 async function getLocation(){
 	return new Promise((resolve, reject) => {
 	if(navigator.geolocation){
 		navigator.geolocation.getCurrentPosition(async (position) => {
 			const user = new User(position);
 			window.user = user; // store the user object globally, this is kind of hacky
+			locationAllowed = true; 
+			window.locationAllowed = locationAllowed; 
 		resolve(position);
 		return position; 
 		}, (error) => {
 			showError(error);
-			reject(error);
+			reject(error); 
 		});
+
 	} else {
+		// i know this isnt the logic thats running when users reject location perms 
 	   console.error("Geolocation is not supported by this browser.");
 	   reject(new Error("Geolocation is not supported by this browser."));
 	}
@@ -110,7 +115,6 @@ async function addUserMarker() {
 		}, 
 		(error) => {
 			showError(error);
-			reject(error);
 		});  
 	} else {
 		console.error("Geolocation is not supported by this browser.");
@@ -124,32 +128,38 @@ function showError(error) {
 
 
 async function findNearestBathroom() {
-    user = window.user; // get the user object from the global scope
-    console.log("Finding nearest bathroom...");
-    const userLat = user.position.coords.latitude;
-    const userLon = user.position.coords.longitude;
-    
-    const distances = [];
-    const bathrooms = bathroomArray;
-    for (const bathroom of bathrooms) {
-    const distance = distanceFormula(userLat, userLon, bathroom.getbLatitude(), bathroom.getbLongitude());
-    if(distance==0) {
-            console.warn(bathroom.getName()+ "has a distance of 0 miles");
-        } 
-        else {
-        console.log(`Distance to ${bathroom.getName()}: ${distance} miles`);
-        distances.push(new Distance(user, bathroom, distance));
-        } 
-    }
+	if (locationAllowed == true){
+		user = window.user; // get the user object from the global scope
+		console.log("Finding nearest bathroom...");
+		const userLat = user.position.coords.latitude;
+		const userLon = user.position.coords.longitude;
+		
+		const distances = [];
+		const bathrooms = bathroomArray;
+		for (const bathroom of bathrooms) {
+		const distance = distanceFormula(userLat, userLon, bathroom.getbLatitude(), bathroom.getbLongitude());
+		if(distance==0) {
+				console.warn(bathroom.getName()+ "has a distance of 0 miles");
+			} 
+			else {
+			distances.push(new Distance(user, bathroom, distance));
+			} 
+		}
 
-    // Sort distances in ascending order
-    distances.sort((a, b) => a.distance - b.distance);
-    console.log(distances);
-    console.log("Nearest bathroom found: " + distances[0].getBathroom().getName() + " at a distance of " + distances[0].getDistance() + " miles");
+		// Sort distances in ascending order
+		distances.sort((a, b) => a.distance - b.distance);
+		console.log(distances);
+		console.log("Nearest bathroom found: " + distances[0].getBathroom().getName() + " at a distance of " + distances[0].getDistance() + " miles");
 
-	const nearestBathroom = distances[0].getBathroom();
-	openNearestBathroom(nearestBathroom); // open the nearest bathroom
-    return nearestBathroom; 
+		const nearestBathroom = distances[0].getBathroom();
+		openNearestBathroom(nearestBathroom); // open the nearest bathroom
+		return nearestBathroom; 
+	} else {
+		console.warn("Location not allowed, cannot find nearest bathroom.");
+		const warning = document.getElementById("locationWarning"); 
+		warning.showModal(); 
+		enableDialogClose(warning); 
+	}
 }
 
 async function specificDistance(bathroom){
