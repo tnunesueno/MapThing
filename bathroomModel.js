@@ -237,12 +237,10 @@ let pins = [];
                 document.getElementById("name").display = "none";
               }
 
-              if(locationAllowed == true){
+              
               const SD = await specificDistance(Bathroom); 
               document.getElementById("distance").innerHTML = `${SD} miles`; 
-             } else {
-              document.getElementByID("distance").style.display = none; 
-             }
+            
         // it should alwsy have an address and cleanliness is a number 
               document.getElementById("address").innerHTML = Bathroom.getAddress();
               document.getElementById("cleanlinessText").innerHTML = `Cleanliness: ${Bathroom.getCleanliness()}`;
