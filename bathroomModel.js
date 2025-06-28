@@ -239,7 +239,11 @@ let pins = [];
 
               
               const SD = await specificDistance(Bathroom); 
+              if (SD === null || SD === undefined) {
+                document.getElementById("distance").innerHTML = "Distance not available"; 
+              } else {
               document.getElementById("distance").innerHTML = `${SD} miles`; 
+              }
             
         // it should alwsy have an address and cleanliness is a number 
               document.getElementById("address").innerHTML = Bathroom.getAddress();
