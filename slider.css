@@ -443,7 +443,6 @@ dialog button.cancel-button:hover {
     display: flex; /* Show nav items in a row on desktop */
     align-items: center; /* Center items vertically */
     flex-direction: row; /* Align items horizontally */
-    position: static; /* Remove dropdown behavior */
     gap: 20px; /* Add spacing between items */
     opacity: 1; /* Ensure visibility */
     pointer-events: auto; /* Ensure links are clickable */
