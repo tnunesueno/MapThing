@@ -7,7 +7,7 @@ body, p, span, div, input, label {
   font-family: 'Caladea', serif;
 }
 
-h1, h2, p, ul{
+p, ul{
   margin-left: 32px;
   margin-right: 32px;
 }
