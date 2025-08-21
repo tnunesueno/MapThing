@@ -1,6 +1,10 @@
-h1, h2, h3, h4, h5, button, h6 {
+h1, h2, h3, h4, h5, h6 {
   font-family: 'Nourd BOLD', sans-serif;
   margin: 10px; 
+}
+
+button, input[type="button"], input[type="submit"] {
+  font-family: 'Nourd BOLD', sans-serif;
 }
 
 body, p, span, div, input, label {
