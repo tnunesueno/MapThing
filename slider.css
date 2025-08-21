@@ -3,7 +3,7 @@ h1, h2, h3, h4, h5, h6 {
   margin: 10px; 
 }
 
-button, input[type="button"], input[type="submit"] {
+button, input[type="button"], button[type="submit"], input[type="submit"] {
   font-family: 'Nourd BOLD', sans-serif;
 }
 
