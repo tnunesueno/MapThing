@@ -618,7 +618,9 @@ export{Bathroom, initMap, geocodeBathroom, addPinToMap, fetchBathrooms, map, mak
   window.makeAcRequest = makeAcRequest;
     
   // TO DO: 
-     // figure out how to prompt another permission request from the warning 
+    // show which page ur on in the horiz navbar 
+    // add a loading animation to the map
+    // figure out how to prompt another permission request from the warning 
     // make the popout look more interesting
     // make the site (esp usermarker) load faster OR add a loading animation
     // add hours of operation 
