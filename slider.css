@@ -442,6 +442,35 @@ dialog button.cancel-button:hover {
   transform: translateY(-12.5px) rotate(-45deg); /* Adjusted */
 }
 
+
+.grid {
+  display: grid;
+  gap: 20px; /* Space between grid items */
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); /* Responsive columns */
+  margin: 20px;
+}
+
+.grid-item {
+  text-align: center; /* Center-align content */
+}
+
+.grid-item img {
+  width: 100%; /* Make images responsive */
+  height: auto; /* Maintain aspect ratio */
+  border-radius: 8px; /* Optional: Rounded corners */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Optional: Add shadow */
+}
+
+.grid-item figcaption {
+  margin-top: 10px; /* Space between image and caption */
+  font-size: 1em; /* Adjust font size */
+}
+
+.grid-item a {
+  text-decoration: none; /* Remove underline from links */
+  color: #004AAD; /* Link color */
+}
+
 /* --- MOBILE RESPONSIVE --- */
 @media (max-width: 768px) {
   .navbar {
