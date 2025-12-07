@@ -431,7 +431,7 @@ dialog button.cancel-button:hover {
 }
 
 .menu-toggle.active .bar:nth-child(1) {
-  transform: rotate(-45deg) translate(-8px, 8px);
+  transform: translateY(12.5px) rotate(45deg); 
 }
 
 .menu-toggle.active .bar:nth-child(2) {
@@ -439,7 +439,7 @@ dialog button.cancel-button:hover {
 }
 
 .menu-toggle.active .bar:nth-child(3) {
-  transform: rotate(45deg) translate(-7px, -7px);
+  transform: translateY(-12.5px) rotate(-45deg); /* Adjusted */
 }
 
 /* --- MOBILE RESPONSIVE --- */
