@@ -361,75 +361,77 @@ dialog button.cancel-button:hover {
   align-self: center;
 }
 
-/* Navbar styles */
+/* --- NAVBAR (Professional Styling) --- */
 .navbar {
-  font-family: 'Nourd BOLD', sans-serif;
-  z-index: 10000; 
-  background-color: #004AAD;
-  color: white;
-  padding: 10px 20px;
+  background-color: #ffffff;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  padding: 15px 20px;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  position: relative;
+}
 
-  margin: 0; 
-  box-sizing: border-box;
+.navbar .logo {
+  font-size: 1.5em;
+  font-weight: 700;
+  color: #004AAD;
+  text-decoration: none;
+  letter-spacing: 0.5px;
 }
 
 .nav-list {
+  display: flex;
   list-style: none;
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-  position: absolute; 
-  top: 100%; 
-  left: 0; 
-  width: 100%;
-  transform: translateY(-150%);
-  opacity: 0; 
-  pointer-events: none;
-  z-index: 1000; 
-  background-color: #004AAD;
-  padding-bottom: 20px;
+  margin: 0;
+  padding: 0;
+  gap: 30px;
 }
 
-.nav-list.active {
-  transform: translateY(0); /* Slide down into view */
-  opacity: 1; /* Make it visible */
-  pointer-events: auto; 
-  z-index: 1000; 
-  background-color: #004AAD; 
+.nav-list li {
+  margin: 0;
 }
 
-.nav-list a {
-  color: white;
+.nav-link {
   text-decoration: none;
-  padding: 10px 15px;
+  color: #333;
+  font-weight: 500;
+  font-size: 1em;
+  transition: all 0.3s ease;
+  border-bottom: 2px solid transparent;
+  padding-bottom: 5px;
 }
 
-.nav-list a:hover {
-  background-color: #F9DC5C;
-  border-radius: 5px;
+.nav-link:hover {
+  color: #004AAD;
+  border-bottom-color: #F9DC5C;
 }
 
-/* Hamburger menu styles */
+.nav-link.active {
+  color: #004AAD;
+  border-bottom-color: #F9DC5C;
+}
+
+/* --- MOBILE MENU TOGGLE --- */
 .menu-toggle {
-  display: flex;
+  display: none;
   flex-direction: column;
   cursor: pointer;
 }
 
 .menu-toggle .bar {
-  background-color: white;
-  height: 3px;
   width: 25px;
-  margin: 3px 0;
-  transition: 0.3s;
+  height: 3px;
+  background-color: #004AAD;
+  margin: 5px 0;
+  transition: all 0.3s ease;
+  border-radius: 2px;
 }
 
 .menu-toggle.active .bar:nth-child(1) {
-  transform: translateY(9px) rotate(45deg); 
+  transform: rotate(-45deg) translate(-8px, 8px);
 }
 
 .menu-toggle.active .bar:nth-child(2) {
@@ -437,40 +439,52 @@ dialog button.cancel-button:hover {
 }
 
 .menu-toggle.active .bar:nth-child(3) {
-  transform: translateY(-9px) rotate(-45deg); /* Adjusted */
+  transform: rotate(45deg) translate(-7px, -7px);
 }
 
-.grid {
-  display: grid;
-  gap: 20px; /* Space between grid items */
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); /* Responsive columns */
-  margin: 20px;
+/* --- MOBILE RESPONSIVE --- */
+@media (max-width: 768px) {
+  .navbar {
+    padding: 15px;
+  }
+
+  .menu-toggle {
+    display: flex;
+  }
+
+  .nav-list {
+    position: absolute;
+    top: 60px;
+    left: 0;
+    width: 100%;
+    background-color: #ffffff;
+    flex-direction: column;
+    gap: 0;
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease;
+  }
+
+  .nav-list.active {
+    max-height: 400px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+
+  .nav-list li {
+    padding: 15px 20px;
+    border-bottom: 1px solid #eee;
+  }
+
+  .nav-list li:last-child {
+    border-bottom: none;
+  }
+
+  .nav-link {
+    display: block;
+    padding: 10px 0;
+  }
 }
 
-.grid-item {
-  text-align: center; /* Center-align content */
-}
-
-.grid-item img {
-  width: 100%; /* Make images responsive */
-  height: auto; /* Maintain aspect ratio */
-  border-radius: 8px; /* Optional: Rounded corners */
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Optional: Add shadow */
-}
-
-.grid-item figcaption {
-  margin-top: 10px; /* Space between image and caption */
-  font-size: 1em; /* Adjust font size */
-}
-
-.grid-item a {
-  text-decoration: none; /* Remove underline from links */
-  color: #004AAD; /* Link color */
-}
-
-.grid-item a:hover {
-  text-decoration: underline; /* Add underline on hover */
-}
 /* --- DESKTOP STYLES (min-width: 768px) --- */
 @media (min-width: 768px) {
 
@@ -623,4 +637,70 @@ dialog button.cancel-button:hover {
   #filterPanel button { /* Already styled by general dialog button */
     font-size: 1em;
   }
+}
+
+/* --- TEXT PAGES (About & Guidelines) --- */
+.text-page {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 40px 20px;
+  line-height: 1.8;
+}
+
+.text-page h1 {
+  font-size: 2.5em;
+  margin-bottom: 30px;
+  color: #004AAD;
+  border-bottom: 3px solid #F9DC5C;
+  padding-bottom: 15px;
+}
+
+.text-page h2 {
+  font-size: 1.8em;
+  margin-top: 40px;
+  margin-bottom: 15px;
+  color: #004AAD;
+}
+
+.text-page p {
+  font-size: 1.05em;
+  line-height: 1.8;
+  color: #333;
+  margin-bottom: 15px;
+}
+
+.text-page ul {
+  margin-left: 40px;
+  margin-right: 20px;
+}
+
+.text-page li {
+  margin-bottom: 15px;
+  line-height: 1.7;
+  color: #333;
+}
+
+.text-page strong {
+  color: #004AAD;
+  font-weight: 600;
+}
+
+.text-page a {
+  color: #004AAD;
+  text-decoration: none;
+  border-bottom: 1px solid #F9DC5C;
+  transition: all 0.3s ease;
+}
+
+.text-page a:hover {
+  color: #F9DC5C;
+  border-bottom-color: #004AAD;
+}
+
+.contact-section {
+  background-color: #f9f9f9;
+  padding: 25px;
+  border-left: 4px solid #004AAD;
+  border-radius: 5px;
+  margin-top: 30px;
 }

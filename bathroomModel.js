@@ -391,6 +391,15 @@ let pins = [];
           east: -74.95,
           west: -75.28,
         };
+        
+        // this nonsense 
+        pos = await getLocation()
+        const userBounds ={
+        north: (pos.coords.latitude)+2, 
+        south: (pos.coords.latitude)-2,
+        east: (pos.coords.longitude)-2,
+        east: (pos.coords.longitude)+2,
+        }; 
       
           // Reset elements and exit if an empty string is received.
           if (input.target.value == "") {
@@ -401,7 +410,7 @@ let pins = [];
         // Add the latest char sequence to the request.
         request.input = input.target.value; 
         
-        // this makes like a box 
+        // this makes like a box FIX THIS 
         request.locationBias = philadelphiaBounds; 
 
         const { suggestions } =
