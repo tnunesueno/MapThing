@@ -393,13 +393,15 @@ let pins = [];
         };
         
         // this nonsense 
-        pos = await getLocation()
-        const userBounds ={
+        
+        /*const userBounds ={
         north: (pos.coords.latitude)+2, 
         south: (pos.coords.latitude)-2,
         east: (pos.coords.longitude)-2,
         east: (pos.coords.longitude)+2,
-        }; 
+        }; */ 
+
+        const userBounds = philadelphiaBounds
       
           // Reset elements and exit if an empty string is received.
           if (input.target.value == "") {
@@ -411,7 +413,7 @@ let pins = [];
         request.input = input.target.value; 
         
         // this makes like a box FIX THIS 
-        request.locationBias = philadelphiaBounds; 
+        request.locationBias = userBounds; 
 
         const { suggestions } =
         await google.maps.places.AutocompleteSuggestion.fetchAutocompleteSuggestions(
